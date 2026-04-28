@@ -1,0 +1,1777 @@
+@prefix : <http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/> .
+@prefix as: <https://www.w3.org/ns/activitystreams#> .
+@prefix ra: <https://example.org/research-access#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ddp: <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#> .
+@prefix dpv: <https://w3id.org/dpv#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix loc: <https://w3id.org/dpv/loc#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix frapo: <http://purl.org/cerif/frapo/> .
+@prefix legal-eu: <https://w3id.org/dpv/legal/eu#> .
+@base <http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/> .
+
+<http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access> rdf:type owl:Ontology ;
+                                                                       owl:imports <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/as_our_ideas.owl> ,
+                                                                                   <https://w3id.org/dpv/2.3/owl#> ,
+                                                                                   <https://w3id.org/dpv/2.3/risk/owl#> ;
+                                                                       rdfs:comment "An ontology modelling DSA Article 40 vetted researcher access to platform data for systemic risk research. Distinguishes the Art. 40(4) DSC-mediated non-public data process from the Art. 40(12) direct public data process. Integrates OSDA (ActivityStreams extension) for platform data typing."@en ;
+                                                                       rdfs:label "Research Access Ontology"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.w3.org/2004/02/skos/core#closeMatch
+skos:closeMatch rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#inScheme
+skos:inScheme rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://purl.org/cerif/frapo/isEmployedBy
+frapo:isEmployedBy rdf:type owl:ObjectProperty ;
+                   rdfs:domain foaf:Agent ;
+                   rdfs:range foaf:Agent ;
+                   rdfs:isDefinedBy frapo: ;
+                   rdfs:label "is employed by"@en .
+
+
+###  http://purl.org/cerif/frapo/isFundedBy
+frapo:isFundedBy rdf:type owl:ObjectProperty ;
+                 rdfs:isDefinedBy frapo: ;
+                 rdfs:label "is funded by"@en .
+
+
+###  http://purl.org/dc/terms/format
+dct:format rdf:type owl:ObjectProperty ;
+           rdfs:domain dcat:Distribution ;
+           rdfs:range dct:MediaTypeOrExtent ;
+           rdfs:isDefinedBy dct: ;
+           rdfs:label "format"@en .
+
+
+###  http://purl.org/dc/terms/hasFormat
+dct:hasFormat rdf:type owl:ObjectProperty ;
+              rdfs:domain dcat:Distribution ;
+              rdfs:comment "Used here to link a dcat:Distribution to its format-specific schema description (csvw:Schema for CSV, or a foaf:Document URL for JSON Schema)."@en ;
+              rdfs:isDefinedBy dct: ;
+              rdfs:label "has format"@en .
+
+
+###  http://www.w3.org/ns/csvw#column
+csvw:column rdf:type owl:ObjectProperty ;
+            rdfs:domain csvw:Schema ;
+            rdfs:range csvw:Column ;
+            rdfs:isDefinedBy csvw: ;
+            rdfs:comment "Links a csvw:Schema to a csvw:Column description specifying the name, datatype and constraints of one column in the CSV file."@en ;
+            rdfs:label "column"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/employsMethod
+:employsMethod rdf:type owl:ObjectProperty ;
+               rdfs:domain :ResearchActivity ;
+               rdfs:range :ResearchMethod ;
+               rdfs:comment "Links a research activity to the research method it employs."@en ;
+               rdfs:label "employs method"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/hasMethod
+:hasMethod rdf:type owl:ObjectProperty ;
+           rdfs:domain :ResearchActivity ,
+                       <https://example.org/orda#ResearchProject> ;
+           rdfs:range :ResearchMethod ;
+           rdfs:comment "Links a research project to the research methods it employs."@en ;
+           rdfs:label "has method"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/hasResearchActivity
+:hasResearchActivity rdf:type owl:ObjectProperty ;
+                     rdfs:domain <https://example.org/orda#ResearchProject> ;
+                     rdfs:range :ResearchActivity ;
+                     rdfs:comment "Links a research project to the research activities it comprises."@en ;
+                     rdfs:label "has research activity"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/hasResearchQuestion
+:hasResearchQuestion rdf:type owl:ObjectProperty ;
+                     rdfs:domain <https://example.org/orda#ResearchProject> ;
+                     rdfs:range :ResearchQuestion ;
+                     rdfs:comment "Links a research project to the research questions it addresses."@en ;
+                     rdfs:label "has research question"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/hasReview
+:hasReview rdf:type owl:ObjectProperty ;
+           rdfs:domain :ResearchMethod ;
+           rdfs:range <https://example.org/orda#ExpertConsultation> ;
+           rdfs:comment "Links a research method to the expert consultation (e.g. orda:MethodologicalReview) that reviews it for necessity and proportionality."@en ;
+           rdfs:label "has review"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/hasTopic
+:hasTopic rdf:type owl:ObjectProperty ;
+          rdfs:domain <https://example.org/orda#ResearchProject> ;
+          rdfs:range :ResearchTopic ;
+          rdfs:comment "Links a research project to the research topics it covers."@en ;
+          rdfs:label "has topic"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/investigates
+:investigates rdf:type owl:ObjectProperty ;
+              rdfs:domain :ResearchQuestion ;
+              rdfs:comment "Links a research question to what it investigates — either an orda:SystemicRisk category or a :ResearchTopic. Distinct from orda:investigates whose domain is orda:ResearchProject."@en ;
+              rdfs:label "investigates"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/participatesIn
+:participatesIn rdf:type owl:ObjectProperty ;
+                rdfs:domain :Researcher ;
+                rdfs:range <https://example.org/orda#ResearchProject> ;
+                rdfs:comment "Links a researcher to a research project they participate in."@en ;
+                rdfs:label "participates in"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/requestedBy
+:requestedBy rdf:type owl:ObjectProperty ;
+             rdfs:domain <https://example.org/orda#AmendmentRequest> ;
+             rdfs:range <https://example.org/orda#DataProvider> ;
+             rdfs:label "requested by" .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasAccount
+ddp:hasAccount rdf:type owl:ObjectProperty ;
+               rdfs:domain ddp:RealWorldIdentity ;
+               rdfs:range ddp:Agent ;
+               rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+               rdfs:label "has account"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasActivities
+ddp:hasActivities rdf:type owl:ObjectProperty ;
+                  rdfs:domain ddp:Agent ;
+                  rdfs:range ddp:ActivityHistory ;
+                  rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                  rdfs:label "has activities"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasCreator
+ddp:hasCreator rdf:type owl:ObjectProperty ;
+               rdfs:range ddp:Agent ;
+               rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+               rdfs:label "has creator"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasItem
+ddp:hasItem rdf:type owl:ObjectProperty ;
+            rdfs:domain ddp:ActivityHistory ;
+            rdfs:range as:Activity ;
+            rdfs:comment "Links an activity history to individual ActivityStreams activities."@en ;
+            rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+            rdfs:label "has item"@en .
+
+
+###  http://www.w3.org/2004/02/skos/core#member
+skos:member rdf:type owl:ObjectProperty ;
+            owl:inverseOf foaf:member .
+
+
+###  http://xmlns.com/foaf/0.1/member
+foaf:member rdf:type owl:ObjectProperty ;
+            rdfs:range foaf:Organization ;
+            rdfs:isDefinedBy foaf: ;
+            rdfs:label "member"@en .
+
+
+###  https://example.org/orda#affiliatedWith
+<https://example.org/orda#affiliatedWith> rdf:type owl:ObjectProperty ;
+                                          rdfs:domain <https://example.org/orda#VettedResearcher> ;
+                                          rdfs:range foaf:Organization ;
+                                          rdfs:comment "Links a vetted researcher to their affiliated organisation."@en ;
+                                          rdfs:label "affiliated with"@en .
+
+
+###  https://example.org/orda#amendmentRequestedBy
+<https://example.org/orda#amendmentRequestedBy> rdf:type owl:ObjectProperty ;
+                                                rdfs:domain <https://example.org/orda#AmendmentRequest> ;
+                                                rdfs:range <https://example.org/orda#DataProvider> ;
+                                                rdfs:comment "Links an amendment request to the platform that submitted it."@en ;
+                                                rdfs:label "amendment requested by"@en .
+
+
+###  https://example.org/orda#amendsRequest
+<https://example.org/orda#amendsRequest> rdf:type owl:ObjectProperty ;
+                                         rdfs:domain <https://example.org/orda#AmendmentRequest> ;
+                                         rdfs:range <https://example.org/orda#ReasonedRequest> ;
+                                         rdfs:comment "Links an amendment request to the reasoned request it seeks to modify under Art. 40(5) DSA."@en ;
+                                         rdfs:label "amends request"@en .
+
+
+###  https://example.org/orda#assessedBy
+<https://example.org/orda#assessedBy> rdf:type owl:ObjectProperty ;
+                                      rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                      rdfs:range <https://example.org/orda#DSCofEstablishment> ;
+                                      rdfs:comment "Links an Art. 40(4) data access application to the DSC of establishment that makes the final vetting decision and formulates the reasoned request."@en ;
+                                      rdfs:label "assessed by"@en .
+
+
+###  https://example.org/orda#assessesMitigation
+<https://example.org/orda#assessesMitigation> rdf:type owl:ObjectProperty ;
+                                              rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                              rdfs:range <https://example.org/orda#DataProvider> ;
+                                              rdfs:comment "Links a research project to the VLOP or VLOSE whose risk mitigation measures (under Art. 35 DSA) it assesses for adequacy, efficiency and impact. Shares domain with orda:investigates per Art. 40(4)."@en ;
+                                              rdfs:label "assesses mitigation"@en .
+
+
+###  https://example.org/orda#consultationRequestedBy
+<https://example.org/orda#consultationRequestedBy> rdf:type owl:ObjectProperty ;
+                                                   rdfs:domain <https://example.org/orda#ExpertConsultation> ;
+                                                   rdfs:range <https://example.org/orda#DigitalServicesCoordinator> ;
+                                                   rdfs:comment "Links an expert consultation to the DSC that requested it."@en ;
+                                                   rdfs:label "consultation requested by"@en .
+
+
+###  https://example.org/orda#eventActor
+<https://example.org/orda#eventActor> rdf:type owl:ObjectProperty ;
+                                      rdfs:domain <https://example.org/orda#StatusEvent> ;
+                                      rdfs:comment "The entity (DSC, platform, researcher) that triggered this status change."@en ;
+                                      rdfs:label "event actor"@en .
+
+
+###  https://example.org/orda#eventStatus
+<https://example.org/orda#eventStatus> rdf:type owl:ObjectProperty ;
+                                       rdfs:domain <https://example.org/orda#StatusEvent> ;
+                                       rdfs:range skos:Concept ;
+                                       rdfs:comment "Links a status event to the status it represents, drawn from orda:RequestStatusScheme."@en ;
+                                       rdfs:label "event status"@en .
+
+
+###  https://example.org/orda#evidences
+<https://example.org/orda#evidences> rdf:type owl:ObjectProperty ;
+                                     rdfs:range <https://example.org/orda#SystemicRisk> ;
+                                     rdfs:comment "Links a platform content object (post, reaction, video etc.) to the DSA systemic risk category it constitutes evidence of."@en ;
+                                     rdfs:label "evidences"@en .
+
+
+###  https://example.org/orda#hasAccessModality
+<https://example.org/orda#hasAccessModality> rdf:type owl:ObjectProperty ;
+                                             rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                             rdfs:range <https://example.org/orda#AccessModality> ;
+                                             rdfs:comment "Links a data access request (Art. 40(4) or Art. 40(12)) — or the reasoned request formulated from it — to the access modality. At application stage the modality is researcher-proposed; for Art. 40(4) reasoned requests it is determined by the DSC of establishment per DA Art. 9."@en ;
+                                             rdfs:label "has access modality"@en .
+
+
+###  https://example.org/orda#hasDataCatalogue
+<https://example.org/orda#hasDataCatalogue> rdf:type owl:ObjectProperty ;
+                                            rdfs:domain <https://example.org/orda#DataProvider> ;
+                                            rdfs:range <https://example.org/orda#DSADataCatalogue> ;
+                                            rdfs:comment "Links a VLOP or VLOSE to its published DSA data catalogue per DA Art. 6(4)."@en ;
+                                            rdfs:label "has data catalogue"@en .
+
+
+###  https://example.org/orda#hasDataManagementPlan
+<https://example.org/orda#hasDataManagementPlan> rdf:type owl:ObjectProperty ;
+                                                 rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                                 rdfs:range :DataManagementPlan ;
+                                                 rdfs:comment "Links a research project to the data management plan that governs how accessed data will be stored, processed and protected."@en ;
+                                                 rdfs:label "has data management plan"@en .
+
+
+###  https://example.org/orda#hasExpertConsultation
+<https://example.org/orda#hasExpertConsultation> rdf:type owl:ObjectProperty ;
+                                                 rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                                 rdfs:range <https://example.org/orda#ExpertConsultation> ;
+                                                 rdfs:comment "Links an Art. 40(4) application to an expert consultation conducted during its assessment per DA Art. 14."@en ;
+                                                 rdfs:label "has expert consultation"@en .
+
+
+###  https://example.org/orda#hasMeasure
+<https://example.org/orda#hasMeasure> rdf:type owl:ObjectProperty ;
+                                      rdfs:domain dcat:Distribution ;
+                                      rdfs:range <https://example.org/orda#DataHandlingMeasure> ;
+                                      rdfs:comment "Links a dcat:Distribution to a technical, legal or organisational measure governing how the data it describes may be accessed and handled."@en ;
+                                      rdfs:label "has measure"@en .
+
+
+###  https://example.org/orda#hasStatusEvent
+<https://example.org/orda#hasStatusEvent> rdf:type owl:ObjectProperty ;
+                                          rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                          rdfs:range <https://example.org/orda#StatusEvent> ;
+                                          rdfs:comment "Links a data access request to a timestamped status change event in its lifecycle."@en ;
+                                          rdfs:label "has status event"@en .
+
+
+###  https://example.org/orda#includesResearcher
+<https://example.org/orda#includesResearcher> rdf:type owl:ObjectProperty ;
+                                              rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                              rdfs:range :Researcher ;
+                                              rdfs:comment "Links a data access request to additional researchers (beyond the principal researcher) who are covered by the same application. Per DA Art. 10, the reasoned request must identify all researchers."@en ;
+                                              rdfs:label "includes researcher"@en .
+
+
+###  https://example.org/orda#initiallyAssessedBy
+<https://example.org/orda#initiallyAssessedBy> rdf:type owl:ObjectProperty ;
+                                               rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                               rdfs:range <https://example.org/orda#DSCofMemberState> ;
+                                               rdfs:comment "Links an Art. 40(4) application (submitted via the researcher's own member state under Art. 40(9)) to the DSC that conducted the initial assessment before forwarding to the DSC of establishment."@en ;
+                                               rdfs:label "initially assessed by"@en .
+
+
+###  https://example.org/orda#investigates
+<https://example.org/orda#investigates> rdf:type owl:ObjectProperty ;
+                                        rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                        rdfs:range <https://example.org/orda#SystemicRisk> ;
+                                        rdfs:comment "Links a research project to the DSA systemic risk category it investigates under Art. 34(1). Distinct from dpv:hasRisk which covers data processing risks."@en ;
+                                        rdfs:label "investigates"@en .
+
+
+###  https://example.org/orda#isPartOf
+<https://example.org/orda#isPartOf> rdf:type owl:ObjectProperty ;
+                                    rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                    rdfs:range <https://example.org/orda#ResearchProject> ;
+                                    rdfs:comment "Links a data access request to the research project it supports."@en ;
+                                    rdfs:label "is part of"@en .
+
+
+###  https://example.org/orda#issuedBy
+<https://example.org/orda#issuedBy> rdf:type owl:ObjectProperty ;
+                                    rdfs:domain <https://example.org/orda#ReasonedRequest> ;
+                                    rdfs:range <https://example.org/orda#DSCofEstablishment> ;
+                                    rdfs:comment "Links a reasoned request to the DSC of establishment that formulated it."@en ;
+                                    rdfs:label "issued by"@en .
+
+
+###  https://example.org/orda#issuedTo
+<https://example.org/orda#issuedTo> rdf:type owl:ObjectProperty ;
+                                    rdfs:domain <https://example.org/orda#ReasonedRequest> ;
+                                    rdfs:range <https://example.org/orda#DataProvider> ;
+                                    rdfs:comment "Links a reasoned request to the VLOP or VLOSE to which it is addressed."@en ;
+                                    rdfs:label "issued to"@en .
+
+
+###  https://example.org/orda#madeBy
+<https://example.org/orda#madeBy> rdf:type owl:ObjectProperty ;
+                                  rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                  rdfs:range :PrincipalResearcher ;
+                                  rdfs:comment "Links a data access request to the principal researcher who submitted it. Per DA Art. 2 and 7, the principal researcher is the primary contact and bears responsibility for the application."@en ;
+                                  rdfs:label "made by"@en .
+
+
+###  https://example.org/orda#publishedIn
+<https://example.org/orda#publishedIn> rdf:type owl:ObjectProperty ;
+                                       rdfs:domain <https://example.org/orda#ReasonedRequest> ;
+                                       rdfs:range <https://example.org/orda#DSADataAccessPortal> ;
+                                       rdfs:comment "Links a reasoned request to the DSA Data Access Portal where its overview is published per DA Art. 11."@en ;
+                                       rdfs:label "published in"@en .
+
+
+###  https://example.org/orda#referencesDataCatalogue
+<https://example.org/orda#referencesDataCatalogue> rdf:type owl:ObjectProperty ;
+                                                   rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                                   rdfs:range <https://example.org/orda#DSADataCatalogue> ;
+                                                   rdfs:comment "Links a data access request to the platform data catalogue it references."@en ;
+                                                   rdfs:label "references data catalogue"@en .
+
+
+###  https://example.org/orda#requestStatus
+<https://example.org/orda#requestStatus> rdf:type owl:ObjectProperty ;
+                                         rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                         rdfs:range skos:Concept ;
+                                         rdfs:comment "The current status of the request, drawn from orda:RequestStatusScheme. For full history, see orda:hasStatusEvent."@en ;
+                                         rdfs:label "request status"@en .
+
+
+###  https://example.org/orda#requestedFrom
+<https://example.org/orda#requestedFrom> rdf:type owl:ObjectProperty ;
+                                         rdfs:domain <https://example.org/orda#Art40_12_DataAccessRequest> ;
+                                         rdfs:range <https://example.org/orda#VeryLargeOnlinePlatform> ,
+                                                    <https://example.org/orda#VeryLargeOnlineSearchEngine> ;
+                                         rdfs:comment "Links an Art. 40(12) public data request directly to the platform, without DSC intermediation."@en ;
+                                         rdfs:label "requested from"@en .
+
+
+###  https://example.org/orda#requestsData
+<https://example.org/orda#requestsData> rdf:type owl:ObjectProperty ;
+                                        rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                        rdfs:range dcat:Distribution ;
+                                        rdfs:comment "Links a data access request to the dcat:Distribution it requests from the platform."@en ;
+                                        rdfs:label "requests data"@en .
+
+
+###  https://example.org/orda#resultsIn
+<https://example.org/orda#resultsIn> rdf:type owl:ObjectProperty ;
+                                     rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                     rdfs:range <https://example.org/orda#ReasonedRequest> ;
+                                     rdfs:comment "Links an Art. 40(4) data access application to the reasoned request formulated by the DSC of establishment. The reasoned request is the operative legal instrument that triggers the platform's obligation to provide data."@en ;
+                                     rdfs:label "results in"@en .
+
+
+###  https://example.org/orda#submittedVia
+<https://example.org/orda#submittedVia> rdf:type owl:ObjectProperty ;
+                                        rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                        rdfs:range <https://example.org/orda#DSADataAccessPortal> ;
+                                        rdfs:comment "Links an Art. 40(4) data access application to the DSA Data Access Portal through which it was submitted. Per DA Art. 3, all Art. 40(4) applications must be submitted through this portal."@en ;
+                                        rdfs:label "submitted via"@en .
+
+
+###  https://example.org/orda#suggestsModality
+<https://example.org/orda#suggestsModality> rdf:type owl:ObjectProperty ;
+                                            rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                            rdfs:range <https://example.org/orda#AccessModality> ;
+                                            rdfs:comment "Links a data access request to the access modality proposed by the researcher. Distinct from orda:hasAccessModality on the ReasonedRequest, which records the modality determined by the DSC of establishment per DA Art. 9."@en ;
+                                            rdfs:label "suggests modality"@en .
+
+
+###  https://example.org/orda#targets
+<https://example.org/orda#targets> rdf:type owl:ObjectProperty ;
+                                   rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                   rdfs:range <https://example.org/orda#DataProvider> ;
+                                   rdfs:comment "Links a data access request to the VLOP or VLOSE from which data is requested."@en ;
+                                   rdfs:label "targets"@en .
+
+
+###  https://w3id.org/dpv/owl#hasContext
+<https://w3id.org/dpv/owl#hasContext> rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                      rdfs:range <https://w3id.org/dpv/owl#Context> .
+
+
+###  https://w3id.org/dpv/owl#hasData
+<https://w3id.org/dpv/owl#hasData> rdfs:domain <https://example.org/orda#ResearchProject> .
+
+
+###  https://w3id.org/dpv/owl#hasDataSubject
+<https://w3id.org/dpv/owl#hasDataSubject> rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                          rdfs:range dpv:DataSubject .
+
+
+###  https://w3id.org/dpv/owl#hasJurisdiction
+<https://w3id.org/dpv/owl#hasJurisdiction> rdfs:domain <https://example.org/orda#SystemicRisk> ;
+                                           rdfs:range dpv:Location .
+
+
+###  https://w3id.org/dpv/owl#hasLegalBasis
+<https://w3id.org/dpv/owl#hasLegalBasis> rdfs:domain <https://example.org/orda#DataAccessRequest> ,
+                                                     <https://example.org/orda#ResearchProject> ;
+                                         rdfs:range <https://w3id.org/dpv/owl#LegalBasis> .
+
+
+###  https://w3id.org/dpv/owl#hasPurpose
+<https://w3id.org/dpv/owl#hasPurpose> rdfs:domain <https://example.org/orda#ResearchProject> .
+
+
+###  https://w3id.org/dpv/risk/owl#hasRiskAssessment
+<https://w3id.org/dpv/risk/owl#hasRiskAssessment> rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                                  rdfs:range <https://w3id.org/dpv/owl#RiskAssessment> .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://purl.org/cerif/frapo/hasEndDate
+frapo:hasEndDate rdf:type owl:DatatypeProperty ;
+                 rdfs:domain frapo:Funding ,
+                             <https://example.org/orda#ResearchProject> ;
+                 rdfs:range xsd:dateTime ;
+                 rdfs:isDefinedBy frapo: ;
+                 rdfs:label "has end date"@en .
+
+
+###  http://purl.org/cerif/frapo/hasGrantNumber
+frapo:hasGrantNumber rdf:type owl:DatatypeProperty ;
+                     rdfs:domain frapo:Grant ,
+                                 <https://example.org/orda#ResearchProject> ;
+                     rdfs:isDefinedBy frapo: ;
+                     rdfs:label "has grant number"@en .
+
+
+###  http://purl.org/cerif/frapo/hasStartDate
+frapo:hasStartDate rdf:type owl:DatatypeProperty ;
+                   rdfs:domain frapo:Funding ,
+                               frapo:Grant ,
+                               <https://example.org/orda#ResearchProject> ;
+                   rdfs:range xsd:dateTime ;
+                   rdfs:isDefinedBy frapo: ;
+                   rdfs:label "has start date"@en .
+
+
+###  https://example.org/orda#amendmentGrounds
+<https://example.org/orda#amendmentGrounds> rdf:type owl:DatatypeProperty ;
+                                            rdfs:domain <https://example.org/orda#AmendmentRequest> ;
+                                            rdfs:range xsd:string ;
+                                            rdfs:comment "The grounds for the amendment request per Art. 40(5) DSA: (a) platform does not have access to the data, or (b) access would create significant vulnerabilities."@en ;
+                                            rdfs:label "amendment grounds"@en .
+
+
+###  https://example.org/orda#eventDate
+<https://example.org/orda#eventDate> rdf:type owl:DatatypeProperty ;
+                                     rdfs:domain <https://example.org/orda#StatusEvent> ;
+                                     rdfs:range xsd:date ;
+                                     rdfs:comment "The date on which this status change occurred."@en ;
+                                     rdfs:label "event date"@en .
+
+
+###  https://example.org/orda#hasPublicationCommitment
+<https://example.org/orda#hasPublicationCommitment> rdf:type owl:DatatypeProperty ;
+                                                    rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                                    rdfs:range xsd:boolean ;
+                                                    rdfs:comment "Whether the researcher has committed to publishing results publicly and free of charge within a reasonable period, as required by Art. 40(8)(g) DSA."@en ;
+                                                    rdfs:label "has publication commitment"@en .
+
+
+###  https://example.org/orda#independenceDeclaration
+<https://example.org/orda#independenceDeclaration> rdf:type owl:DatatypeProperty ;
+                                                   rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                                   rdfs:range xsd:string ;
+                                                   rdfs:comment "A declaration by the researcher that they are independent from commercial interests in relation to the specific research project, as required by Art. 40(8)(b) DSA."@en ;
+                                                   rdfs:label "independence declaration"@en .
+
+
+###  https://example.org/orda#projectDescription
+<https://example.org/orda#projectDescription> rdf:type owl:DatatypeProperty ;
+                                              rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                              rdfs:range xsd:string ;
+                                              rdfs:label "project description"@en .
+
+
+###  https://example.org/orda#projectEndDate
+<https://example.org/orda#projectEndDate> rdf:type owl:DatatypeProperty ;
+                                          rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                          rdfs:range xsd:date ;
+                                          rdfs:label "project end date"@en .
+
+
+###  https://example.org/orda#projectStartDate
+<https://example.org/orda#projectStartDate> rdf:type owl:DatatypeProperty ;
+                                            rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                            rdfs:range xsd:date ;
+                                            rdfs:label "project start date"@en .
+
+
+###  https://example.org/orda#projectTitle
+<https://example.org/orda#projectTitle> rdf:type owl:DatatypeProperty ;
+                                        rdfs:domain <https://example.org/orda#ResearchProject> ;
+                                        rdfs:range xsd:string ;
+                                        rdfs:label "project title"@en .
+
+
+###  https://example.org/orda#publicationTimeline
+<https://example.org/orda#publicationTimeline> rdf:type owl:DatatypeProperty ;
+                                               rdfs:domain <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                               rdfs:range xsd:string ;
+                                               rdfs:comment "The planned timeline for making research results publicly available, e.g. 'within 12 months of completion'."@en ;
+                                               rdfs:label "publication timeline"@en .
+
+
+###  https://example.org/orda#requestDate
+<https://example.org/orda#requestDate> rdf:type owl:DatatypeProperty ;
+                                       rdfs:domain <https://example.org/orda#DataAccessRequest> ;
+                                       rdfs:range xsd:date ;
+                                       rdfs:comment "The date on which the data access request was submitted."@en ;
+                                       rdfs:label "request date"@en .
+
+
+###  https://example.org/orda#researcherEmail
+<https://example.org/orda#researcherEmail> rdf:type owl:DatatypeProperty ;
+                                           rdfs:domain <https://example.org/orda#VettedResearcher> ;
+                                           rdfs:range xsd:string ;
+                                           rdfs:label "researcher email"@en .
+
+
+###  https://example.org/orda#researcherName
+<https://example.org/orda#researcherName> rdf:type owl:DatatypeProperty ;
+                                          rdfs:domain <https://example.org/orda#VettedResearcher> ;
+                                          rdfs:range xsd:string ;
+                                          rdfs:label "researcher name"@en .
+
+
+###  http://www.w3.org/ns/csvw#name
+csvw:name rdf:type owl:DatatypeProperty ;
+          rdfs:domain csvw:Column ;
+          rdfs:range xsd:string ;
+          rdfs:isDefinedBy csvw: ;
+          rdfs:comment "The name of the column as it appears in the CSV header row. Used as the column identifier in CSVW processing."@en ;
+          rdfs:label "name"@en .
+
+
+###  http://www.w3.org/ns/csvw#datatype
+csvw:datatype rdf:type owl:DatatypeProperty ;
+              rdfs:domain csvw:Column ;
+              rdfs:range xsd:string ;
+              rdfs:isDefinedBy csvw: ;
+              rdfs:comment "The datatype of values in this column, e.g. 'string', 'integer', 'dateTime'. Corresponds to the built-in CSVW datatypes or an XSD type name."@en ;
+              rdfs:label "datatype"@en .
+
+
+###  http://www.w3.org/ns/csvw#titles
+csvw:titles rdf:type owl:DatatypeProperty ;
+            rdfs:domain csvw:Column ;
+            rdfs:range xsd:string ;
+            rdfs:isDefinedBy csvw: ;
+            rdfs:comment "A human-readable title for the column, used in documentation and display. May be language-tagged."@en ;
+            rdfs:label "titles"@en .
+
+
+###  http://www.w3.org/ns/csvw#required
+csvw:required rdf:type owl:DatatypeProperty ;
+              rdfs:domain csvw:Column ;
+              rdfs:range xsd:boolean ;
+              rdfs:isDefinedBy csvw: ;
+              rdfs:comment "If true, every row in the CSV must have a non-null value for this column."@en ;
+              rdfs:label "required"@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://data.europa.eu/eli/ontology#LegalResource
+eli:LegalResource rdf:type owl:Class ;
+                  rdfs:comment "A legal resource such as a law, regulation or treaty."@en ;
+                  rdfs:isDefinedBy <http://data.europa.eu/eli/ontology> ;
+                  rdfs:label "Legal Resource"@en .
+
+
+###  http://purl.org/cerif/frapo/Funding
+frapo:Funding rdf:type owl:Class ;
+              rdfs:isDefinedBy frapo: ;
+              rdfs:label "Funding"@en .
+
+
+###  http://purl.org/cerif/frapo/FundingAgency
+frapo:FundingAgency rdf:type owl:Class ;
+                    rdfs:isDefinedBy frapo: ;
+                    rdfs:label "Funding Agency"@en .
+
+
+###  http://purl.org/cerif/frapo/Grant
+frapo:Grant rdf:type owl:Class ;
+            rdfs:isDefinedBy frapo: ;
+            rdfs:label "Grant"@en .
+
+
+###  http://purl.org/cerif/frapo/Project
+frapo:Project rdf:type owl:Class ;
+              rdfs:isDefinedBy frapo: ;
+              rdfs:label "Project"@en .
+
+
+###  http://purl.org/cerif/frapo/University
+frapo:University rdf:type owl:Class ;
+                 rdfs:isDefinedBy frapo: ;
+                 rdfs:label "University"@en .
+
+
+###  http://purl.org/dc/terms/MediaTypeOrExtent
+dct:MediaTypeOrExtent rdf:type owl:Class ;
+                      rdfs:isDefinedBy dct: ;
+                      rdfs:label "Media Type or Extent"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/DataCatalogue
+:DataCatalogue rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/DataManagementPlan
+:DataManagementPlan rdf:type owl:Class ;
+                    rdfs:subClassOf <https://example.org/orda#DataHandlingMeasure> .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/HumanReviewProcess
+:HumanReviewProcess rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/PrincipalResearcher
+:PrincipalResearcher rdf:type owl:Class ;
+                     rdfs:subClassOf :Researcher ;
+                     rdfs:comment "The principal researcher who is the primary contact for a data access application and bears responsibility for the request. Per DA Art. 2 and 7."@en ;
+                     rdfs:label "Principal Researcher"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/ResearchActivity
+:ResearchActivity rdf:type owl:Class ;
+                  rdfs:comment "The actions taken with the data used. (e.g data analysis, modeling, comparison, etc.)"@en ;
+                  rdfs:label "Research Activity"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/ResearchMethod
+:ResearchMethod rdf:type owl:Class ;
+                rdfs:label "Research Method"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/ResearchQuestion
+:ResearchQuestion rdf:type owl:Class ;
+                  rdfs:label "Research Question"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/ResearchTopic
+:ResearchTopic rdf:type owl:Class ;
+               rdfs:label "Research Topic"@en .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/Researcher
+:Researcher rdf:type owl:Class ;
+            rdfs:subClassOf foaf:Person ;
+            rdfs:comment "A researcher who may participate in the DSA Art. 40 data access process. Broader class encompassing all researcher roles."@en ;
+            rdfs:label "Researcher"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ActivityHistory
+ddp:ActivityHistory rdf:type owl:Class ;
+                    rdfs:comment "A collection of platform activities belonging to an agent. The primary unit of data returned by a DSA Article 40 data access request."@en ;
+                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                    rdfs:label "Activity History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#Agent
+ddp:Agent rdf:type owl:Class ;
+          rdfs:comment "A social media account holder — person, organisation or software agent. In the Art. 40 research access context, instances whose data is accessed may also be typed as dpv:DataSubject at the instance level, but ddp:Agent and dpv:Entity are kept as independent class hierarchies."@en ;
+          rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+          rdfs:label "Agent"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#BlockHistory
+ddp:BlockHistory rdf:type owl:Class ;
+                 rdfs:subClassOf ddp:ActivityHistory ;
+                 rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                 rdfs:label "Block History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ConsumeHistory
+ddp:ConsumeHistory rdf:type owl:Class ;
+                   rdfs:subClassOf ddp:ActivityHistory ;
+                   rdfs:comment "History of content viewed or consumed by the agent."@en ;
+                   rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                   rdfs:label "Consume History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#FavoriteHistory
+ddp:FavoriteHistory rdf:type owl:Class ;
+                    rdfs:subClassOf ddp:ActivityHistory ;
+                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                    rdfs:label "Favorite History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#FollowerHistory
+ddp:FollowerHistory rdf:type owl:Class ;
+                    rdfs:subClassOf ddp:ActivityHistory ;
+                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                    rdfs:label "Follower History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#FollowingHistory
+ddp:FollowingHistory rdf:type owl:Class ;
+                     rdfs:subClassOf ddp:ActivityHistory ;
+                     rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                     rdfs:label "Following History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#Organization
+ddp:Organization rdf:type owl:Class ;
+                 rdfs:subClassOf ddp:Agent ;
+                 rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                 rdfs:label "Organization"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#Person
+ddp:Person rdf:type owl:Class ;
+           rdfs:subClassOf ddp:Agent ;
+           rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+           rdfs:label "Person"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#PublishPostHistory
+ddp:PublishPostHistory rdf:type owl:Class ;
+                       rdfs:subClassOf ddp:ActivityHistory ;
+                       rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                       rdfs:label "Publish Post History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ReactionHistory
+ddp:ReactionHistory rdf:type owl:Class ;
+                    rdfs:subClassOf ddp:ActivityHistory ;
+                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                    rdfs:label "Reaction History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#RealWorldIdentity
+ddp:RealWorldIdentity rdf:type owl:Class ;
+                      rdfs:comment "The real-world person behind one or more platform accounts."@en ;
+                      rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                      rdfs:label "Real World Identity"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#SearchHistory
+ddp:SearchHistory rdf:type owl:Class ;
+                  rdfs:subClassOf ddp:ActivityHistory ;
+                  rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                  rdfs:label "Search History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ShareHistory
+ddp:ShareHistory rdf:type owl:Class ;
+                 rdfs:subClassOf ddp:ActivityHistory ;
+                 rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                 rdfs:label "Share History"@en .
+
+
+###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#SoftwareAgent
+ddp:SoftwareAgent rdf:type owl:Class ;
+                  rdfs:subClassOf ddp:Agent ;
+                  rdfs:comment "A bot or automated account."@en ;
+                  rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
+                  rdfs:label "Software Agent"@en .
+
+
+###  http://www.w3.org/2004/02/skos/core#Concept
+skos:Concept rdf:type owl:Class .
+
+
+###  http://www.w3.org/2004/02/skos/core#ConceptScheme
+skos:ConceptScheme rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/csvw#Column
+csvw:Column rdf:type owl:Class ;
+            rdfs:isDefinedBy csvw: ;
+            rdfs:comment "A description of a single column in a CSV file, specifying its name, datatype, title and constraints per the CSVW specification."@en ;
+            rdfs:label "Column"@en .
+
+
+###  http://www.w3.org/ns/csvw#Schema
+csvw:Schema rdf:type owl:Class ;
+            rdfs:isDefinedBy csvw: ;
+            rdfs:comment "A schema describing the columns of a CSV file, linked to a dcat:Distribution via dct:hasFormat."@en ;
+            rdfs:label "Schema"@en .
+
+
+###  http://www.w3.org/ns/dcat#Distribution
+dcat:Distribution rdf:type owl:Class ;
+                  rdfs:isDefinedBy dcat: ;
+                  rdfs:label "Distribution"@en .
+
+
+###  https://example.org/orda#CSVDistribution
+<https://example.org/orda#CSVDistribution> rdf:type owl:Class ;
+                                           rdfs:subClassOf dcat:Distribution ;
+                                           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                             owl:onProperty dct:format ;
+                                                             owl:hasValue <http://publications.europa.eu/resource/authority/file-type/CSV>
+                                                           ] ;
+                                           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                             owl:onProperty dct:hasFormat ;
+                                                             owl:someValuesFrom csvw:Schema
+                                                           ] ;
+                                           rdfs:comment "A dcat:Distribution in CSV format (dct:format = EU file-type/CSV) that carries a csvw:Schema via dct:hasFormat, describing column names, datatypes and constraints per the CSVW specification (https://w3c.github.io/csvw/syntax/)."@en ;
+                                           rdfs:label "CSV Distribution"@en ;
+                                           rdfs:seeAlso <https://w3c.github.io/csvw/syntax/> .
+
+
+###  http://xmlns.com/foaf/0.1/Agent
+foaf:Agent rdf:type owl:Class ;
+           rdfs:isDefinedBy foaf: ;
+           rdfs:label "Agent"@en .
+
+
+###  http://xmlns.com/foaf/0.1/Organization
+foaf:Organization rdf:type owl:Class ;
+                  rdfs:isDefinedBy foaf: ;
+                  rdfs:label "Organization"@en .
+
+
+###  http://xmlns.com/foaf/0.1/Person
+foaf:Person rdf:type owl:Class ;
+            rdfs:isDefinedBy foaf: ;
+            rdfs:label "Person"@en .
+
+
+###  https://example.org/orda#AccessModality
+<https://example.org/orda#AccessModality> rdf:type owl:Class ;
+                                          rdfs:comment "The technical, legal and organisational arrangement through which a VLOP or VLOSE provides data to vetted researchers, as determined by the DSC of establishment per DA Art. 9."@en ;
+                                          rdfs:label "Access Modality"@en .
+
+
+###  https://example.org/orda#AmendmentRequest
+<https://example.org/orda#AmendmentRequest> rdf:type owl:Class ;
+                                            rdfs:comment "A request by a VLOP or VLOSE to amend a reasoned request under DSA Art. 40(5), submitted within 15 days of receipt. Grounds: (a) platform does not have access to the requested data, or (b) access would create significant vulnerabilities in service security or protection of confidential information."@en ;
+                                            rdfs:label "Amendment Request"@en .
+
+
+###  https://example.org/orda#ApplicantResearcher
+<https://example.org/orda#ApplicantResearcher> rdf:type owl:Class ;
+                                               rdfs:subClassOf :Researcher ;
+                                               rdfs:comment "A researcher who has submitted an application for data access but has not yet been awarded vetted researcher status. Applicable to the Art. 40(4) process during the assessment period."@en ;
+                                               rdfs:label "Applicant Researcher"@en .
+
+
+###  https://example.org/orda#Art40_12_DataAccessRequest
+<https://example.org/orda#Art40_12_DataAccessRequest> rdf:type owl:Class ;
+                                                      rdfs:subClassOf <https://example.org/orda#DataAccessRequest> ;
+                                                      rdfs:comment "A data access request under DSA Art. 40(12) for publicly accessible platform data. Submitted directly to the platform without DSC intermediation. Researchers need not be formally vetted but must meet conditions in Art. 40(8)(b)-(e). Includes researchers affiliated with not-for-profit bodies, organisations and associations. The Delegated Regulation 2025/2050 does not govern this process."@en ;
+                                                      rdfs:label "Art. 40(12) Data Access Request"@en .
+
+
+###  https://example.org/orda#Art40_4_DataAccessRequest
+<https://example.org/orda#Art40_4_DataAccessRequest> rdf:type owl:Class ;
+                                                     rdfs:subClassOf <https://example.org/orda#DataAccessRequest> ;
+                                                     rdfs:comment "A data access application under DSA Art. 40(4) for non-public platform data. Requires: (1) submission via the DSA Data Access Portal, (2) assessment by the DSC of establishment, (3) formal vetting of the researcher under Art. 40(8), and (4) formulation of a reasoned request by the DSC to the platform. Governed by Delegated Regulation 2025/2050."@en ;
+                                                     rdfs:label "Art. 40(4) Data Access Request"@en ;
+                                                     rdfs:seeAlso <http://data.europa.eu/eli/reg_del/2025/2050/oj> .
+
+
+###  https://example.org/orda#CivicDiscourseRisk
+<https://example.org/orda#CivicDiscourseRisk> rdf:type owl:Class ;
+                                              rdfs:subClassOf <https://example.org/orda#SystemicRisk> ;
+                                              rdfs:comment "DSA Art. 34(1)(c): systemic risks of negative effects on civic discourse, electoral processes or public security."@en ;
+                                              rdfs:label "Civic Discourse Risk"@en .
+
+
+###  https://example.org/orda#DSADataAccessPortal
+<https://example.org/orda#DSADataAccessPortal> rdf:type owl:Class ;
+                                               rdfs:comment "The centralised digital infrastructure established under DA Art. 3 through which Art. 40(4) applications are submitted, reasoned request overviews are published, and the data access process is managed. Operated by the European Commission."@en ;
+                                               rdfs:label "DSA Data Access Portal"@en ;
+                                               rdfs:seeAlso <http://data.europa.eu/eli/reg_del/2025/2050/oj> .
+
+
+###  https://example.org/orda#DSADataCatalogue
+<https://example.org/orda#DSADataCatalogue> rdf:type owl:Class ;
+                                            rdfs:comment "A catalogue of available data assets published by a VLOP or VLOSE per DA Art. 6(4), describing data structure, metadata, and suggested access modalities to help researchers formulate applications."@en ;
+                                            rdfs:label "DSA Data Catalogue"@en .
+
+
+###  https://example.org/orda#DSCofEstablishment
+<https://example.org/orda#DSCofEstablishment> rdf:type owl:Class ;
+                                              rdfs:subClassOf <https://example.org/orda#DigitalServicesCoordinator> ;
+                                              rdfs:comment "The DSC of the member state where the VLOP or VLOSE is primarily established in the EU. Makes the final decision on vetting, formulates reasoned requests, and determines access modalities. Per DSA Art. 40(4) and (8)."@en ;
+                                              rdfs:label "DSC of Establishment"@en .
+
+
+###  https://example.org/orda#DSCofMemberState
+<https://example.org/orda#DSCofMemberState> rdf:type owl:Class ;
+                                            rdfs:subClassOf <https://example.org/orda#DigitalServicesCoordinator> ;
+                                            rdfs:comment "The DSC of the member state where the researcher's institution is based. Under Art. 40(9), conducts initial assessment and forwards to the DSC of establishment."@en ;
+                                            rdfs:label "DSC of Member State"@en .
+
+
+###  https://example.org/orda#DataAccessRequest
+<https://example.org/orda#DataAccessRequest> rdf:type owl:Class ;
+                                             rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ;
+                                             rdfs:comment "A formal request by a researcher to access data from a VLOP or VLOSE under DSA Art. 40. Superclass for the two distinct processes: Art. 40(4) non-public data via DSC, and Art. 40(12) public data direct to platform."@en ;
+                                             rdfs:label "Data Access Request"@en ;
+                                             rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_40> .
+
+
+###  https://example.org/orda#DataHandlingClause
+<https://example.org/orda#DataHandlingClause> rdf:type owl:Class ;
+                                              rdfs:subClassOf <https://example.org/orda#DataHandlingMeasure> ;
+                                              rdfs:comment "A legal clause that governs how data is handled under specific conditions, such as international transfers. Instances include the Transfer Impact Assessment required when data is sent outside the EU/EEA."@en ;
+                                              rdfs:label "Data Handling Clause"@en .
+
+
+###  https://example.org/orda#DataHandlingMeasure
+<https://example.org/orda#DataHandlingMeasure> rdf:type owl:Class ;
+                                               rdfs:subClassOf <https://w3id.org/dpv/owl#LegalMeasure> ;
+                                               rdfs:comment "A protective measure — technical, legal or organisational — attached to a dcat:Distribution to govern how the data it describes may be accessed and handled."@en ;
+                                               rdfs:label "Data Handling Measure"@en .
+
+
+###  https://example.org/orda#DataProvider
+<https://example.org/orda#DataProvider> rdf:type owl:Class ;
+                                        rdfs:subClassOf dpv:LegalEntity ;
+                                        rdfs:comment "A superset including VLOPs and VLOSEs"@en ;
+                                        rdfs:label "Data Provider"@en .
+
+
+###  https://example.org/orda#DigitalServicesCoordinator
+<https://example.org/orda#DigitalServicesCoordinator> rdf:type owl:Class ;
+                                                      rdfs:subClassOf dpv:LegalEntity ;
+                                                      rdfs:comment "A national authority designated under DSA Art. 49 to oversee DSA compliance and handle researcher data access applications under Art. 40."@en ;
+                                                      rdfs:label "Digital Services Coordinator"@en ;
+                                                      rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_49> .
+
+
+###  https://example.org/orda#ExpertConsultation
+<https://example.org/orda#ExpertConsultation> rdf:type owl:Class ;
+                                              rdfs:comment "An optional consultation with independent experts or advisory mechanisms during the assessment of an Art. 40(4) application, per DA Art. 14."@en ;
+                                              rdfs:label "Expert Consultation"@en .
+
+
+###  https://example.org/orda#FundamentalRightsRisk
+<https://example.org/orda#FundamentalRightsRisk> rdf:type owl:Class ;
+                                                 rdfs:subClassOf <https://example.org/orda#SystemicRisk> ;
+                                                 rdfs:comment "DSA Art. 34(1)(b): systemic risks of negative effects on fundamental rights."@en ;
+                                                 rdfs:label "Fundamental Rights Risk"@en .
+
+
+###  https://example.org/orda#IllegalContentRisk
+<https://example.org/orda#IllegalContentRisk> rdf:type owl:Class ;
+                                              rdfs:subClassOf <https://example.org/orda#SystemicRisk> ;
+                                              rdfs:comment "DSA Art. 34(1)(a): systemic risks from dissemination of illegal content."@en ;
+                                              rdfs:label "Illegal Content Risk"@en .
+
+
+###  https://example.org/orda#InternationalDataTransferMeasure
+<https://example.org/orda#InternationalDataTransferMeasure> rdf:type owl:Class ;
+                                                            rdfs:comment "Measures to ensure that any transfer of data out of the EU/EEA is subject to an appropriate transfer mechanism under GDPR Chapter V. Instances include Standard Contractual Clauses and Adequacy Decisions."@en ;
+                                                            rdfs:label "International Data Transfer Measure"@en ;
+                                                            rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679#chap_V> .
+
+
+###  https://example.org/orda#LegalModality
+<https://example.org/orda#LegalModality> rdf:type owl:Class ;
+                                         rdfs:subClassOf <https://example.org/orda#AccessModality> ;
+                                         rdfs:comment "An access modality whose character is primarily legal — e.g. contractual undertakings, confidentiality agreements, transfer mechanisms."@en ;
+                                         rdfs:label "Legal Modality"@en .
+
+
+###  https://example.org/orda#MethodologicalReview
+<https://example.org/orda#MethodologicalReview> rdf:type owl:Class ;
+                                                rdfs:subClassOf <https://example.org/orda#ExpertConsultation> ;
+                                                rdfs:comment "Review of research methodology to ensure data requested is necessary and proportionate to the stated research objectives."@en ;
+                                                rdfs:label "Methodological Review"@en .
+
+
+###  https://example.org/orda#OrganisationalModality
+<https://example.org/orda#OrganisationalModality> rdf:type owl:Class ;
+                                                  rdfs:subClassOf <https://example.org/orda#AccessModality> ;
+                                                  rdfs:comment "An access modality realised through organisational measures — e.g. on-site-only access, mediation by a trusted third party."@en ;
+                                                  rdfs:label "Organisational Modality"@en .
+
+
+###  https://example.org/orda#PublicWellbeingRisk
+<https://example.org/orda#PublicWellbeingRisk> rdf:type owl:Class ;
+                                               rdfs:subClassOf <https://example.org/orda#SystemicRisk> ;
+                                               rdfs:comment "DSA Art. 34(1)(d): systemic risks of negative effects on public health, physical and mental wellbeing, or gender-based violence."@en ;
+                                               rdfs:label "Public Wellbeing Risk"@en .
+
+
+###  https://example.org/orda#ReasonedRequest
+<https://example.org/orda#ReasonedRequest> rdf:type owl:Class ;
+                                           rdfs:comment "A formally reasoned request issued by the DSC of establishment to a VLOP or VLOSE under DSA Art. 40(4), triggering the platform's obligation to provide data. Legally distinct from the researcher's application. Content requirements specified in DA Art. 10. Published in the DSA Data Access Portal per DA Art. 11."@en ;
+                                           rdfs:label "Reasoned Request"@en ;
+                                           rdfs:seeAlso <http://data.europa.eu/eli/reg_del/2025/2050/oj> .
+
+
+###  https://example.org/orda#ResearchProject
+<https://example.org/orda#ResearchProject> rdf:type owl:Class ;
+                                           rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ;
+                                           rdfs:comment "A research project that processes data, defined as a subclass of dpv:Process. Under DSA Art. 40, may submit data access requests to investigate systemic risks or assess risk mitigation measures within the EU."@en ;
+                                           rdfs:label "Research Project"@en .
+
+
+###  https://example.org/orda#StatusEvent
+<https://example.org/orda#StatusEvent> rdf:type owl:Class ;
+                                       rdfs:comment "A timestamped event recording a status change in the lifecycle of a data access request. Captures who triggered the change, when, and what the new status is."@en ;
+                                       rdfs:label "Status Event"@en .
+
+
+###  https://example.org/orda#SystemicRisk
+<https://example.org/orda#SystemicRisk> rdf:type owl:Class ;
+                                        rdfs:comment "A societal risk as defined under DSA Art. 34, stemming from the design or functioning of a VLOP or VLOSE within the EU. Distinct from dpv:Risk which covers data processing risks."@en ;
+                                        rdfs:label "Systemic Risk"@en ;
+                                        rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_34> .
+
+
+###  https://example.org/orda#TechnicalModality
+<https://example.org/orda#TechnicalModality> rdf:type owl:Class ;
+                                             rdfs:subClassOf <https://example.org/orda#AccessModality> ;
+                                             rdfs:comment "An access modality realised through technical controls — e.g. secure enclaves, restricted APIs, pseudonymisation, query-only access."@en ;
+                                             rdfs:label "Technical Modality"@en .
+
+
+###  https://example.org/orda#VeryLargeOnlinePlatform
+<https://example.org/orda#VeryLargeOnlinePlatform> rdf:type owl:Class ;
+                                                   rdfs:subClassOf <https://example.org/orda#DataProvider> ;
+                                                   rdfs:comment "A platform designated as a VLOP under DSA Art. 33, with over 45 million monthly active users in the EU."@en ;
+                                                   rdfs:label "Very Large Online Platform"@en ;
+                                                   rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_33> .
+
+
+###  https://example.org/orda#VeryLargeOnlineSearchEngine
+<https://example.org/orda#VeryLargeOnlineSearchEngine> rdf:type owl:Class ;
+                                                       rdfs:subClassOf <https://example.org/orda#DataProvider> ;
+                                                       rdfs:comment "A search engine designated as a VLOSE under DSA Art. 33."@en ;
+                                                       rdfs:label "Very Large Online Search Engine"@en ;
+                                                       rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_33> .
+
+
+###  https://example.org/orda#VettedResearcher
+<https://example.org/orda#VettedResearcher> rdf:type owl:Class ;
+                                            rdfs:subClassOf :Researcher ,
+                                                            <https://w3id.org/dpv/owl#Entity> ;
+                                            rdfs:comment "A researcher vetted under DSA Art. 40(8) by a DSC to access non-public platform data under Art. 40(4). Must be affiliated with a research organisation per Dir. 2019/790 Art. 2(1). Not required to be based in the EU — the systemic risk being researched must occur within the EU."@en ;
+                                            rdfs:label "Vetted Researcher"@en .
+
+
+###  https://w3id.org/dpv#Adult
+dpv:Adult rdf:type owl:Class ;
+          rdfs:subClassOf dpv:DataSubject ;
+          rdfs:comment "A natural person that is not a child i.e. has attained the age of maturity."@en ;
+          rdfs:label "Adult"@en .
+
+
+###  https://w3id.org/dpv#Applicant
+dpv:Applicant rdf:type owl:Class ;
+              rdfs:subClassOf dpv:DataSubject ;
+              rdfs:comment "Data subjects that have applied for something."@en ;
+              rdfs:label "Applicant"@en .
+
+
+###  https://w3id.org/dpv#AsylumSeeker
+dpv:AsylumSeeker rdf:type owl:Class ;
+                 rdfs:subClassOf dpv:VulnerableDataSubject ;
+                 rdfs:comment "Data subjects that are asylum seekers."@en ;
+                 rdfs:label "Asylum Seeker"@en .
+
+
+###  https://w3id.org/dpv#Child
+dpv:Child rdf:type owl:Class ;
+          rdfs:subClassOf dpv:DataSubject ;
+          rdfs:comment "A natural person that has not attained the age of maturity."@en ;
+          rdfs:label "Child"@en .
+
+
+###  https://w3id.org/dpv#Citizen
+dpv:Citizen rdf:type owl:Class ;
+            rdfs:subClassOf dpv:DataSubject ;
+            rdfs:comment "Data subjects that are citizens of a jurisdiction."@en ;
+            rdfs:label "Citizen"@en .
+
+
+###  https://w3id.org/dpv#Client
+dpv:Client rdf:type owl:Class ;
+           rdfs:subClassOf dpv:DataSubject ;
+           rdfs:comment "Data subjects that are clients of a service."@en ;
+           rdfs:label "Client"@en .
+
+
+###  https://w3id.org/dpv#Consumer
+dpv:Consumer rdf:type owl:Class ;
+             rdfs:subClassOf dpv:DataSubject ;
+             rdfs:comment "Data subjects that consume goods or services."@en ;
+             rdfs:label "Consumer"@en .
+
+
+###  https://w3id.org/dpv#Customer
+dpv:Customer rdf:type owl:Class ;
+             rdfs:subClassOf dpv:DataSubject ;
+             rdfs:comment "Data subjects that are customers of a service or product."@en ;
+             rdfs:label "Customer"@en .
+
+
+###  https://w3id.org/dpv#DataSubject
+dpv:DataSubject rdf:type owl:Class ;
+                rdfs:subClassOf dpv:HumanSubject ;
+                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. Instances may also be typed as ddp:Agent when they are social media account holders."@en ;
+                rdfs:label "Data Subject"@en .
+
+
+###  https://w3id.org/dpv#ElderlyDataSubject
+dpv:ElderlyDataSubject rdf:type owl:Class ;
+                       rdfs:subClassOf dpv:VulnerableDataSubject ;
+                       rdfs:comment "Data subjects that are considered elderly (i.e. based on age)."@en ;
+                       rdfs:label "Elderly Data Subject"@en .
+
+
+###  https://w3id.org/dpv#Employee
+dpv:Employee rdf:type owl:Class ;
+             rdfs:subClassOf dpv:DataSubject ;
+             rdfs:comment "Data subjects that are employees."@en ;
+             rdfs:label "Employee"@en .
+
+
+###  https://w3id.org/dpv#GuardianOfDataSubject
+dpv:GuardianOfDataSubject rdf:type owl:Class ;
+                          rdfs:subClassOf dpv:DataSubject ;
+                          rdfs:comment "Guardian(s) of a data subject."@en ;
+                          rdfs:label "Guardian(s) of Data Subject"@en .
+
+
+###  https://w3id.org/dpv#HumanSubject
+dpv:HumanSubject rdf:type owl:Class ;
+                 rdfs:subClassOf dpv:NaturalPerson ;
+                 rdfs:comment "A human that is the subject of a specific context, such as Data Subject for data or AI Subject for AI."@en ;
+                 rdfs:label "Human Subject"@en .
+
+
+###  https://w3id.org/dpv#Immigrant
+dpv:Immigrant rdf:type owl:Class ;
+              rdfs:subClassOf dpv:DataSubject ;
+              rdfs:comment "Data subjects that are immigrants."@en ;
+              rdfs:label "Immigrant"@en .
+
+
+###  https://w3id.org/dpv#JobApplicant
+dpv:JobApplicant rdf:type owl:Class ;
+                 rdfs:subClassOf dpv:DataSubject ;
+                 rdfs:comment "Data subjects that have applied for a job."@en ;
+                 rdfs:label "Job Applicant"@en .
+
+
+###  https://w3id.org/dpv#LegalEntity
+dpv:LegalEntity rdf:type owl:Class .
+
+
+###  https://w3id.org/dpv#Location
+dpv:Location rdf:type owl:Class .
+
+
+###  https://w3id.org/dpv#Member
+dpv:Member rdf:type owl:Class ;
+           rdfs:subClassOf dpv:DataSubject ;
+           rdfs:comment "Data subjects that are members of a group or organisation."@en ;
+           rdfs:label "Member"@en .
+
+
+###  https://w3id.org/dpv#MentallyVulnerableDataSubject
+dpv:MentallyVulnerableDataSubject rdf:type owl:Class ;
+                                  rdfs:subClassOf dpv:VulnerableDataSubject ;
+                                  rdfs:comment "Data subjects that are considered mentally vulnerable."@en ;
+                                  rdfs:label "Mentally Vulnerable Data Subject"@en .
+
+
+###  https://w3id.org/dpv#NaturalPerson
+dpv:NaturalPerson rdf:type owl:Class ;
+                  rdfs:subClassOf <https://w3id.org/dpv/owl#Entity> ;
+                  rdfs:comment "A human."@en ;
+                  rdfs:label "Natural Person"@en .
+
+
+###  https://w3id.org/dpv#NonCitizen
+dpv:NonCitizen rdf:type owl:Class ;
+               rdfs:subClassOf dpv:DataSubject ;
+               rdfs:comment "Data subjects that are not citizens of a jurisdiction."@en ;
+               rdfs:label "Non-Citizen"@en .
+
+
+###  https://w3id.org/dpv#ParentOfDataSubject
+dpv:ParentOfDataSubject rdf:type owl:Class ;
+                        rdfs:subClassOf dpv:DataSubject ;
+                        rdfs:comment "Parent(s) of a data subject."@en ;
+                        rdfs:label "Parent(s) of Data Subject"@en .
+
+
+###  https://w3id.org/dpv#Participant
+dpv:Participant rdf:type owl:Class ;
+                rdfs:subClassOf dpv:DataSubject ;
+                rdfs:comment "Data subjects that participate in an activity or process."@en ;
+                rdfs:label "Participant"@en .
+
+
+###  https://w3id.org/dpv#Patient
+dpv:Patient rdf:type owl:Class ;
+            rdfs:subClassOf dpv:DataSubject ;
+            rdfs:comment "Data subjects that receive medical attention, treatment, or care."@en ;
+            rdfs:label "Patient"@en .
+
+
+###  https://w3id.org/dpv#Student
+dpv:Student rdf:type owl:Class ;
+            rdfs:subClassOf dpv:DataSubject ;
+            rdfs:comment "Data subjects that are students."@en ;
+            rdfs:label "Student"@en .
+
+
+###  https://w3id.org/dpv#Subscriber
+dpv:Subscriber rdf:type owl:Class ;
+               rdfs:subClassOf dpv:DataSubject ;
+               rdfs:comment "Data subjects that subscribe to a service."@en ;
+               rdfs:label "Subscriber"@en .
+
+
+###  https://w3id.org/dpv#SupraNationalUnion
+dpv:SupraNationalUnion rdf:type owl:Class .
+
+
+###  https://w3id.org/dpv#Tourist
+dpv:Tourist rdf:type owl:Class ;
+            rdfs:subClassOf dpv:DataSubject ;
+            rdfs:comment "Data subjects that are tourists."@en ;
+            rdfs:label "Tourist"@en .
+
+
+###  https://w3id.org/dpv#User
+dpv:User rdf:type owl:Class ;
+         rdfs:subClassOf dpv:DataSubject ;
+         rdfs:comment "Data subjects that use a service or product."@en ;
+         rdfs:label "User"@en .
+
+
+###  https://w3id.org/dpv#Visitor
+dpv:Visitor rdf:type owl:Class ;
+            rdfs:subClassOf dpv:DataSubject ;
+            rdfs:comment "Data subjects that visit a place or service."@en ;
+            rdfs:label "Visitor"@en .
+
+
+###  https://w3id.org/dpv#VulnerableDataSubject
+dpv:VulnerableDataSubject rdf:type owl:Class ;
+                          rdfs:subClassOf dpv:DataSubject ;
+                          rdfs:comment "Data subjects which should be considered 'vulnerable' and therefore would require additional measures and safeguards."@en ;
+                          rdfs:label "Vulnerable Data Subject"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Activity
+as:Activity rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://publications.europa.eu/resource/authority/file-type/CSV
+<http://publications.europa.eu/resource/authority/file-type/CSV> rdf:type owl:NamedIndividual .
+
+
+###  http://publications.europa.eu/resource/authority/file-type/JSON
+<http://publications.europa.eu/resource/authority/file-type/JSON> rdf:type owl:NamedIndividual .
+
+
+###  http://publications.europa.eu/resource/authority/file-type/PDF
+<http://publications.europa.eu/resource/authority/file-type/PDF> rdf:type owl:NamedIndividual .
+
+
+###  http://www.semanticweb.org/jacein/ontologies/2026/2/Research_Access/ExampleSystemicRisk
+:ExampleSystemicRisk rdf:type owl:NamedIndividual ,
+                              <https://example.org/orda#CivicDiscourseRisk> ;
+                     <https://w3id.org/dpv/owl#hasJurisdiction> loc:EU .
+
+
+###  https://example.org/orda#AliExpressVLOP
+<https://example.org/orda#AliExpressVLOP> rdf:type owl:NamedIndividual ,
+                                                   <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                          <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
+                                          rdfs:label "AliExpress"@en ;
+                                          rdfs:seeAlso <https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses> .
+
+
+###  https://example.org/orda#AmazonStoreVLOP
+<https://example.org/orda#AmazonStoreVLOP> rdf:type owl:NamedIndividual ,
+                                                    <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                           <https://w3id.org/dpv/owl#hasLocation> loc:LU ;
+                                           rdfs:label "Amazon Store"@en .
+
+
+###  https://example.org/orda#AppStoreVLOP
+<https://example.org/orda#AppStoreVLOP> rdf:type owl:NamedIndividual ,
+                                                 <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                        <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                        rdfs:label "Apple App Store"@en .
+
+
+###  https://example.org/orda#BingVLOSE
+<https://example.org/orda#BingVLOSE> rdf:type owl:NamedIndividual ,
+                                              <https://example.org/orda#VeryLargeOnlineSearchEngine> ;
+                                     <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                     rdfs:label "Bing"@en .
+
+
+###  https://example.org/orda#BookingVLOP
+<https://example.org/orda#BookingVLOP> rdf:type owl:NamedIndividual ,
+                                                <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                       <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
+                                       rdfs:label "Booking.com"@en .
+
+
+###  https://example.org/orda#EthicalReview
+<https://example.org/orda#EthicalReview> rdf:type owl:NamedIndividual ;
+                                         rdfs:comment "Independent ethics committee or IRB review confirming the research design meets ethical standards before data access is granted."@en ;
+                                         rdfs:label "Ethical Review"@en .
+
+
+###  https://example.org/orda#ExampleCatalogue
+<https://example.org/orda#ExampleCatalogue> rdf:type owl:NamedIndividual ,
+                                                     <https://example.org/orda#DSADataCatalogue> ;
+                                            rdfs:label "Example VLOP Data Catalogue 2026"@en .
+
+
+###  https://example.org/orda#ExampleCsvwSchema
+<https://example.org/orda#ExampleCsvwSchema> rdf:type owl:NamedIndividual ,
+                                                      csvw:Schema ;
+                                             rdfs:label "CSVW schema for example activity-history CSV"@en ;
+                                             csvw:column [ rdf:type csvw:Column ;
+                                                           csvw:name "user_id" ;
+                                                           csvw:datatype "string" ;
+                                                           csvw:titles "User ID" ;
+                                                           csvw:required "true"^^xsd:boolean
+                                                         ] ,
+                                                         [ rdf:type csvw:Column ;
+                                                           csvw:name "activity" ;
+                                                           csvw:datatype "string" ;
+                                                           csvw:titles "Activity Type"
+                                                         ] ,
+                                                         [ rdf:type csvw:Column ;
+                                                           csvw:name "timestamp" ;
+                                                           csvw:datatype "dateTime" ;
+                                                           csvw:titles "Timestamp" ;
+                                                           csvw:required "true"^^xsd:boolean
+                                                         ] .
+
+
+###  https://example.org/orda#ExampleDSCofEstablishment
+<https://example.org/orda#ExampleDSCofEstablishment> rdf:type owl:NamedIndividual ,
+                                                              <https://example.org/orda#DSCofEstablishment> ;
+                                                     rdfs:label "Coimisiún na Meán (Ireland)"@en .
+
+
+###  https://example.org/orda#ExampleDSCofMemberState
+<https://example.org/orda#ExampleDSCofMemberState> rdf:type owl:NamedIndividual ,
+                                                            <https://example.org/orda#DSCofMemberState> ;
+                                                   rdfs:label "ACM (Netherlands)"@en .
+
+
+###  https://example.org/orda#ExampleDataAccessRequest
+<https://example.org/orda#ExampleDataAccessRequest> rdf:type owl:NamedIndividual ,
+                                                             <https://example.org/orda#Art40_4_DataAccessRequest> ;
+                                                    <https://example.org/orda#assessedBy> <https://example.org/orda#ExampleDSCofEstablishment> ;
+                                                    <https://example.org/orda#hasStatusEvent> _:genid4 ,
+                                                                                              _:genid5 ,
+                                                                                              _:genid6 ;
+                                                    <https://example.org/orda#initiallyAssessedBy> <https://example.org/orda#ExampleDSCofMemberState> ;
+                                                    <https://example.org/orda#isPartOf> <https://example.org/orda#ExampleResearchProject> ;
+                                                    <https://example.org/orda#madeBy> <https://example.org/orda#ExamplePrincipalResearcher> ;
+                                                    <https://example.org/orda#requestStatus> <https://example.org/orda#StatusReasonedRequestFormulated> ;
+                                                    <https://example.org/orda#requestsData> <https://example.org/orda#ExampleDistribution> ;
+                                                    <https://example.org/orda#resultsIn> <https://example.org/orda#ExampleReasonedRequest> ;
+                                                    <https://example.org/orda#submittedVia> <https://example.org/orda#ExamplePortal> ;
+                                                    <https://example.org/orda#targets> <https://example.org/orda#TikTokVLOP> ;
+                                                    <https://w3id.org/dpv/owl#hasLegalBasis> legal-eu:DSA ;
+                                                    <https://example.org/orda#hasPublicationCommitment> "true"^^xsd:boolean ;
+                                                    <https://example.org/orda#independenceDeclaration> "This research is independent from commercial interests." ;
+                                                    <https://example.org/orda#publicationTimeline> "Within 12 months of project completion" ;
+                                                    <https://example.org/orda#requestDate> "2026-01-15"^^xsd:date .
+
+_:genid4 rdf:type <https://example.org/orda#StatusEvent> ;
+          <https://example.org/orda#eventActor> <https://example.org/orda#ExamplePrincipalResearcher> ;
+          <https://example.org/orda#eventStatus> <https://example.org/orda#StatusSubmitted> ;
+          <https://example.org/orda#eventDate> "2026-01-15"^^xsd:date .
+
+_:genid5 rdf:type <https://example.org/orda#StatusEvent> ;
+          <https://example.org/orda#eventActor> <https://example.org/orda#ExampleDSCofEstablishment> ;
+          <https://example.org/orda#eventStatus> <https://example.org/orda#StatusUnderAssessment> ;
+          <https://example.org/orda#eventDate> "2026-01-20"^^xsd:date .
+
+_:genid6 rdf:type <https://example.org/orda#StatusEvent> ;
+          <https://example.org/orda#eventActor> <https://example.org/orda#ExampleDSCofEstablishment> ;
+          <https://example.org/orda#eventStatus> <https://example.org/orda#StatusReasonedRequestFormulated> ;
+          <https://example.org/orda#eventDate> "2026-04-10"^^xsd:date .
+
+
+###  https://example.org/orda#ExampleDistribution
+<https://example.org/orda#ExampleDistribution> rdf:type owl:NamedIndividual ,
+                                                        <https://example.org/orda#CSVDistribution> ;
+                                               dct:format <http://publications.europa.eu/resource/authority/file-type/CSV> ;
+                                               dct:hasFormat <https://example.org/orda#ExampleCsvwSchema> ;
+                                               rdfs:label "Example CSV distribution of platform activity data"@en .
+
+
+###  https://example.org/orda#ExampleGrant
+<https://example.org/orda#ExampleGrant> rdf:type owl:NamedIndividual ,
+                                                 frapo:Grant .
+
+
+###  https://example.org/orda#ExampleJsonDistribution
+<https://example.org/orda#ExampleJsonDistribution> rdf:type owl:NamedIndividual ,
+                                                            dcat:Distribution ;
+                                                   dct:format <http://publications.europa.eu/resource/authority/file-type/JSON> ;
+                                                   dct:hasFormat <https://example.org/schemas/activity-history.schema.json> ;
+                                                   rdfs:label "Example JSON distribution"@en .
+
+
+###  https://example.org/orda#ExampleModality
+<https://example.org/orda#ExampleModality> rdf:type owl:NamedIndividual .
+
+
+###  https://example.org/orda#ExamplePdfDistribution
+<https://example.org/orda#ExamplePdfDistribution> rdf:type owl:NamedIndividual ,
+                                                           dcat:Distribution ;
+                                                  dct:format <http://publications.europa.eu/resource/authority/file-type/PDF> ;
+                                                  rdfs:label "Example PDF transparency report"@en .
+
+
+###  https://example.org/orda#ExamplePortal
+<https://example.org/orda#ExamplePortal> rdf:type owl:NamedIndividual ,
+                                                  <https://example.org/orda#DSADataAccessPortal> ;
+                                         rdfs:label "DSA Data Access Portal"@en .
+
+
+###  https://example.org/orda#ExamplePrincipalResearcher
+<https://example.org/orda#ExamplePrincipalResearcher> rdf:type owl:NamedIndividual ,
+                                                               :PrincipalResearcher ,
+                                                               <https://example.org/orda#VettedResearcher> ;
+                                                      frapo:isEmployedBy <https://example.org/orda#ExampleUniversity> ;
+                                                      <https://example.org/orda#affiliatedWith> <https://example.org/orda#ExampleUniversity> ;
+                                                      <https://example.org/orda#researcherEmail> "j.smith@uva.nl" ;
+                                                      <https://example.org/orda#researcherName> "Dr. Jane Smith" .
+
+
+###  https://example.org/orda#ExampleReasonedRequest
+<https://example.org/orda#ExampleReasonedRequest> rdf:type owl:NamedIndividual ,
+                                                           <https://example.org/orda#ReasonedRequest> ;
+                                                  <https://example.org/orda#hasAccessModality> <https://example.org/orda#ExampleModality> ;
+                                                  <https://example.org/orda#issuedBy> <https://example.org/orda#ExampleDSCofEstablishment> ;
+                                                  <https://example.org/orda#issuedTo> <https://example.org/orda#TikTokVLOP> ;
+                                                  <https://example.org/orda#publishedIn> <https://example.org/orda#ExamplePortal> ;
+                                                  rdfs:label "Reasoned Request RR-2026-0042"@en .
+
+
+###  https://example.org/orda#ExampleResearchProject
+<https://example.org/orda#ExampleResearchProject> rdf:type owl:NamedIndividual ,
+                                                           <https://example.org/orda#ResearchProject> ;
+                                                  frapo:isFundedBy <https://example.org/orda#ExampleGrant> ;
+                                                  <https://example.org/orda#assessesMitigation> <https://example.org/orda#TikTokVLOP> ;
+                                                  <https://example.org/orda#investigates> :ExampleSystemicRisk ;
+                                                  <https://w3id.org/dpv/owl#hasLegalBasis> legal-eu:DSA ;
+                                                  <https://example.org/orda#projectDescription> "A research project investigating civic discourse risks and assessing platform mitigation measures on VLOPs." ;
+                                                  <https://example.org/orda#projectEndDate> "2028-06-30"^^xsd:date ;
+                                                  <https://example.org/orda#projectStartDate> "2026-01-01"^^xsd:date ;
+                                                  <https://example.org/orda#projectTitle> "Example Research Project" .
+
+
+###  https://example.org/orda#ExampleUniversity
+<https://example.org/orda#ExampleUniversity> rdf:type owl:NamedIndividual ,
+                                                      frapo:University ;
+                                             rdfs:label "University of Amsterdam"@en .
+
+
+###  https://example.org/orda#FacebookVLOP
+<https://example.org/orda#FacebookVLOP> rdf:type owl:NamedIndividual ,
+                                                 <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                        <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                        rdfs:label "Facebook"@en ;
+                                        skos:closeMatch ddp:Facebook .
+
+
+###  https://example.org/orda#GoogleMapsVLOP
+<https://example.org/orda#GoogleMapsVLOP> rdf:type owl:NamedIndividual ,
+                                                   <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                          <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                          rdfs:label "Google Maps"@en .
+
+
+###  https://example.org/orda#GooglePlayVLOP
+<https://example.org/orda#GooglePlayVLOP> rdf:type owl:NamedIndividual ,
+                                                   <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                          <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                          rdfs:label "Google Play"@en .
+
+
+###  https://example.org/orda#GoogleSearchVLOSE
+<https://example.org/orda#GoogleSearchVLOSE> rdf:type owl:NamedIndividual ,
+                                                      <https://example.org/orda#VeryLargeOnlineSearchEngine> ;
+                                             <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                             rdfs:label "Google Search"@en .
+
+
+###  https://example.org/orda#GoogleShoppingVLOP
+<https://example.org/orda#GoogleShoppingVLOP> rdf:type owl:NamedIndividual ,
+                                                       <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                              <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                              rdfs:label "Google Shopping"@en .
+
+
+###  https://example.org/orda#InstagramVLOP
+<https://example.org/orda#InstagramVLOP> rdf:type owl:NamedIndividual ,
+                                                  <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                         <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                         rdfs:label "Instagram"@en ;
+                                         skos:closeMatch ddp:Instagram .
+
+
+###  https://example.org/orda#LinkedInVLOP
+<https://example.org/orda#LinkedInVLOP> rdf:type owl:NamedIndividual ,
+                                                 <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                        <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                        rdfs:label "LinkedIn"@en .
+
+
+###  https://example.org/orda#PinterestVLOP
+<https://example.org/orda#PinterestVLOP> rdf:type owl:NamedIndividual ,
+                                                  <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                         <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                         rdfs:label "Pinterest"@en .
+
+
+###  https://example.org/orda#RequestStatusScheme
+<https://example.org/orda#RequestStatusScheme> rdf:type owl:NamedIndividual ,
+                                                        skos:ConceptScheme ;
+                                               rdfs:comment "Controlled vocabulary for the lifecycle stages of a DSA Art. 40 data access request."@en ;
+                                               rdfs:label "Request Status Scheme"@en .
+
+
+###  https://example.org/orda#SnapchatVLOP
+<https://example.org/orda#SnapchatVLOP> rdf:type owl:NamedIndividual ,
+                                                 <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                        <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
+                                        rdfs:label "Snapchat"@en .
+
+
+###  https://example.org/orda#StandardContractualClauses
+<https://example.org/orda#StandardContractualClauses> rdf:type owl:NamedIndividual ,
+                                                               <https://example.org/orda#InternationalDataTransferMeasure> ;
+                                                      rdfs:comment "European Commission-approved Standard Contractual Clauses (SCCs) governing the transfer of personal data to a third country outside the EU/EEA under GDPR Art. 46(2)(c)."@en ;
+                                                      rdfs:label "Standard Contractual Clauses"@en ;
+                                                      rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021D0914> .
+
+
+###  https://example.org/orda#StatusAmendmentRequested
+<https://example.org/orda#StatusAmendmentRequested> rdf:type owl:NamedIndividual ,
+                                                             skos:Concept ;
+                                                    skos:definition "The platform has submitted an amendment request under Art. 40(5) DSA within 15 days of receiving the reasoned request."@en ;
+                                                    skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                                    skos:prefLabel "Amendment Requested"@en .
+
+
+###  https://example.org/orda#StatusDataProvided
+<https://example.org/orda#StatusDataProvided> rdf:type owl:NamedIndividual ,
+                                                       skos:Concept ;
+                                              skos:definition "The platform has provided the requested data under the modalities specified in the reasoned request."@en ;
+                                              skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                              skos:prefLabel "Data Provided"@en .
+
+
+###  https://example.org/orda#StatusInMediation
+<https://example.org/orda#StatusInMediation> rdf:type owl:NamedIndividual ,
+                                                      skos:Concept ;
+                                             skos:definition "The reasoned request is subject to dispute settlement per DA Art. 13, with up to 40 additional working days."@en ;
+                                             skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                             skos:prefLabel "In Mediation"@en .
+
+
+###  https://example.org/orda#StatusReasonedRequestFormulated
+<https://example.org/orda#StatusReasonedRequestFormulated> rdf:type owl:NamedIndividual ,
+                                                                    skos:Concept ;
+                                                           skos:definition "The DSC of establishment has formulated a reasoned request and issued it to the platform."@en ;
+                                                           skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                                           skos:prefLabel "Reasoned Request Formulated"@en .
+
+
+###  https://example.org/orda#StatusRejected
+<https://example.org/orda#StatusRejected> rdf:type owl:NamedIndividual ,
+                                                   skos:Concept ;
+                                          skos:definition "The application was rejected by the DSC of establishment."@en ;
+                                          skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                          skos:prefLabel "Rejected"@en .
+
+
+###  https://example.org/orda#StatusSubmitted
+<https://example.org/orda#StatusSubmitted> rdf:type owl:NamedIndividual ,
+                                                    skos:Concept ;
+                                           skos:definition "Application submitted via the DSA Data Access Portal (Art. 40(4)) or directly to the platform (Art. 40(12))."@en ;
+                                           skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                           skos:prefLabel "Submitted"@en .
+
+
+###  https://example.org/orda#StatusTerminated
+<https://example.org/orda#StatusTerminated> rdf:type owl:NamedIndividual ,
+                                                     skos:Concept ;
+                                            skos:definition "Access has been terminated by the DSC under Art. 40(10) because the vetted researcher no longer meets Art. 40(8) conditions."@en ;
+                                            skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                            skos:prefLabel "Terminated"@en .
+
+
+###  https://example.org/orda#StatusUnderAssessment
+<https://example.org/orda#StatusUnderAssessment> rdf:type owl:NamedIndividual ,
+                                                          skos:Concept ;
+                                                 skos:definition "Application is being assessed by the DSC of establishment against Art. 40(8) prerequisites. The DSC has 80 working days to decide (DA Art. 7)."@en ;
+                                                 skos:inScheme <https://example.org/orda#RequestStatusScheme> ;
+                                                 skos:prefLabel "Under Assessment"@en .
+
+
+###  https://example.org/orda#TikTokVLOP
+<https://example.org/orda#TikTokVLOP> rdf:type owl:NamedIndividual ,
+                                               <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                      <https://example.org/orda#hasDataCatalogue> <https://example.org/orda#ExampleCatalogue> ;
+                                      <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                      rdfs:label "TikTok"@en ;
+                                      skos:closeMatch ddp:TikTok .
+
+
+###  https://example.org/orda#TransferImpactAssessment
+<https://example.org/orda#TransferImpactAssessment> rdf:type owl:NamedIndividual ,
+                                                             <https://example.org/orda#DataHandlingClause> ;
+                                                    rdfs:comment "An assessment required before transferring personal data to a third country, evaluating whether the destination country's legal framework ensures adequate protection equivalent to EU standards."@en ;
+                                                    rdfs:label "Transfer Impact Assessment"@en .
+
+
+###  https://example.org/orda#WikipediaVLOP
+<https://example.org/orda#WikipediaVLOP> rdf:type owl:NamedIndividual ,
+                                                  <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                         <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
+                                         rdfs:label "Wikipedia"@en .
+
+
+###  https://example.org/orda#XVLOP
+<https://example.org/orda#XVLOP> rdf:type owl:NamedIndividual ,
+                                          <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                 <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                 rdfs:label "X (formerly Twitter)"@en .
+
+
+###  https://example.org/orda#YouTubeVLOP
+<https://example.org/orda#YouTubeVLOP> rdf:type owl:NamedIndividual ,
+                                                <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                       <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
+                                       rdfs:label "YouTube"@en ;
+                                       skos:closeMatch ddp:YouTube .
+
+
+###  https://example.org/orda#ZalandoVLOP
+<https://example.org/orda#ZalandoVLOP> rdf:type owl:NamedIndividual ,
+                                                <https://example.org/orda#VeryLargeOnlinePlatform> ;
+                                       <https://w3id.org/dpv/owl#hasLocation> loc:DE ;
+                                       rdfs:label "Zalando"@en .
+
+
+###  https://example.org/schemas/activity-history.schema.json
+<https://example.org/schemas/activity-history.schema.json> rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/dpv/legal/eu#DSA
+legal-eu:DSA rdf:type owl:NamedIndividual ,
+                      eli:LegalResource ;
+             rdfs:comment "Regulation (EU) 2022/2065. Art. 40 grants vetted researchers access to platform data to investigate systemic risks within the EU."@en ;
+             rdfs:isDefinedBy <https://w3id.org/dpv/legal/eu> ;
+             rdfs:label "Digital Services Act"@en ;
+             rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065> .
+
+
+###  https://w3id.org/dpv/loc#DE
+loc:DE rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/dpv/loc#EU
+loc:EU rdf:type owl:NamedIndividual ,
+                dpv:SupraNationalUnion ;
+       rdfs:comment "The jurisdiction within which DSA systemic risks must occur to trigger Art. 40 data access rights."@en ;
+       rdfs:isDefinedBy <https://w3id.org/dpv/loc> ;
+       rdfs:label "European Union"@en ;
+       skos:prefLabel "European Union"@en .
+
+
+###  https://w3id.org/dpv/loc#IE
+loc:IE rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/dpv/loc#LU
+loc:LU rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/dpv/loc#NL
+loc:NL rdf:type owl:NamedIndividual .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
