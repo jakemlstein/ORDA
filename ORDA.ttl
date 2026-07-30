@@ -60,7 +60,23 @@ frapo:isEmployedBy rdf:type owl:ObjectProperty ;
 
 
 ###  http://purl.org/cerif/frapo/isFundedBy
+###  http://purl.org/cerif/frapo/hasFundingAgency
+frapo:hasFundingAgency rdf:type owl:ObjectProperty ;
+                       rdfs:domain frapo:Funding ;
+                       rdfs:range frapo:FundingAgency ;
+                       rdfs:comment "Links funding to the agency providing it. Every frapo:Funding instance in ORDA is required to carry one."@en ;
+                       rdfs:isDefinedBy frapo: ;
+                       rdfs:label "has funding agency"@en .
+
+###  http://purl.org/cerif/frapo/isFundedBy
 frapo:isFundedBy rdf:type owl:ObjectProperty ;
+                 rdfs:domain orda:ResearchProject ;
+                 rdfs:range [ rdf:type owl:Class ;
+                              owl:unionOf ( frapo:Funding
+                                            frapo:FundingAgency
+                                          )
+                            ] ;
+                 rdfs:comment "Links a research project to the funding that finances it. FRAPO defines this property as polymorphic over both the funding and the agency providing it, so the range permits either, but ORDA requires a research project to name its frapo:Funding; the funding agency is reached from there via frapo:hasFundingAgency."@en ;
                  rdfs:isDefinedBy frapo: ;
                  rdfs:label "is funded by"@en .
 
@@ -113,12 +129,6 @@ ddp:hasItem rdf:type owl:ObjectProperty ;
             rdfs:label "has item"@en .
 
 
-###  http://www.w3.org/2004/02/skos/core#member
-skos:member rdf:type owl:ObjectProperty ;
-            owl:inverseOf foaf:member ;
-            rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core> .
-
-
 ###  http://www.w3.org/ns/csvw#column
 csvw:column rdf:type owl:ObjectProperty ;
             rdfs:domain csvw:Schema ;
@@ -128,33 +138,40 @@ csvw:column rdf:type owl:ObjectProperty ;
             rdfs:label "column"@en .
 
 
-###  http://xmlns.com/foaf/0.1/member
-foaf:member rdf:type owl:ObjectProperty ;
-            rdfs:range foaf:Organization ;
-            rdfs:isDefinedBy foaf: ;
-            rdfs:label "member"@en .
-
-
 ###  https://example.org/orda#affiliatedWith
 orda:affiliatedWith rdf:type owl:ObjectProperty ;
+                    owl:inverseOf orda:hasAffiliatedResearcher ;
                     rdfs:domain orda:VettedResearcher ;
-                    rdfs:range foaf:Organization ;
-                    rdfs:comment "Links a vetted researcher to their affiliated organisation."@en ;
+                    rdfs:range [ rdf:type owl:Class ;
+                                 owl:unionOf ( frapo:College
+                                               frapo:ResearchInstitute
+                                               frapo:University
+                                             )
+                               ] ;
+                    rdfs:comment "Links a vetted researcher to the research organisation they are affiliated with. Art. 40(8)(a) DSA requires affiliation with a research organisation within the meaning of Dir. (EU) 2019/790 Art. 2(1); FRAPO has no single class for this, so the range is the union of its university, college and research-institute classes."@en ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
                     rdfs:label "affiliated with"@en .
 
 
-###  https://example.org/orda#amendmentRequestedBy
-orda:amendmentRequestedBy rdf:type owl:ObjectProperty ;
-                          rdfs:domain orda:AmendmentRequest ;
-                          rdfs:range orda:DataProvider ;
-                          rdfs:comment "Links an amendment request to the platform that submitted it."@en ;
-                          rdfs:isDefinedBy <https://example.org/orda> ;
-                          rdfs:label "amendment requested by"@en .
+###  https://example.org/orda#amendmentOutcome
+orda:amendmentOutcome rdf:type owl:ObjectProperty ,
+                               owl:FunctionalProperty ;
+                      rdfs:domain orda:AmendmentRequest ;
+                      rdfs:range [ rdf:type owl:Class ;
+                                   owl:oneOf ( orda:StatusAmendmentAccepted
+                                               orda:StatusAmendmentRejected
+                                             )
+                                 ] ;
+                      rdfs:comment "The outcome of an amendment request submitted under Art. 40(5) DSA."@en ;
+                      rdfs:isDefinedBy <https://example.org/orda> ;
+                      rdfs:label "amendment outcome"@en .
 
 
 ###  https://example.org/orda#amendsRequest
-orda:amendsRequest rdf:type owl:ObjectProperty ;
+orda:amendsRequest rdf:type owl:ObjectProperty ,
+                            owl:FunctionalProperty ,
+                            owl:AsymmetricProperty ,
+                            owl:IrreflexiveProperty ;
                    rdfs:domain orda:AmendmentRequest ;
                    rdfs:range orda:ReasonedRequest ;
                    rdfs:comment "Links an amendment request to the reasoned request it seeks to modify under Art. 40(5) DSA."@en ;
@@ -162,8 +179,18 @@ orda:amendsRequest rdf:type owl:ObjectProperty ;
                    rdfs:label "amends request"@en .
 
 
+###  https://example.org/orda#appliesMeasure
+orda:appliesMeasure rdf:type owl:ObjectProperty ;
+                    rdfs:domain orda:AccessModality ;
+                    rdfs:range orda:DataHandlingMeasure ;
+                    rdfs:comment "Links an access modality to the technical, legal or organisational measures that constitute it — e.g. a technical modality applying pseudonymisation, or a legal modality applying standard contractual clauses."@en ;
+                    rdfs:isDefinedBy <https://example.org/orda> ;
+                    rdfs:label "applies measure"@en .
+
+
 ###  https://example.org/orda#assessedBy
-orda:assessedBy rdf:type owl:ObjectProperty ;
+orda:assessedBy rdf:type owl:ObjectProperty ,
+                         owl:FunctionalProperty ;
                 rdfs:domain orda:Art40_4_DataAccessRequest ;
                 rdfs:range orda:DSCofEstablishment ;
                 rdfs:comment "Links an Art. 40(4) data access application to the DSC of establishment that makes the final vetting decision and formulates the reasoned request."@en ;
@@ -180,6 +207,24 @@ orda:assessesMitigation rdf:type owl:ObjectProperty ;
                         rdfs:label "assesses mitigation"@en .
 
 
+###  https://example.org/orda#assessesMitigationMeasure
+orda:assessesMitigationMeasure rdf:type owl:ObjectProperty ;
+                               rdfs:domain orda:ResearchProject ;
+                               rdfs:range orda:RiskMitigationMeasure ;
+                               rdfs:comment "Links a research project to the specific Art. 35 mitigation measure whose adequacy, efficiency and impact it assesses. Refines orda:assessesMitigation, which names only the platform."@en ;
+                               rdfs:isDefinedBy <https://example.org/orda> ;
+                               rdfs:label "assesses mitigation measure"@en .
+
+
+###  https://example.org/orda#catalogueEntry
+orda:catalogueEntry rdf:type owl:ObjectProperty ;
+                    rdfs:domain orda:DSADataCatalogue ;
+                    rdfs:range dcat:Distribution ;
+                    rdfs:comment "Links a DSA data catalogue to a data asset it describes, per DA Art. 6(4). This is the property a researcher follows from a catalogue to the distributions they can then request via orda:requestsData."@en ;
+                    rdfs:isDefinedBy <https://example.org/orda> ;
+                    rdfs:label "catalogue entry"@en .
+
+
 ###  https://example.org/orda#consultationRequestedBy
 orda:consultationRequestedBy rdf:type owl:ObjectProperty ;
                              rdfs:domain orda:ExpertConsultation ;
@@ -187,6 +232,16 @@ orda:consultationRequestedBy rdf:type owl:ObjectProperty ;
                              rdfs:comment "Links an expert consultation to the DSC that requested it."@en ;
                              rdfs:isDefinedBy <https://example.org/orda> ;
                              rdfs:label "consultation requested by"@en .
+
+
+###  https://example.org/orda#dataCatalogueOf
+orda:dataCatalogueOf rdf:type owl:ObjectProperty ;
+                     owl:inverseOf orda:hasDataCatalogue ;
+                     rdfs:domain orda:DSADataCatalogue ;
+                     rdfs:range orda:DataProvider ;
+                     rdfs:comment "Links a DSA data catalogue to the VLOP or VLOSE that published it."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "data catalogue of"@en .
 
 
 ###  https://example.org/orda#employsMethod
@@ -201,13 +256,15 @@ orda:employsMethod rdf:type owl:ObjectProperty ;
 ###  https://example.org/orda#eventActor
 orda:eventActor rdf:type owl:ObjectProperty ;
                 rdfs:domain orda:StatusEvent ;
+                rdfs:range foaf:Agent ;
                 rdfs:comment "The entity (DSC, platform, researcher) that triggered this status change."@en ;
                 rdfs:isDefinedBy <https://example.org/orda> ;
                 rdfs:label "event actor"@en .
 
 
 ###  https://example.org/orda#eventStatus
-orda:eventStatus rdf:type owl:ObjectProperty ;
+orda:eventStatus rdf:type owl:ObjectProperty ,
+                          owl:FunctionalProperty ;
                  rdfs:domain orda:StatusEvent ;
                  rdfs:range skos:Concept ;
                  rdfs:comment "Links a status event to the status it represents, drawn from orda:RequestStatusScheme."@en ;
@@ -215,21 +272,36 @@ orda:eventStatus rdf:type owl:ObjectProperty ;
                  rdfs:label "event status"@en .
 
 
-###  https://example.org/orda#evidences
-orda:evidences rdf:type owl:ObjectProperty ;
-               rdfs:range orda:SystemicRisk ;
-               rdfs:comment "Links a platform content object (post, reaction, video etc.) to the DSA systemic risk category it constitutes evidence of."@en ;
-               rdfs:isDefinedBy <https://example.org/orda> ;
-               rdfs:label "evidences"@en .
-
-
 ###  https://example.org/orda#hasAccessModality
 orda:hasAccessModality rdf:type owl:ObjectProperty ;
-                       rdfs:domain orda:DataAccessRequest ;
+                       rdfs:domain [ rdf:type owl:Class ;
+                                     owl:unionOf ( orda:DataAccessRequest
+                                                   orda:ReasonedRequest
+                                                 )
+                                   ] ;
                        rdfs:range orda:AccessModality ;
                        rdfs:comment "Links a data access request (Art. 40(4) or Art. 40(12)) — or the reasoned request formulated from it — to the access modality. At application stage the modality is researcher-proposed; for Art. 40(4) reasoned requests it is determined by the DSC of establishment per DA Art. 9."@en ;
                        rdfs:isDefinedBy <https://example.org/orda> ;
                        rdfs:label "has access modality"@en .
+
+
+###  https://example.org/orda#hasAffiliatedResearcher
+orda:hasAffiliatedResearcher rdf:type owl:ObjectProperty ;
+                             rdfs:domain orda:ResearchProject ;
+                             rdfs:range orda:Researcher ;
+                             rdfs:comment "Links a research organisation to the vetted researchers affiliated with it. The domain is entailed from the range of orda:affiliatedWith."@en ;
+                             rdfs:isDefinedBy <https://example.org/orda> ;
+                             rdfs:label "has affiliated researcher"@en .
+
+
+###  https://example.org/orda#hasDataAccessRequest
+orda:hasDataAccessRequest rdf:type owl:ObjectProperty ;
+                          owl:inverseOf orda:isPartOf ;
+                          rdfs:domain orda:ResearchProject ;
+                          rdfs:range orda:DataAccessRequest ;
+                          rdfs:comment "Links a research project to the data access requests submitted in support of it."@en ;
+                          rdfs:isDefinedBy <https://example.org/orda> ;
+                          rdfs:label "has data access request"@en .
 
 
 ###  https://example.org/orda#hasDataCatalogue
@@ -242,7 +314,8 @@ orda:hasDataCatalogue rdf:type owl:ObjectProperty ;
 
 
 ###  https://example.org/orda#hasDataManagementPlan
-orda:hasDataManagementPlan rdf:type owl:ObjectProperty ;
+orda:hasDataManagementPlan rdf:type owl:ObjectProperty ,
+                                    owl:FunctionalProperty ;
                            rdfs:domain orda:ResearchProject ;
                            rdfs:range orda:DataManagementPlan ;
                            rdfs:comment "Links a research project to the data management plan that governs how accessed data will be stored, processed and protected."@en ;
@@ -270,12 +343,34 @@ orda:hasMeasure rdf:type owl:ObjectProperty ;
 
 ###  https://example.org/orda#hasMethod
 orda:hasMethod rdf:type owl:ObjectProperty ;
-               rdfs:domain orda:ResearchActivity ,
-                           orda:ResearchProject ;
+               rdfs:domain [ rdf:type owl:Class ;
+                             owl:unionOf ( orda:ResearchActivity
+                                           orda:ResearchProject
+                                         )
+                           ] ;
                rdfs:range orda:ResearchMethod ;
                rdfs:comment "Links a research project to the research methods it employs."@en ;
                rdfs:isDefinedBy <https://example.org/orda> ;
                rdfs:label "has method"@en .
+
+
+###  https://example.org/orda#hasMitigationMeasure
+orda:hasMitigationMeasure rdf:type owl:ObjectProperty ;
+                          rdfs:domain orda:DataProvider ;
+                          rdfs:range orda:RiskMitigationMeasure ;
+                          rdfs:comment "Links a VLOP or VLOSE to a risk mitigation measure it has put in place under DSA Art. 35."@en ;
+                          rdfs:isDefinedBy <https://example.org/orda> ;
+                          rdfs:label "has mitigation measure"@en .
+
+
+###  https://example.org/orda#hasParticipant
+orda:hasParticipant rdf:type owl:ObjectProperty ;
+                    owl:inverseOf orda:participatesIn ;
+                    rdfs:domain orda:ResearchProject ;
+                    rdfs:range orda:Researcher ;
+                    rdfs:comment "Links a research project to the researchers participating in it. A project may have many."@en ;
+                    rdfs:isDefinedBy <https://example.org/orda> ;
+                    rdfs:label "has participant"@en .
 
 
 ###  https://example.org/orda#hasResearchActivity
@@ -326,8 +421,8 @@ orda:hasTopic rdf:type owl:ObjectProperty ;
 ###  https://example.org/orda#includesResearcher
 orda:includesResearcher rdf:type owl:ObjectProperty ;
                         rdfs:domain orda:DataAccessRequest ;
-                        rdfs:range orda:Researcher ;
-                        rdfs:comment "Links a data access request to additional researchers (beyond the principal researcher) who are covered by the same application. Per DA Art. 10, the reasoned request must identify all researchers."@en ;
+                        rdfs:range orda:ApplicantResearcher ;
+                        rdfs:comment "Links a data access request to every researcher covered by it, including the principal researcher (orda:madeBy is a sub-property of this). Per DA Art. 10, the reasoned request must identify all researchers."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "includes researcher"@en .
 
@@ -351,7 +446,9 @@ orda:investigates rdf:type owl:ObjectProperty ;
 
 
 ###  https://example.org/orda#isPartOf
-orda:isPartOf rdf:type owl:ObjectProperty ;
+orda:isPartOf rdf:type owl:ObjectProperty ,
+                       owl:AsymmetricProperty ,
+                       owl:IrreflexiveProperty ;
               rdfs:domain orda:DataAccessRequest ;
               rdfs:range orda:ResearchProject ;
               rdfs:comment "Links a data access request to the research project it supports."@en ;
@@ -359,8 +456,19 @@ orda:isPartOf rdf:type owl:ObjectProperty ;
               rdfs:label "is part of"@en .
 
 
+###  https://example.org/orda#isTargetOf
+orda:isTargetOf rdf:type owl:ObjectProperty ;
+                owl:inverseOf orda:targets ;
+                rdfs:domain orda:DataProvider ;
+                rdfs:range orda:DataAccessRequest ;
+                rdfs:comment "Links a VLOP or VLOSE to the data access requests directed at it."@en ;
+                rdfs:isDefinedBy <https://example.org/orda> ;
+                rdfs:label "is target of"@en .
+
+
 ###  https://example.org/orda#issuedBy
-orda:issuedBy rdf:type owl:ObjectProperty ;
+orda:issuedBy rdf:type owl:ObjectProperty ,
+                       owl:FunctionalProperty ;
               rdfs:domain orda:ReasonedRequest ;
               rdfs:range orda:DSCofEstablishment ;
               rdfs:comment "Links a reasoned request to the DSC of establishment that formulated it."@en ;
@@ -369,7 +477,8 @@ orda:issuedBy rdf:type owl:ObjectProperty ;
 
 
 ###  https://example.org/orda#issuedTo
-orda:issuedTo rdf:type owl:ObjectProperty ;
+orda:issuedTo rdf:type owl:ObjectProperty ,
+                       owl:FunctionalProperty ;
               rdfs:domain orda:ReasonedRequest ;
               rdfs:range orda:DataProvider ;
               rdfs:comment "Links a reasoned request to the VLOP or VLOSE to which it is addressed."@en ;
@@ -379,6 +488,9 @@ orda:issuedTo rdf:type owl:ObjectProperty ;
 
 ###  https://example.org/orda#madeBy
 orda:madeBy rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf orda:includesResearcher ;
+            owl:inverseOf orda:submittedRequest ;
+            rdf:type owl:FunctionalProperty ;
             rdfs:domain orda:DataAccessRequest ;
             rdfs:range orda:PrincipalResearcher ;
             rdfs:comment "Links a data access request to the principal researcher who submitted it. Per DA Art. 2 and 7, the principal researcher is the primary contact and bears responsibility for the application."@en ;
@@ -407,7 +519,8 @@ orda:publishedIn rdf:type owl:ObjectProperty ;
 ###  https://example.org/orda#questionInvestigates
 orda:questionInvestigates rdf:type owl:ObjectProperty ;
                           rdfs:domain orda:ResearchQuestion ;
-                          rdfs:comment "Links a research question to what it investigates — either an orda:SystemicRisk category or an orda:ResearchTopic. Distinct from orda:investigates whose domain is orda:ResearchProject."@en ;
+                          rdfs:range orda:SystemicRisk ;
+                          rdfs:comment "Links a research question to the DSA systemic risk it investigates. Distinct from orda:investigates whose domain is orda:ResearchProject. Research topics are attached at project level via orda:hasTopic."@en ;
                           rdfs:isDefinedBy <https://example.org/orda> ;
                           rdfs:label "question investigates"@en .
 
@@ -422,9 +535,22 @@ orda:referencesDataCatalogue rdf:type owl:ObjectProperty ;
 
 
 ###  https://example.org/orda#requestStatus
-orda:requestStatus rdf:type owl:ObjectProperty ;
+orda:requestStatus rdf:type owl:ObjectProperty ,
+                            owl:FunctionalProperty ;
                    rdfs:domain orda:DataAccessRequest ;
-                   rdfs:range skos:Concept ;
+                   rdfs:range [ rdf:type owl:Class ;
+                                owl:oneOf ( orda:StatusAmendmentAccepted
+                                            orda:StatusAmendmentRejected
+                                            orda:StatusAmendmentRequested
+                                            orda:StatusDataProvided
+                                            orda:StatusInMediation
+                                            orda:StatusReasonedRequestFormulated
+                                            orda:StatusRejected
+                                            orda:StatusSubmitted
+                                            orda:StatusTerminated
+                                            orda:StatusUnderAssessment
+                                          )
+                              ] ;
                    rdfs:comment "The current status of the request, drawn from orda:RequestStatusScheme. For full history, see orda:hasStatusEvent."@en ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
                    rdfs:label "request status"@en .
@@ -434,15 +560,15 @@ orda:requestStatus rdf:type owl:ObjectProperty ;
 orda:requestedBy rdf:type owl:ObjectProperty ;
                  rdfs:domain orda:AmendmentRequest ;
                  rdfs:range orda:DataProvider ;
+                 rdfs:comment "Links an amendment request to the VLOP or VLOSE that submitted it under Art. 40(5) DSA."@en ;
                  rdfs:isDefinedBy <https://example.org/orda> ;
-                 rdfs:label "requested by" .
+                 rdfs:label "requested by"@en .
 
 
 ###  https://example.org/orda#requestedFrom
 orda:requestedFrom rdf:type owl:ObjectProperty ;
                    rdfs:domain orda:Art40_12_DataAccessRequest ;
-                   rdfs:range orda:VeryLargeOnlinePlatform ,
-                              orda:VeryLargeOnlineSearchEngine ;
+                   rdfs:range orda:DataProvider ;
                    rdfs:comment "Links an Art. 40(12) public data request directly to the platform, without DSC intermediation."@en ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
                    rdfs:label "requested from"@en .
@@ -457,8 +583,20 @@ orda:requestsData rdf:type owl:ObjectProperty ;
                   rdfs:label "requests data"@en .
 
 
+###  https://example.org/orda#resultsFrom
+orda:resultsFrom rdf:type owl:ObjectProperty ;
+                 owl:inverseOf orda:resultsIn ;
+                 rdfs:domain orda:ReasonedRequest ;
+                 rdfs:range orda:Art40_4_DataAccessRequest ;
+                 rdfs:comment "Links a reasoned request to the Art. 40(4) application it was formulated from."@en ;
+                 rdfs:isDefinedBy <https://example.org/orda> ;
+                 rdfs:label "results from"@en .
+
+
 ###  https://example.org/orda#resultsIn
-orda:resultsIn rdf:type owl:ObjectProperty ;
+orda:resultsIn rdf:type owl:ObjectProperty ,
+                        owl:FunctionalProperty ,
+                        owl:InverseFunctionalProperty ;
                rdfs:domain orda:Art40_4_DataAccessRequest ;
                rdfs:range orda:ReasonedRequest ;
                rdfs:comment "Links an Art. 40(4) data access application to the reasoned request formulated by the DSC of establishment. The reasoned request is the operative legal instrument that triggers the platform's obligation to provide data."@en ;
@@ -466,8 +604,27 @@ orda:resultsIn rdf:type owl:ObjectProperty ;
                rdfs:label "results in"@en .
 
 
+###  https://example.org/orda#riskArisesOn
+orda:riskArisesOn rdf:type owl:ObjectProperty ;
+                  rdfs:domain orda:SystemicRisk ;
+                  rdfs:range orda:DataProvider ;
+                  rdfs:comment "Links a systemic risk to the VLOP or VLOSE from whose design or functioning it stems, per DSA Art. 34(1)."@en ;
+                  rdfs:isDefinedBy <https://example.org/orda> ;
+                  rdfs:label "risk arises on"@en .
+
+
+###  https://example.org/orda#submittedRequest
+orda:submittedRequest rdf:type owl:ObjectProperty ;
+                      rdfs:domain orda:PrincipalResearcher ;
+                      rdfs:range orda:DataAccessRequest ;
+                      rdfs:comment "Links a principal researcher to the data access requests they submitted."@en ;
+                      rdfs:isDefinedBy <https://example.org/orda> ;
+                      rdfs:label "submitted request"@en .
+
+
 ###  https://example.org/orda#submittedVia
-orda:submittedVia rdf:type owl:ObjectProperty ;
+orda:submittedVia rdf:type owl:ObjectProperty ,
+                           owl:FunctionalProperty ;
                   rdfs:domain orda:Art40_4_DataAccessRequest ;
                   rdfs:range orda:DSADataAccessPortal ;
                   rdfs:comment "Links an Art. 40(4) data access application to the DSA Data Access Portal through which it was submitted. Per DA Art. 3, all Art. 40(4) applications must be submitted through this portal."@en ;
@@ -513,8 +670,11 @@ orda:targets rdf:type owl:ObjectProperty ;
 
 
 ###  https://w3id.org/dpv/owl#hasLegalBasis
-<https://w3id.org/dpv/owl#hasLegalBasis> rdfs:domain orda:DataAccessRequest ,
-                                                     orda:ResearchProject ;
+<https://w3id.org/dpv/owl#hasLegalBasis> rdfs:domain [ rdf:type owl:Class ;
+                                                       owl:unionOf ( orda:DataAccessRequest
+                                                                     orda:ResearchProject
+                                                                   )
+                                                     ] ;
                                          rdfs:range <https://w3id.org/dpv/owl#LegalBasis> .
 
 
@@ -533,8 +693,11 @@ orda:targets rdf:type owl:ObjectProperty ;
 
 ###  http://purl.org/cerif/frapo/hasEndDate
 frapo:hasEndDate rdf:type owl:DatatypeProperty ;
-                 rdfs:domain frapo:Funding ,
-                             orda:ResearchProject ;
+                 rdfs:domain [ rdf:type owl:Class ;
+                               owl:unionOf ( frapo:Funding
+                                             orda:ResearchProject
+                                           )
+                             ] ;
                  rdfs:range xsd:dateTime ;
                  rdfs:isDefinedBy frapo: ;
                  rdfs:label "has end date"@en .
@@ -542,20 +705,36 @@ frapo:hasEndDate rdf:type owl:DatatypeProperty ;
 
 ###  http://purl.org/cerif/frapo/hasGrantNumber
 frapo:hasGrantNumber rdf:type owl:DatatypeProperty ;
-                     rdfs:domain frapo:Grant ,
-                                 orda:ResearchProject ;
+                     rdfs:domain [ rdf:type owl:Class ;
+                                   owl:unionOf ( frapo:Grant
+                                                 orda:ResearchProject
+                                               )
+                                 ] ;
                      rdfs:isDefinedBy frapo: ;
                      rdfs:label "has grant number"@en .
 
 
 ###  http://purl.org/cerif/frapo/hasStartDate
 frapo:hasStartDate rdf:type owl:DatatypeProperty ;
-                   rdfs:domain frapo:Funding ,
-                               frapo:Grant ,
-                               orda:ResearchProject ;
+                   rdfs:domain [ rdf:type owl:Class ;
+                                 owl:unionOf ( frapo:Funding
+                                               frapo:Grant
+                                               orda:ResearchProject
+                                             )
+                               ] ;
                    rdfs:range xsd:dateTime ;
                    rdfs:isDefinedBy frapo: ;
                    rdfs:label "has start date"@en .
+
+
+###  http://purl.org/dc/terms/identifier
+dct:identifier rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain orda:DataAccessRequest ;
+               rdfs:range xsd:string ;
+               rdfs:comment "The reference under which a data access request is registered, e.g. in the DSA Data Access Portal."@en ;
+               rdfs:isDefinedBy dct: ;
+               rdfs:label "identifier"@en .
 
 
 ###  http://www.w3.org/ns/csvw#datatype
@@ -594,6 +773,26 @@ csvw:titles rdf:type owl:DatatypeProperty ;
             rdfs:label "titles"@en .
 
 
+###  https://example.org/orda#accessEndDate
+orda:accessEndDate rdf:type owl:DatatypeProperty ,
+                            owl:FunctionalProperty ;
+                   rdfs:domain orda:ReasonedRequest ;
+                   rdfs:range xsd:date ;
+                   rdfs:comment "The date on which the granted period of access expires. Per DA Art. 10 the reasoned request must specify the period of access."@en ;
+                   rdfs:isDefinedBy <https://example.org/orda> ;
+                   rdfs:label "access end date"@en .
+
+
+###  https://example.org/orda#accessStartDate
+orda:accessStartDate rdf:type owl:DatatypeProperty ,
+                              owl:FunctionalProperty ;
+                     rdfs:domain orda:ReasonedRequest ;
+                     rdfs:range xsd:date ;
+                     rdfs:comment "The date from which the platform must make the requested data available. Per DA Art. 10 the reasoned request must specify the period of access."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "access start date"@en .
+
+
 ###  https://example.org/orda#amendmentGrounds
 orda:amendmentGrounds rdf:type owl:DatatypeProperty ;
                       rdfs:domain orda:AmendmentRequest ;
@@ -604,7 +803,8 @@ orda:amendmentGrounds rdf:type owl:DatatypeProperty ;
 
 
 ###  https://example.org/orda#eventDate
-orda:eventDate rdf:type owl:DatatypeProperty ;
+orda:eventDate rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
                rdfs:domain orda:StatusEvent ;
                rdfs:range xsd:date ;
                rdfs:comment "The date on which this status change occurred."@en ;
@@ -639,7 +839,8 @@ orda:projectDescription rdf:type owl:DatatypeProperty ;
 
 
 ###  https://example.org/orda#projectEndDate
-orda:projectEndDate rdf:type owl:DatatypeProperty ;
+orda:projectEndDate rdf:type owl:DatatypeProperty ,
+                             owl:FunctionalProperty ;
                     rdfs:domain orda:ResearchProject ;
                     rdfs:range xsd:date ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
@@ -647,7 +848,8 @@ orda:projectEndDate rdf:type owl:DatatypeProperty ;
 
 
 ###  https://example.org/orda#projectStartDate
-orda:projectStartDate rdf:type owl:DatatypeProperty ;
+orda:projectStartDate rdf:type owl:DatatypeProperty ,
+                               owl:FunctionalProperty ;
                       rdfs:domain orda:ResearchProject ;
                       rdfs:range xsd:date ;
                       rdfs:isDefinedBy <https://example.org/orda> ;
@@ -655,7 +857,8 @@ orda:projectStartDate rdf:type owl:DatatypeProperty ;
 
 
 ###  https://example.org/orda#projectTitle
-orda:projectTitle rdf:type owl:DatatypeProperty ;
+orda:projectTitle rdf:type owl:DatatypeProperty ,
+                           owl:FunctionalProperty ;
                   rdfs:domain orda:ResearchProject ;
                   rdfs:range xsd:string ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
@@ -672,7 +875,8 @@ orda:publicationTimeline rdf:type owl:DatatypeProperty ;
 
 
 ###  https://example.org/orda#requestDate
-orda:requestDate rdf:type owl:DatatypeProperty ;
+orda:requestDate rdf:type owl:DatatypeProperty ,
+                          owl:FunctionalProperty ;
                  rdfs:domain orda:DataAccessRequest ;
                  rdfs:range xsd:date ;
                  rdfs:comment "The date on which the data access request was submitted."@en ;
@@ -707,20 +911,34 @@ eli:LegalResource rdf:type owl:Class ;
                   rdfs:label "Legal Resource"@en .
 
 
+###  http://purl.org/cerif/frapo/College
+frapo:College rdf:type owl:Class ;
+              rdfs:subClassOf foaf:Organization ;
+              rdfs:isDefinedBy frapo: ;
+              rdfs:label "College"@en .
+
+
 ###  http://purl.org/cerif/frapo/Funding
 frapo:Funding rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty frapo:hasFundingAgency ;
+                                owl:someValuesFrom frapo:FundingAgency
+                              ] ;
+              rdfs:comment "An amount of money available to finance some project or activity. Within ORDA every instance must name the agency providing it, so that the funding disclosure required by Art. 40(8)(b) DSA is reachable from any funded research project."@en ;
               rdfs:isDefinedBy frapo: ;
               rdfs:label "Funding"@en .
 
 
 ###  http://purl.org/cerif/frapo/FundingAgency
 frapo:FundingAgency rdf:type owl:Class ;
+                    rdfs:subClassOf foaf:Organization ;
                     rdfs:isDefinedBy frapo: ;
                     rdfs:label "Funding Agency"@en .
 
 
 ###  http://purl.org/cerif/frapo/Grant
 frapo:Grant rdf:type owl:Class ;
+            rdfs:subClassOf frapo:Funding ;
             rdfs:isDefinedBy frapo: ;
             rdfs:label "Grant"@en .
 
@@ -731,8 +949,16 @@ frapo:Project rdf:type owl:Class ;
               rdfs:label "Project"@en .
 
 
+###  http://purl.org/cerif/frapo/ResearchInstitute
+frapo:ResearchInstitute rdf:type owl:Class ;
+                        rdfs:subClassOf foaf:Organization ;
+                        rdfs:isDefinedBy frapo: ;
+                        rdfs:label "Research Institute"@en .
+
+
 ###  http://purl.org/cerif/frapo/University
 frapo:University rdf:type owl:Class ;
+                 rdfs:subClassOf foaf:Organization ;
                  rdfs:isDefinedBy frapo: ;
                  rdfs:label "University"@en .
 
@@ -876,6 +1102,7 @@ csvw:Schema rdf:type owl:Class ;
 
 ###  http://www.w3.org/ns/dcat#Distribution
 dcat:Distribution rdf:type owl:Class ;
+                  owl:disjointWith orda:ReasonedRequest ;
                   rdfs:isDefinedBy dcat: ;
                   rdfs:label "Distribution"@en .
 
@@ -907,6 +1134,11 @@ orda:AccessModality rdf:type owl:Class ;
 
 ###  https://example.org/orda#AmendmentRequest
 orda:AmendmentRequest rdf:type owl:Class ;
+                      rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                        owl:onProperty orda:amendsRequest ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                        owl:onClass orda:ReasonedRequest
+                                      ] ;
                       rdfs:comment "A request by a VLOP or VLOSE to amend a reasoned request under DSA Art. 40(5), submitted within 15 days of receipt. Grounds: (a) platform does not have access to the requested data, or (b) access would create significant vulnerabilities in service security or protection of confidential information."@en ;
                       rdfs:isDefinedBy <https://example.org/orda> ;
                       rdfs:label "Amendment Request"@en .
@@ -915,7 +1147,7 @@ orda:AmendmentRequest rdf:type owl:Class ;
 ###  https://example.org/orda#ApplicantResearcher
 orda:ApplicantResearcher rdf:type owl:Class ;
                          rdfs:subClassOf orda:Researcher ;
-                         rdfs:comment "A researcher who has submitted an application for data access but has not yet been awarded vetted researcher status. Applicable to the Art. 40(4) process during the assessment period."@en ;
+                         rdfs:comment "A researcher named on a data access application. Every application must name at least one. An applicant researcher may or may not also be the principal researcher, and may or may not already hold vetted researcher status — the classes deliberately overlap."@en ;
                          rdfs:isDefinedBy <https://example.org/orda> ;
                          rdfs:label "Applicant Researcher"@en .
 
@@ -923,6 +1155,7 @@ orda:ApplicantResearcher rdf:type owl:Class ;
 ###  https://example.org/orda#Art40_12_DataAccessRequest
 orda:Art40_12_DataAccessRequest rdf:type owl:Class ;
                                 rdfs:subClassOf orda:DataAccessRequest ;
+                                owl:disjointWith orda:Art40_4_DataAccessRequest ;
                                 rdfs:comment "A data access request under DSA Art. 40(12) for publicly accessible platform data. Submitted directly to the platform without DSC intermediation. Researchers need not be formally vetted but must meet conditions in Art. 40(8)(b)-(e). Includes researchers affiliated with not-for-profit bodies, organisations and associations. The Delegated Regulation 2025/2050 does not govern this process."@en ;
                                 rdfs:isDefinedBy <https://example.org/orda> ;
                                 rdfs:label "Art. 40(12) Data Access Request"@en .
@@ -930,7 +1163,11 @@ orda:Art40_12_DataAccessRequest rdf:type owl:Class ;
 
 ###  https://example.org/orda#Art40_4_DataAccessRequest
 orda:Art40_4_DataAccessRequest rdf:type owl:Class ;
-                               rdfs:subClassOf orda:DataAccessRequest ;
+                               rdfs:subClassOf orda:DataAccessRequest ,
+                                               [ rdf:type owl:Restriction ;
+                                                 owl:onProperty orda:hasPublicationCommitment ;
+                                                 owl:hasValue "true"^^xsd:boolean
+                                               ] ;
                                rdfs:comment "A data access application under DSA Art. 40(4) for non-public platform data. Requires: (1) submission via the DSA Data Access Portal, (2) assessment by the DSC of establishment, (3) formal vetting of the researcher under Art. 40(8), and (4) formulation of a reasoned request by the DSC to the platform. Governed by Delegated Regulation 2025/2050."@en ;
                                rdfs:isDefinedBy <https://example.org/orda> ;
                                rdfs:label "Art. 40(4) Data Access Request"@en ;
@@ -980,7 +1217,7 @@ orda:DSADataCatalogue rdf:type owl:Class ;
 ###  https://example.org/orda#DSCofEstablishment
 orda:DSCofEstablishment rdf:type owl:Class ;
                         rdfs:subClassOf orda:DigitalServicesCoordinator ;
-                        rdfs:comment "The DSC of the member state where the VLOP or VLOSE is primarily established in the EU. Makes the final decision on vetting, formulates reasoned requests, and determines access modalities. Per DSA Art. 40(4) and (8)."@en ;
+                        rdfs:comment "The DSC of the member state where the VLOP or VLOSE is primarily established in the EU. Makes the final decision on vetting, formulates reasoned requests, and determines access modalities. Per DSA Art. 40(4) and (8). Deliberately NOT disjoint with orda:DSCofMemberState: where the researcher's institution and the platform are established in the same member state, one authority holds both roles. Do not add a disjointness axiom between them."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "DSC of Establishment"@en .
 
@@ -988,14 +1225,30 @@ orda:DSCofEstablishment rdf:type owl:Class ;
 ###  https://example.org/orda#DSCofMemberState
 orda:DSCofMemberState rdf:type owl:Class ;
                       rdfs:subClassOf orda:DigitalServicesCoordinator ;
-                      rdfs:comment "The DSC of the member state where the researcher's institution is based. Under Art. 40(9), conducts initial assessment and forwards to the DSC of establishment."@en ;
+                      rdfs:comment "The DSC of the member state where the researcher's institution is based. Under Art. 40(9), conducts initial assessment and forwards to the DSC of establishment. Deliberately NOT disjoint with orda:DSCofEstablishment — the same authority can hold both roles."@en ;
                       rdfs:isDefinedBy <https://example.org/orda> ;
                       rdfs:label "DSC of Member State"@en .
 
 
 ###  https://example.org/orda#DataAccessRequest
 orda:DataAccessRequest rdf:type owl:Class ;
-                       rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ;
+                       owl:equivalentClass [ rdf:type owl:Class ;
+                                             owl:unionOf ( orda:Art40_12_DataAccessRequest
+                                                           orda:Art40_4_DataAccessRequest
+                                                         )
+                                           ] ;
+                       rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:includesResearcher ;
+                                         owl:someValuesFrom orda:ApplicantResearcher
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:isPartOf ;
+                                         owl:someValuesFrom orda:ResearchProject
+                                       ] ;
+                       owl:disjointWith orda:ReasonedRequest ,
+                                        orda:ResearchProject ,
+                                        orda:StatusEvent ;
                        rdfs:comment "A formal request by a researcher to access data from a VLOP or VLOSE under DSA Art. 40. Superclass for the two distinct processes: Art. 40(4) non-public data via DSC, and Art. 40(12) public data direct to platform."@en ;
                        rdfs:isDefinedBy <https://example.org/orda> ;
                        rdfs:label "Data Access Request"@en ;
@@ -1020,13 +1273,31 @@ orda:DataHandlingMeasure rdf:type owl:Class ;
 
 ###  https://example.org/orda#DataManagementPlan
 orda:DataManagementPlan rdf:type owl:Class ;
-                        rdfs:subClassOf orda:DataHandlingMeasure ;
+                        rdfs:subClassOf orda:DataHandlingMeasure ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty <https://w3id.org/dpv/owl#hasStorageCondition> ;
+                                          owl:someValuesFrom <https://w3id.org/dpv/owl#StorageDeletion>
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty <https://w3id.org/dpv/owl#hasStorageCondition> ;
+                                          owl:someValuesFrom <https://w3id.org/dpv/owl#StorageDuration>
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty <https://w3id.org/dpv/owl#hasTechnicalOrganisationalMeasure> ;
+                                          owl:someValuesFrom <https://w3id.org/dpv/owl#TechnicalOrganisationalMeasure>
+                                        ] ;
+                        rdfs:comment "A plan governing how accessed data is stored, protected and deleted. Retention, deletion and security requirements are expressed with DPV terms: dpv:StorageDuration and dpv:StorageDeletion via dpv:hasStorageCondition, and dpv:TechnicalOrganisationalMeasure via dpv:hasTechnicalOrganisationalMeasure."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "Data Management Plan"@en .
 
 
 ###  https://example.org/orda#DataProvider
 orda:DataProvider rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Class ;
+                                        owl:unionOf ( orda:VeryLargeOnlinePlatform
+                                                      orda:VeryLargeOnlineSearchEngine
+                                                    )
+                                      ] ;
                   rdfs:subClassOf dpv:LegalEntity ;
                   rdfs:comment "A superset including VLOPs and VLOSEs"@en ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1040,6 +1311,13 @@ orda:DigitalServicesCoordinator rdf:type owl:Class ;
                                 rdfs:isDefinedBy <https://example.org/orda> ;
                                 rdfs:label "Digital Services Coordinator"@en ;
                                 rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_49> .
+
+
+###  https://example.org/orda#EthicalReview
+orda:EthicalReview rdf:type owl:Class ;
+                   rdfs:comment "Independent ethics committee or IRB review confirming the research design meets ethical standards before data access is granted. Distinct from orda:ExpertConsultation, which is the DSC-initiated consultation under DA Art. 14: an ethical review is commissioned by the research side, not by the assessing authority."@en ;
+                   rdfs:isDefinedBy <https://example.org/orda> ;
+                   rdfs:label "Ethical Review"@en .
 
 
 ###  https://example.org/orda#ExpertConsultation
@@ -1057,12 +1335,6 @@ orda:FundamentalRightsRisk rdf:type owl:Class ;
                            rdfs:label "Fundamental Rights Risk"@en .
 
 
-###  https://example.org/orda#HumanReviewProcess
-orda:HumanReviewProcess rdf:type owl:Class ;
-                        rdfs:isDefinedBy <https://example.org/orda> ;
-                        rdfs:label "Human Review Process"@en .
-
-
 ###  https://example.org/orda#IllegalContentRisk
 orda:IllegalContentRisk rdf:type owl:Class ;
                         rdfs:subClassOf orda:SystemicRisk ;
@@ -1073,6 +1345,7 @@ orda:IllegalContentRisk rdf:type owl:Class ;
 
 ###  https://example.org/orda#InternationalDataTransferMeasure
 orda:InternationalDataTransferMeasure rdf:type owl:Class ;
+                                      rdfs:subClassOf orda:DataHandlingMeasure ;
                                       rdfs:comment "Measures to ensure that any transfer of data out of the EU/EEA is subject to an appropriate transfer mechanism under GDPR Chapter V. Instances include Standard Contractual Clauses and Adequacy Decisions."@en ;
                                       rdfs:isDefinedBy <https://example.org/orda> ;
                                       rdfs:label "International Data Transfer Measure"@en ;
@@ -1105,7 +1378,7 @@ orda:OrganisationalModality rdf:type owl:Class ;
 
 ###  https://example.org/orda#PrincipalResearcher
 orda:PrincipalResearcher rdf:type owl:Class ;
-                         rdfs:subClassOf orda:Researcher ;
+                         rdfs:subClassOf orda:ApplicantResearcher ;
                          rdfs:comment "The principal researcher who is the primary contact for a data access application and bears responsibility for the request. Per DA Art. 2 and 7."@en ;
                          rdfs:isDefinedBy <https://example.org/orda> ;
                          rdfs:label "Principal Researcher"@en .
@@ -1142,7 +1415,11 @@ orda:ResearchMethod rdf:type owl:Class ;
 
 ###  https://example.org/orda#ResearchProject
 orda:ResearchProject rdf:type owl:Class ;
-                     rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ;
+                     rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty frapo:isFundedBy ;
+                                       owl:someValuesFrom frapo:Funding
+                                     ] ;
                      rdfs:comment "A research project that processes data, defined as a subclass of dpv:Process. Under DSA Art. 40, may submit data access requests to investigate systemic risks or assess risk mitigation measures within the EU."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Research Project"@en .
@@ -1168,8 +1445,27 @@ orda:Researcher rdf:type owl:Class ;
                 rdfs:label "Researcher"@en .
 
 
+###  https://example.org/orda#RiskMitigationMeasure
+orda:RiskMitigationMeasure rdf:type owl:Class ;
+                           rdfs:subClassOf <https://w3id.org/dpv/owl#RiskMitigationMeasure> ;
+                           rdfs:comment "A measure put in place by a VLOP or VLOSE under DSA Art. 35 to mitigate the systemic risks identified under Art. 34. Specialises dpv:RiskMitigationMeasure to the DSA systemic-risk setting, mirroring the way orda:SystemicRisk is kept distinct from dpv:Risk."@en ;
+                           rdfs:isDefinedBy <https://example.org/orda> ;
+                           rdfs:label "Risk Mitigation Measure"@en ;
+                           rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_35> .
+
+
 ###  https://example.org/orda#StatusEvent
 orda:StatusEvent rdf:type owl:Class ;
+                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                   owl:onProperty orda:eventStatus ;
+                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onClass skos:Concept
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty orda:eventDate ;
+                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onDataRange xsd:date
+                                 ] ;
                  rdfs:comment "A timestamped event recording a status change in the lifecycle of a data access request. Captures who triggered the change, when, and what the new status is."@en ;
                  rdfs:isDefinedBy <https://example.org/orda> ;
                  rdfs:label "Status Event"@en .
@@ -1177,6 +1473,13 @@ orda:StatusEvent rdf:type owl:Class ;
 
 ###  https://example.org/orda#SystemicRisk
 orda:SystemicRisk rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Class ;
+                                        owl:unionOf ( orda:CivicDiscourseRisk
+                                                      orda:FundamentalRightsRisk
+                                                      orda:IllegalContentRisk
+                                                      orda:PublicWellbeingRisk
+                                                    )
+                                      ] ;
                   rdfs:comment "A societal risk as defined under DSA Art. 34, stemming from the design or functioning of a VLOP or VLOSE within the EU. Distinct from dpv:Risk which covers data processing risks."@en ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
                   rdfs:label "Systemic Risk"@en ;
@@ -1194,6 +1497,7 @@ orda:TechnicalModality rdf:type owl:Class ;
 ###  https://example.org/orda#VeryLargeOnlinePlatform
 orda:VeryLargeOnlinePlatform rdf:type owl:Class ;
                              rdfs:subClassOf orda:DataProvider ;
+                             owl:disjointWith orda:VeryLargeOnlineSearchEngine ;
                              rdfs:comment "A platform designated as a VLOP under DSA Art. 33, with over 45 million monthly active users in the EU."@en ;
                              rdfs:isDefinedBy <https://example.org/orda> ;
                              rdfs:label "Very Large Online Platform"@en ;
@@ -1212,7 +1516,15 @@ orda:VeryLargeOnlineSearchEngine rdf:type owl:Class ;
 ###  https://example.org/orda#VettedResearcher
 orda:VettedResearcher rdf:type owl:Class ;
                       rdfs:subClassOf orda:Researcher ,
-                                      <https://w3id.org/dpv/owl#Entity> ;
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty orda:affiliatedWith ;
+                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                             owl:unionOf ( frapo:College
+                                                                           frapo:ResearchInstitute
+                                                                           frapo:University
+                                                                         )
+                                                           ]
+                                      ] ;
                       rdfs:comment "A researcher vetted under DSA Art. 40(8) by a DSC to access non-public platform data under Art. 40(4). Must be affiliated with a research organisation per Dir. 2019/790 Art. 2(1). Not required to be based in the EU — the systemic risk being researched must occur within the EU."@en ;
                       rdfs:isDefinedBy <https://example.org/orda> ;
                       rdfs:label "Vetted Researcher"@en .
@@ -1522,13 +1834,6 @@ orda:BookingVLOP rdf:type owl:NamedIndividual ,
                  rdfs:label "Booking.com"@en .
 
 
-###  https://example.org/orda#EthicalReview
-orda:EthicalReview rdf:type owl:NamedIndividual ;
-                   rdfs:comment "Independent ethics committee or IRB review confirming the research design meets ethical standards before data access is granted."@en ;
-                   rdfs:isDefinedBy <https://example.org/orda> ;
-                   rdfs:label "Ethical Review"@en .
-
-
 ###  https://example.org/orda#FacebookVLOP
 orda:FacebookVLOP rdf:type owl:NamedIndividual ,
                            orda:VeryLargeOnlinePlatform ;
@@ -1618,6 +1923,26 @@ orda:StandardContractualClauses rdf:type owl:NamedIndividual ,
                                 rdfs:isDefinedBy <https://example.org/orda> ;
                                 rdfs:label "Standard Contractual Clauses"@en ;
                                 rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021D0914> .
+
+
+###  https://example.org/orda#StatusAmendmentAccepted
+orda:StatusAmendmentAccepted rdf:type owl:NamedIndividual ,
+                                      skos:Concept ;
+                             rdfs:isDefinedBy <https://example.org/orda> ;
+                             rdfs:label "Amendment Accepted"@en ;
+                             skos:definition "The DSC of establishment accepted the platform's amendment request under Art. 40(5) DSA and amended the reasoned request accordingly."@en ;
+                             skos:inScheme orda:RequestStatusScheme ;
+                             skos:prefLabel "Amendment Accepted"@en .
+
+
+###  https://example.org/orda#StatusAmendmentRejected
+orda:StatusAmendmentRejected rdf:type owl:NamedIndividual ,
+                                      skos:Concept ;
+                             rdfs:isDefinedBy <https://example.org/orda> ;
+                             rdfs:label "Amendment Rejected"@en ;
+                             skos:definition "The DSC of establishment rejected the platform's amendment request under Art. 40(5) DSA; the reasoned request stands as issued."@en ;
+                             skos:inScheme orda:RequestStatusScheme ;
+                             skos:prefLabel "Amendment Rejected"@en .
 
 
 ###  https://example.org/orda#StatusAmendmentRequested
@@ -1786,6 +2111,27 @@ loc:LU rdf:type owl:NamedIndividual ;
 ###  https://w3id.org/dpv/loc#NL
 loc:NL rdf:type owl:NamedIndividual ;
        rdfs:isDefinedBy <https://w3id.org/dpv/loc> .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( orda:CivicDiscourseRisk
+                orda:FundamentalRightsRisk
+                orda:IllegalContentRisk
+                orda:PublicWellbeingRisk
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( orda:DataProvider
+                orda:DigitalServicesCoordinator
+                orda:Researcher
+              )
+] .
 
 
 ###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
