@@ -27,7 +27,7 @@
                             dct:title "Research Access Ontology"@en ;
                             vann:preferredNamespacePrefix "orda" ;
                             vann:preferredNamespaceUri "https://example.org/orda#" ;
-                            rdfs:comment "An ontology modelling DSA Article 40 vetted researcher access to platform data for systemic risk research. Distinguishes the Art. 40(4) DSC-mediated non-public data process from the Art. 40(12) direct public data process. Platform data is typed with W3C ActivityStreams 2.0 (as:), extended with ORDA-native terms for the categories ActivityStreams does not cover — search history, and the relation between a real-world identity and the platform accounts it holds."@en ;
+                            rdfs:comment "An ontology modelling DSA Article 40 vetted researcher access to platform data for systemic risk research. Distinguishes the Art. 40(4) DSC-mediated non-public data process from the Art. 40(12) direct public data process. Platform data is typed with W3C ActivityStreams 2.0 (as:), extended with ORDA-native terms for the categories ActivityStreams does not cover: search history, and the relation between a real-world identity and the platform accounts it holds."@en ;
                             rdfs:label "Research Access Ontology"@en ;
                             owl:versionInfo "1.0.0" .
 
@@ -113,7 +113,7 @@ as:attributedTo rdf:type owl:ObjectProperty ;
 ###  https://www.w3.org/ns/activitystreams#items
 as:items rdf:type owl:ObjectProperty ;
          rdfs:domain as:Collection ;
-         rdfs:comment "Links a collection to its members. This is the property the orda:ActivityHistory subclasses are defined over. Note that ActivityStreams defines no 'orderedItems' property — ordering in an as:OrderedCollection is a JSON-LD serialisation concern, so as:items is used for both ordered and unordered histories."@en ;
+         rdfs:comment "Links a collection to its members. This is the property the orda:ActivityHistory subclasses are defined over. Note that ActivityStreams defines no 'orderedItems' property; ordering in an as:OrderedCollection is a JSON-LD serialisation concern, so as:items is used for both ordered and unordered histories."@en ;
          rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
          rdfs:label "items"@en .
 
@@ -172,7 +172,7 @@ orda:amendsRequest rdf:type owl:ObjectProperty ,
 orda:appliesMeasure rdf:type owl:ObjectProperty ;
                     rdfs:domain orda:AccessModality ;
                     rdfs:range orda:DataHandlingMeasure ;
-                    rdfs:comment "Links an access modality to the technical, legal or organisational measures that constitute it — e.g. a technical modality applying pseudonymisation, or a legal modality applying standard contractual clauses."@en ;
+                    rdfs:comment "Links an access modality to the technical, legal or organisational measures that constitute it, e.g. a technical modality applying pseudonymisation, or a legal modality applying standard contractual clauses."@en ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
                     rdfs:label "applies measure"@en .
 
@@ -270,6 +270,16 @@ orda:eventStatus rdf:type owl:ObjectProperty ,
                  rdfs:label "event status"@en .
 
 
+###  https://example.org/orda#hasAccessJustification
+orda:hasAccessJustification rdf:type owl:ObjectProperty ;
+                            rdfs:subPropertyOf <https://w3id.org/dpv/owl#hasJustification> ;
+                            rdfs:domain orda:DataAccessRequest ;
+                            rdfs:range orda:AccessJustification ;
+                            rdfs:comment "Links a data access request to a statement in the application justifying the access sought. DSA Art. 40(8)(e) requires the application to demonstrate that the data and the time frames requested are necessary for, and proportionate to, the purposes of the research. Every data access request must carry at least one orda:NecessityStatement and at least one orda:ProportionalityStatement; a single statement addressing both limbs may be typed as both."@en ;
+                            rdfs:isDefinedBy <https://example.org/orda> ;
+                            rdfs:label "has access justification"@en .
+
+
 ###  https://example.org/orda#hasAccessModality
 orda:hasAccessModality rdf:type owl:ObjectProperty ;
                        rdfs:domain [ rdf:type owl:Class ;
@@ -278,7 +288,7 @@ orda:hasAccessModality rdf:type owl:ObjectProperty ;
                                                  )
                                    ] ;
                        rdfs:range orda:AccessModality ;
-                       rdfs:comment "Links a data access request (Art. 40(4) or Art. 40(12)) — or the reasoned request formulated from it — to the access modality. At application stage the modality is researcher-proposed; for Art. 40(4) reasoned requests it is determined by the DSC of establishment per DA Art. 9."@en ;
+                       rdfs:comment "Links a data access request (Art. 40(4) or Art. 40(12)), or the reasoned request formulated from it, to the access modality. At application stage the modality is researcher-proposed; for Art. 40(4) reasoned requests it is determined by the DSC of establishment per DA Art. 9."@en ;
                        rdfs:isDefinedBy <https://example.org/orda> ;
                        rdfs:label "has access modality"@en .
 
@@ -287,7 +297,7 @@ orda:hasAccessModality rdf:type owl:ObjectProperty ;
 orda:hasAccount rdf:type owl:ObjectProperty ;
                 rdfs:domain dpv:NaturalPerson ;
                 rdfs:range orda:PlatformAccount ;
-                rdfs:comment "Links a real-world person to a platform account they hold. ActivityStreams has no term for this: it models accounts, not the people behind them, and as:Person is an account held by a human rather than the human themselves. The domain is dpv:NaturalPerson — DPV already names the concept ('A human'), so ORDA states the relation rather than coining a class for one of its ends. ORDA needs the relation because it is what separates the two Article 40 access routes: Art. 40(12) public data concerns accounts and their public activity, whereas Art. 40(4) non-public data may permit linkage back to the person holding them, which is the source of the re-identification risk the safeguards address. Note that ORDA researchers are typed foaf:Person, not dpv:NaturalPerson, so this property does not reach them unless a researcher's own account is being described."@en ;
+                rdfs:comment "Links a real-world person to a platform account they hold. ActivityStreams has no term for this: it models accounts, not the people behind them, and as:Person is an account held by a human rather than the human themselves. The domain is dpv:NaturalPerson. DPV already names the concept ('A human'), so ORDA states the relation rather than coining a class for one of its ends. ORDA needs the relation because it is what separates the two Article 40 access routes: Art. 40(12) public data concerns accounts and their public activity, whereas Art. 40(4) non-public data may permit linkage back to the person holding them, which is the source of the re-identification risk the safeguards address. Note that ORDA researchers are typed foaf:Person, not dpv:NaturalPerson, so this property does not reach them unless a researcher's own account is being described."@en ;
                 rdfs:isDefinedBy <https://example.org/orda> ;
                 rdfs:label "has account"@en .
 
@@ -743,6 +753,14 @@ frapo:hasStartDate rdf:type owl:DatatypeProperty ;
                    rdfs:label "has start date"@en .
 
 
+###  http://purl.org/dc/terms/description
+dct:description rdf:type owl:DatatypeProperty ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Free text supplied by a party to the process (an applicant, a platform or a DSC), as opposed to a value ORDA models structurally. ORDA uses this for descriptive text directly where a subject carries only one such text, as on orda:ResearchProject and on the orda:AccessJustification statements, and makes the narrower properties subproperties of it where a subject carries several, so that orda:independenceDeclaration, orda:publicationTimeline and orda:amendmentGrounds remain individually identifiable while still being reachable generically. Left without a domain deliberately, so that ORDA constrains nothing about the term for importers. Typed here as an owl:DatatypeProperty, which DCMI itself does not commit to."@en ;
+                rdfs:isDefinedBy dct: ;
+                rdfs:label "description"@en .
+
+
 ###  http://purl.org/dc/terms/identifier
 dct:identifier rdf:type owl:DatatypeProperty ,
                         owl:FunctionalProperty ;
@@ -792,9 +810,14 @@ csvw:titles rdf:type owl:DatatypeProperty ;
 ###  https://example.org/orda#accessEndDate
 orda:accessEndDate rdf:type owl:DatatypeProperty ,
                             owl:FunctionalProperty ;
-                   rdfs:domain orda:ReasonedRequest ;
+                   rdfs:domain [ rdf:type owl:Class ;
+                                 owl:unionOf ( orda:AmendmentRequest
+                                               orda:DataAccessRequest
+                                               orda:ReasonedRequest
+                                             )
+                               ] ;
                    rdfs:range xsd:date ;
-                   rdfs:comment "The date on which the granted period of access expires. Per DA Art. 10 the reasoned request must specify the period of access."@en ;
+                   rdfs:comment "The date on which the period of access ends. Required on a data access request, where it is proposed by the researcher: DSA Art. 40(8)(e) requires the application to demonstrate that the data and 'the time frames requested' are necessary and proportionate, which presupposes that the application states them. Optional on a reasoned request, where per DA Art. 10 the DSC determines the period of access rather than proposing it, and on an amendment request, where a platform may propose a different period under DSA Art. 40(5)."@en ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
                    rdfs:label "access end date"@en .
 
@@ -802,15 +825,21 @@ orda:accessEndDate rdf:type owl:DatatypeProperty ,
 ###  https://example.org/orda#accessStartDate
 orda:accessStartDate rdf:type owl:DatatypeProperty ,
                               owl:FunctionalProperty ;
-                     rdfs:domain orda:ReasonedRequest ;
+                     rdfs:domain [ rdf:type owl:Class ;
+                                   owl:unionOf ( orda:AmendmentRequest
+                                                 orda:DataAccessRequest
+                                                 orda:ReasonedRequest
+                                               )
+                                 ] ;
                      rdfs:range xsd:date ;
-                     rdfs:comment "The date from which the platform must make the requested data available. Per DA Art. 10 the reasoned request must specify the period of access."@en ;
+                     rdfs:comment "The date from which the data is to be made available. Required on a data access request, where it is proposed by the researcher: DSA Art. 40(8)(e) requires the application to demonstrate that the data and 'the time frames requested' are necessary and proportionate, which presupposes that the application states them. Optional on a reasoned request, where per DA Art. 10 the DSC determines the period of access rather than proposing it, and on an amendment request, where a platform may propose a different period under DSA Art. 40(5)."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "access start date"@en .
 
 
 ###  https://example.org/orda#amendmentGrounds
 orda:amendmentGrounds rdf:type owl:DatatypeProperty ;
+                      rdfs:subPropertyOf dct:description ;
                       rdfs:domain orda:AmendmentRequest ;
                       rdfs:range xsd:string ;
                       rdfs:comment "The grounds for the amendment request per Art. 40(5) DSA: (a) platform does not have access to the data, or (b) access would create significant vulnerabilities."@en ;
@@ -839,19 +868,12 @@ orda:hasPublicationCommitment rdf:type owl:DatatypeProperty ;
 
 ###  https://example.org/orda#independenceDeclaration
 orda:independenceDeclaration rdf:type owl:DatatypeProperty ;
+                             rdfs:subPropertyOf dct:description ;
                              rdfs:domain orda:DataAccessRequest ;
                              rdfs:range xsd:string ;
                              rdfs:comment "A declaration by the researcher that they are independent from commercial interests in relation to the specific research project, as required by Art. 40(8)(b) DSA."@en ;
                              rdfs:isDefinedBy <https://example.org/orda> ;
                              rdfs:label "independence declaration"@en .
-
-
-###  https://example.org/orda#projectDescription
-orda:projectDescription rdf:type owl:DatatypeProperty ;
-                        rdfs:domain orda:ResearchProject ;
-                        rdfs:range xsd:string ;
-                        rdfs:isDefinedBy <https://example.org/orda> ;
-                        rdfs:label "project description"@en .
 
 
 ###  https://example.org/orda#projectEndDate
@@ -883,6 +905,7 @@ orda:projectTitle rdf:type owl:DatatypeProperty ,
 
 ###  https://example.org/orda#publicationTimeline
 orda:publicationTimeline rdf:type owl:DatatypeProperty ;
+                         rdfs:subPropertyOf dct:description ;
                          rdfs:domain orda:Art40_4_DataAccessRequest ;
                          rdfs:range xsd:string ;
                          rdfs:comment "The planned timeline for making research results publicly available, e.g. 'within 12 months of completion'."@en ;
@@ -1034,6 +1057,15 @@ foaf:Person rdf:type owl:Class ;
             rdfs:label "Person"@en .
 
 
+###  https://example.org/orda#AccessJustification
+orda:AccessJustification rdf:type owl:Class ;
+                         rdfs:subClassOf dpv:Justification ;
+                         rdfs:comment "A statement made in a data access application justifying the access sought, reached via orda:hasAccessJustification. DSA Art. 40(8)(e) requires an application to demonstrate that access to the data and the time frames requested are necessary for, and proportionate to, the purposes of the research. The condition applies on both access routes: directly for Art. 40(4) applications as part of vetting under Art. 40(8), and for Art. 40(12) public data requests through that paragraph's cross-reference to Art. 40(8) points (b) to (e). The statement text is carried by dct:description. The class is a subclass of dpv:Justification and orda:hasAccessJustification a subproperty of dpv:hasJustification, so ORDA aligns with DPV without asserting anything about the DPV terms themselves."@en ;
+                         rdfs:isDefinedBy <https://example.org/orda> ;
+                         rdfs:label "Access Justification"@en ;
+                         rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_40> .
+
+
 ###  https://example.org/orda#AccessModality
 orda:AccessModality rdf:type owl:Class ;
                     rdfs:comment "The technical, legal and organisational arrangement through which a VLOP or VLOSE provides data to vetted researchers, as determined by the DSC of establishment per DA Art. 9."@en ;
@@ -1048,7 +1080,7 @@ orda:ActivityHistory rdf:type owl:Class ;
                                        owl:onProperty as:items ;
                                        owl:allValuesFrom as:Activity
                                      ] ;
-                     rdfs:comment "A collection of platform activities belonging to one account. The primary unit of data returned by a DSA Article 40 data access request. The subclasses below are defined classes over the ActivityStreams activity type of their members, so a distribution's contents can be classified from the activities it holds rather than asserted by hand. Each is defined as containing at least one, and only, members of its activity type; the 'at least one' half is deliberate, since a definition using only an owl:allValuesFrom restriction would classify every empty history as an instance of every subclass. Note that classification of a particular history requires that history to be closed — an individual must state that its asserted members are all of its members, by an owl:oneOf or cardinality axiom on as:items — because under the open-world assumption further members of other types are otherwise possible. See orda:ExampleShareHistory in the example data."@en ;
+                     rdfs:comment "A collection of platform activities belonging to one account. The primary unit of data returned by a DSA Article 40 data access request. The subclasses below are defined classes over the ActivityStreams activity type of their members, so a distribution's contents can be classified from the activities it holds rather than asserted by hand. Each is defined as containing at least one, and only, members of its activity type; the 'at least one' half is deliberate, since a definition using only an owl:allValuesFrom restriction would classify every empty history as an instance of every subclass. Note that classification of a particular history requires that history to be closed (an individual must state that its asserted members are all of its members, by an owl:oneOf or cardinality axiom on as:items), because under the open-world assumption further members of other types are otherwise possible. See orda:ExampleShareHistory in the example data."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Activity History"@en .
 
@@ -1068,7 +1100,7 @@ orda:AmendmentRequest rdf:type owl:Class ;
 ###  https://example.org/orda#ApplicantResearcher
 orda:ApplicantResearcher rdf:type owl:Class ;
                          rdfs:subClassOf orda:Researcher ;
-                         rdfs:comment "A researcher named on a data access application. Every application must name at least one. An applicant researcher may or may not also be the principal researcher, and may or may not already hold vetted researcher status — the classes deliberately overlap."@en ;
+                         rdfs:comment "A researcher named on a data access application. Every application must name at least one. An applicant researcher may or may not also be the principal researcher, and may or may not already hold vetted researcher status; the classes deliberately overlap."@en ;
                          rdfs:isDefinedBy <https://example.org/orda> ;
                          rdfs:label "Applicant Researcher"@en .
 
@@ -1194,7 +1226,7 @@ orda:DSCofEstablishment rdf:type owl:Class ;
 ###  https://example.org/orda#DSCofMemberState
 orda:DSCofMemberState rdf:type owl:Class ;
                       rdfs:subClassOf orda:DigitalServicesCoordinator ;
-                      rdfs:comment "The DSC of the member state where the researcher's institution is based. Under Art. 40(9), conducts initial assessment and forwards to the DSC of establishment. Deliberately NOT disjoint with orda:DSCofEstablishment — the same authority can hold both roles."@en ;
+                      rdfs:comment "The DSC of the member state where the researcher's institution is based. Under Art. 40(9), conducts initial assessment and forwards to the DSC of establishment. Deliberately NOT disjoint with orda:DSCofEstablishment; the same authority can hold both roles."@en ;
                       rdfs:isDefinedBy <https://example.org/orda> ;
                       rdfs:label "DSC of Member State"@en .
 
@@ -1214,11 +1246,29 @@ orda:DataAccessRequest rdf:type owl:Class ;
                                        [ rdf:type owl:Restriction ;
                                          owl:onProperty orda:isPartOf ;
                                          owl:someValuesFrom orda:ResearchProject
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:hasAccessJustification ;
+                                         owl:someValuesFrom orda:NecessityStatement
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:hasAccessJustification ;
+                                         owl:someValuesFrom orda:ProportionalityStatement
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:accessStartDate ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                         owl:onDataRange xsd:date
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:accessEndDate ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                         owl:onDataRange xsd:date
                                        ] ;
                        owl:disjointWith orda:ReasonedRequest ,
                                         orda:ResearchProject ,
                                         orda:StatusEvent ;
-                       rdfs:comment "A formal request by a researcher to access data from a VLOP or VLOSE under DSA Art. 40. Superclass for the two distinct processes: Art. 40(4) non-public data via DSC, and Art. 40(12) public data direct to platform."@en ;
+                       rdfs:comment "A formal request by a researcher to access data from a VLOP or VLOSE under DSA Art. 40. Superclass for the two distinct processes: Art. 40(4) non-public data via DSC, and Art. 40(12) public data direct to platform. Every application must propose the period of access it seeks, via orda:accessStartDate and orda:accessEndDate, and must carry both limbs of the Art. 40(8)(e) demonstration via orda:hasAccessJustification. Both requirements sit on this superclass rather than on the Art. 40(4) sub-class because Art. 40(12) cross-references Art. 40(8) points (b) to (e), so the necessity and proportionality condition, and with it the demonstration of the time frames requested, binds on both routes."@en ;
                        rdfs:isDefinedBy <https://example.org/orda> ;
                        rdfs:label "Data Access Request"@en ;
                        rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_40> .
@@ -1235,7 +1285,7 @@ orda:DataHandlingClause rdf:type owl:Class ;
 ###  https://example.org/orda#DataHandlingMeasure
 orda:DataHandlingMeasure rdf:type owl:Class ;
                          rdfs:subClassOf <https://w3id.org/dpv/owl#LegalMeasure> ;
-                         rdfs:comment "A protective measure — technical, legal or organisational — attached to a dcat:Distribution to govern how the data it describes may be accessed and handled."@en ;
+                         rdfs:comment "A protective measure, whether technical, legal or organisational, attached to a dcat:Distribution to govern how the data it describes may be accessed and handled."@en ;
                          rdfs:isDefinedBy <https://example.org/orda> ;
                          rdfs:label "Data Handling Measure"@en .
 
@@ -1338,7 +1388,7 @@ orda:FollowHistory rdf:type owl:Class ;
 orda:FollowerHistory rdf:type owl:Class ;
                      rdfs:subClassOf orda:FollowHistory ;
                      owl:disjointWith orda:FollowingHistory ;
-                     rdfs:comment "A history of the accounts that follow the subject account — that is, as:Follow activities in which the subject is the object rather than the actor. Primitive rather than defined: the direction is a property of the activity's participants, not of its type, so OWL cannot separate it from orda:FollowingHistory by member type. Corresponds to the ActivityPub 'followers' collection, which is not part of the ActivityStreams 2.0 Recommendation."@en ;
+                     rdfs:comment "A history of the accounts that follow the subject account, that is, as:Follow activities in which the subject is the object rather than the actor. Primitive rather than defined: the direction is a property of the activity's participants, not of its type, so OWL cannot separate it from orda:FollowingHistory by member type. Corresponds to the ActivityPub 'followers' collection, which is not part of the ActivityStreams 2.0 Recommendation."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Follower History"@en .
 
@@ -1346,7 +1396,7 @@ orda:FollowerHistory rdf:type owl:Class ;
 ###  https://example.org/orda#FollowingHistory
 orda:FollowingHistory rdf:type owl:Class ;
                       rdfs:subClassOf orda:FollowHistory ;
-                      rdfs:comment "A history of the accounts the subject account follows — as:Follow activities in which the subject is the actor. Corresponds to the ActivityPub 'following' collection, which is not part of the ActivityStreams 2.0 Recommendation. See orda:FollowerHistory for why this is primitive."@en ;
+                      rdfs:comment "A history of the accounts the subject account follows: as:Follow activities in which the subject is the actor. Corresponds to the ActivityPub 'following' collection, which is not part of the ActivityStreams 2.0 Recommendation. See orda:FollowerHistory for why this is primitive."@en ;
                       rdfs:isDefinedBy <https://example.org/orda> ;
                       rdfs:label "Following History"@en .
 
@@ -1379,7 +1429,7 @@ orda:InternationalDataTransferMeasure rdf:type owl:Class ;
 ###  https://example.org/orda#LegalModality
 orda:LegalModality rdf:type owl:Class ;
                    rdfs:subClassOf orda:AccessModality ;
-                   rdfs:comment "An access modality whose character is primarily legal — e.g. contractual undertakings, confidentiality agreements, transfer mechanisms."@en ;
+                   rdfs:comment "An access modality whose character is primarily legal, e.g. contractual undertakings, confidentiality agreements, transfer mechanisms."@en ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
                    rdfs:label "Legal Modality"@en .
 
@@ -1392,10 +1442,18 @@ orda:MethodologicalReview rdf:type owl:Class ;
                           rdfs:label "Methodological Review"@en .
 
 
+###  https://example.org/orda#NecessityStatement
+orda:NecessityStatement rdf:type owl:Class ;
+                        rdfs:subClassOf orda:AccessJustification ;
+                        rdfs:comment "The limb of the Art. 40(8)(e) demonstration addressing necessity: that the applicant cannot answer the research question without the data and time frames requested. Deliberately not declared disjoint from orda:ProportionalityStatement, because Art. 40(8)(e) states a single conjoint test ('necessary for, and proportionate to'), so one statement may discharge both limbs and be typed as both."@en ;
+                        rdfs:isDefinedBy <https://example.org/orda> ;
+                        rdfs:label "Necessity Statement"@en .
+
+
 ###  https://example.org/orda#OrganisationalModality
 orda:OrganisationalModality rdf:type owl:Class ;
                             rdfs:subClassOf orda:AccessModality ;
-                            rdfs:comment "An access modality realised through organisational measures — e.g. on-site-only access, mediation by a trusted third party."@en ;
+                            rdfs:comment "An access modality realised through organisational measures, e.g. on-site-only access, mediation by a trusted third party."@en ;
                             rdfs:isDefinedBy <https://example.org/orda> ;
                             rdfs:label "Organisational Modality"@en .
 
@@ -1410,7 +1468,7 @@ orda:PlatformAccount rdf:type owl:Class ;
                                                          as:Service
                                                        )
                                          ] ;
-                     rdfs:comment "An account on a platform, held by a person, organisation, group or automated agent. ActivityStreams has no single class for this — it lists Application, Group, Organization, Person and Service as actor types but defines no common as:Actor superclass — so ORDA supplies the union. Automated or bot accounts are typed as:Application or as:Service. An account is not the human holding it; the two are related by orda:hasAccount, whose domain is dpv:NaturalPerson. ORDA deliberately stops short of declaring the two classes disjoint — see the note on deliberate non-disjointness in the documentation — so the separation is carried by that property rather than enforced by an axiom, and data typing one individual as both an account and a natural person will not be flagged."@en ;
+                     rdfs:comment "An account on a platform, held by a person, organisation, group or automated agent. ActivityStreams has no single class for this: it lists Application, Group, Organization, Person and Service as actor types but defines no common as:Actor superclass, so ORDA supplies the union. Automated or bot accounts are typed as:Application or as:Service. An account is not the human holding it; the two are related by orda:hasAccount, whose domain is dpv:NaturalPerson. ORDA deliberately stops short of declaring the two classes disjoint (see the note on deliberate non-disjointness in the documentation), so the separation is carried by that property rather than enforced by an axiom, and data typing one individual as both an account and a natural person will not be flagged."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Platform Account"@en .
 
@@ -1421,6 +1479,14 @@ orda:PrincipalResearcher rdf:type owl:Class ;
                          rdfs:comment "The principal researcher who is the primary contact for a data access application and bears responsibility for the request. Per DA Art. 2 and 7."@en ;
                          rdfs:isDefinedBy <https://example.org/orda> ;
                          rdfs:label "Principal Researcher"@en .
+
+
+###  https://example.org/orda#ProportionalityStatement
+orda:ProportionalityStatement rdf:type owl:Class ;
+                              rdfs:subClassOf orda:AccessJustification ;
+                              rdfs:comment "The limb of the Art. 40(8)(e) demonstration addressing proportionality: that the scope of the data and the time frames requested is no wider than the research purpose warrants. Deliberately not declared disjoint from orda:NecessityStatement; see that term."@en ;
+                              rdfs:isDefinedBy <https://example.org/orda> ;
+                              rdfs:label "Proportionality Statement"@en .
 
 
 ###  https://example.org/orda#PublicWellbeingRisk
@@ -1542,7 +1608,7 @@ orda:RiskMitigationMeasure rdf:type owl:Class ;
 ###  https://example.org/orda#Search
 orda:Search rdf:type owl:Class ;
             rdfs:subClassOf as:Activity ;
-            rdfs:comment "A query issued by an account against a platform's search function. ORDA-native: ActivityStreams defines no search activity, because searching is not a social action published to a stream. The term is required nonetheless — search and query logs are among the data categories most often sought under Article 40, particularly from very large online search engines."@en ;
+            rdfs:comment "A query issued by an account against a platform's search function. ORDA-native: ActivityStreams defines no search activity, because searching is not a social action published to a stream. The term is required nonetheless: search and query logs are among the data categories most often sought under Article 40, particularly from very large online search engines."@en ;
             rdfs:isDefinedBy <https://example.org/orda> ;
             rdfs:label "Search"@en .
 
@@ -1620,7 +1686,7 @@ orda:SystemicRisk rdf:type owl:Class ;
 ###  https://example.org/orda#TechnicalModality
 orda:TechnicalModality rdf:type owl:Class ;
                        rdfs:subClassOf orda:AccessModality ;
-                       rdfs:comment "An access modality realised through technical controls — e.g. secure enclaves, restricted APIs, pseudonymisation, query-only access."@en ;
+                       rdfs:comment "An access modality realised through technical controls, e.g. secure enclaves, restricted APIs, pseudonymisation, query-only access."@en ;
                        rdfs:isDefinedBy <https://example.org/orda> ;
                        rdfs:label "Technical Modality"@en .
 
@@ -1656,7 +1722,7 @@ orda:VettedResearcher rdf:type owl:Class ;
                                                                          )
                                                            ]
                                       ] ;
-                      rdfs:comment "A researcher vetted under DSA Art. 40(8) by a DSC to access non-public platform data under Art. 40(4). Must be affiliated with a research organisation per Dir. 2019/790 Art. 2(1). Not required to be based in the EU — the systemic risk being researched must occur within the EU."@en ;
+                      rdfs:comment "A researcher vetted under DSA Art. 40(8) by a DSC to access non-public platform data under Art. 40(4). Must be affiliated with a research organisation per Dir. 2019/790 Art. 2(1). Not required to be based in the EU; the systemic risk being researched must occur within the EU."@en ;
                       rdfs:isDefinedBy <https://example.org/orda> ;
                       rdfs:label "Vetted Researcher"@en .
 
@@ -1728,7 +1794,7 @@ dpv:Customer rdf:type owl:Class ;
 ###  https://w3id.org/dpv#DataSubject
 dpv:DataSubject rdf:type owl:Class ;
                 rdfs:subClassOf dpv:HumanSubject ;
-                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. Being a dpv:NaturalPerson, an instance may be linked via orda:hasAccount to the platform accounts it holds; the account itself is an orda:PlatformAccount. The two are distinct — an account is not the person holding it — but ORDA does not assert disjointness between them, so keeping them apart is a modelling convention here rather than something a reasoner enforces. The DPV entity hierarchy and the ActivityStreams actor types are kept independent."@en ;
+                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. Being a dpv:NaturalPerson, an instance may be linked via orda:hasAccount to the platform accounts it holds; the account itself is an orda:PlatformAccount. The two are distinct (an account is not the person holding it), but ORDA does not assert disjointness between them, so keeping them apart is a modelling convention here rather than something a reasoner enforces. The DPV entity hierarchy and the ActivityStreams actor types are kept independent."@en ;
                 rdfs:isDefinedBy <https://w3id.org/dpv> ;
                 rdfs:label "Data Subject"@en .
 
@@ -1779,6 +1845,14 @@ dpv:JobApplicant rdf:type owl:Class ;
                  rdfs:comment "Data subjects that have applied for a job."@en ;
                  rdfs:isDefinedBy <https://w3id.org/dpv> ;
                  rdfs:label "Job Applicant"@en .
+
+
+###  https://w3id.org/dpv#Justification
+dpv:Justification rdf:type owl:Class ;
+                  rdfs:subClassOf <https://w3id.org/dpv/owl#Context> ;
+                  rdfs:comment "A form of documentation providing reasons, explanations, or justifications. ORDA places orda:AccessJustification beneath this so that the Art. 40(8)(e) demonstration is discoverable as a DPV justification, without asserting anything about the DPV term itself."@en ;
+                  rdfs:isDefinedBy <https://w3id.org/dpv> ;
+                  rdfs:label "Justification"@en .
 
 
 ###  https://w3id.org/dpv#LegalEntity
@@ -1943,7 +2017,7 @@ as:Collection rdf:type owl:Class ;
 ###  https://www.w3.org/ns/activitystreams#Create
 as:Create rdf:type owl:Class ;
           rdfs:subClassOf as:Activity ;
-          rdfs:comment "The account created the object — the activity underlying a published post."@en ;
+          rdfs:comment "The account created the object: the activity underlying a published post."@en ;
           rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
           rdfs:label "Create"@en .
 
@@ -2038,7 +2112,7 @@ as:Service rdf:type owl:Class ;
 ###  https://www.w3.org/ns/activitystreams#View
 as:View rdf:type owl:Class ;
         rdfs:subClassOf as:Activity ;
-        rdfs:comment "The account viewed the object. With as:Read and as:Listen this covers content consumption — the closest ActivityStreams comes to a recommender impression log."@en ;
+        rdfs:comment "The account viewed the object. With as:Read and as:Listen this covers content consumption: the closest ActivityStreams comes to a recommender impression log."@en ;
         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
         rdfs:label "View"@en .
 
