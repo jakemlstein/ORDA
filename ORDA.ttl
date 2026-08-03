@@ -285,9 +285,9 @@ orda:hasAccessModality rdf:type owl:ObjectProperty ;
 
 ###  https://example.org/orda#hasAccount
 orda:hasAccount rdf:type owl:ObjectProperty ;
-                rdfs:domain orda:RealWorldIdentity ;
+                rdfs:domain dpv:NaturalPerson ;
                 rdfs:range orda:PlatformAccount ;
-                rdfs:comment "Links a real-world identity to a platform account it holds. ActivityStreams has no term for this: it models accounts, not the people behind them. ORDA needs the distinction because the re-identification risk that separates Art. 40(4) non-public access from Art. 40(12) public access lives precisely in the link between an account and the person holding it."@en ;
+                rdfs:comment "Links a real-world person to a platform account they hold. ActivityStreams has no term for this: it models accounts, not the people behind them, and as:Person is an account held by a human rather than the human themselves. The domain is dpv:NaturalPerson — DPV already names the concept ('A human'), so ORDA states the relation rather than coining a class for one of its ends. ORDA needs the relation because it is what separates the two Article 40 access routes: Art. 40(12) public data concerns accounts and their public activity, whereas Art. 40(4) non-public data may permit linkage back to the person holding them, which is the source of the re-identification risk the safeguards address. Note that ORDA researchers are typed foaf:Person, not dpv:NaturalPerson, so this property does not reach them unless a researcher's own account is being described."@en ;
                 rdfs:isDefinedBy <https://example.org/orda> ;
                 rdfs:label "has account"@en .
 
@@ -1410,8 +1410,7 @@ orda:PlatformAccount rdf:type owl:Class ;
                                                          as:Service
                                                        )
                                          ] ;
-                     owl:disjointWith orda:RealWorldIdentity ;
-                     rdfs:comment "An account on a platform, held by a person, organisation, group or automated agent. ActivityStreams has no single class for this — it lists Application, Group, Organization, Person and Service as actor types but defines no common as:Actor superclass — so ORDA supplies the union. Automated or bot accounts are typed as:Application or as:Service."@en ;
+                     rdfs:comment "An account on a platform, held by a person, organisation, group or automated agent. ActivityStreams has no single class for this — it lists Application, Group, Organization, Person and Service as actor types but defines no common as:Actor superclass — so ORDA supplies the union. Automated or bot accounts are typed as:Application or as:Service. An account is not the human holding it; the two are related by orda:hasAccount, whose domain is dpv:NaturalPerson. ORDA deliberately stops short of declaring the two classes disjoint — see the note on deliberate non-disjointness in the documentation — so the separation is carried by that property rather than enforced by an axiom, and data typing one individual as both an account and a natural person will not be flagged."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Platform Account"@en .
 
@@ -1476,13 +1475,6 @@ orda:ReactionHistory rdf:type owl:Class ;
                      rdfs:comment "A history of reactions to content, whether positive or negative. Subsumes orda:FavoriteHistory."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Reaction History"@en .
-
-
-###  https://example.org/orda#RealWorldIdentity
-orda:RealWorldIdentity rdf:type owl:Class ;
-                       rdfs:comment "The real-world person behind one or more platform accounts, reached via orda:hasAccount. ActivityStreams has no counterpart: it models accounts, and as:Person is an account held by a natural person rather than the person themselves. ORDA keeps the distinction because it is what separates the two Article 40 access routes — Art. 40(12) public data concerns accounts and their public activity, whereas Art. 40(4) non-public data may permit linkage back to the identity holding them, which is the source of the re-identification risk the safeguards address. Declared disjoint from orda:PlatformAccount."@en ;
-                       rdfs:isDefinedBy <https://example.org/orda> ;
-                       rdfs:label "Real World Identity"@en .
 
 
 ###  https://example.org/orda#ReasonedRequest
@@ -1736,7 +1728,7 @@ dpv:Customer rdf:type owl:Class ;
 ###  https://w3id.org/dpv#DataSubject
 dpv:DataSubject rdf:type owl:Class ;
                 rdfs:subClassOf dpv:HumanSubject ;
-                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. Instances may also be typed as orda:RealWorldIdentity and linked via orda:hasAccount to the platform accounts they hold; note that the account itself is an orda:PlatformAccount, which is disjoint from the identity behind it. dpv:Entity and the ActivityStreams actor types are kept as independent class hierarchies."@en ;
+                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. Being a dpv:NaturalPerson, an instance may be linked via orda:hasAccount to the platform accounts it holds; the account itself is an orda:PlatformAccount. The two are distinct — an account is not the person holding it — but ORDA does not assert disjointness between them, so keeping them apart is a modelling convention here rather than something a reasoner enforces. The DPV entity hierarchy and the ActivityStreams actor types are kept independent."@en ;
                 rdfs:isDefinedBy <https://w3id.org/dpv> ;
                 rdfs:label "Data Subject"@en .
 
@@ -2024,7 +2016,7 @@ as:Organization rdf:type owl:Class ;
 ###  https://www.w3.org/ns/activitystreams#Person
 as:Person rdf:type owl:Class ;
           rdfs:subClassOf as:Object ;
-          rdfs:comment "A natural person holding a platform account. Distinct from orda:RealWorldIdentity: as:Person is the account, not the human behind it, and one human may hold several."@en ;
+          rdfs:comment "An account held by a natural person. Distinct from dpv:NaturalPerson: as:Person is the account, not the human behind it, and one human may hold several. The two are related by orda:hasAccount; ORDA does not assert disjointness between them."@en ;
           rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
           rdfs:label "Person"@en .
 
