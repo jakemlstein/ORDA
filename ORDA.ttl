@@ -1,7 +1,6 @@
 @prefix : <https://example.org/orda#> .
 @prefix as: <https://www.w3.org/ns/activitystreams#> .
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix ddp: <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#> .
 @prefix dpv: <https://w3id.org/dpv#> .
 @prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix loc: <https://w3id.org/dpv/loc#> .
@@ -22,14 +21,13 @@
 
 <https://example.org/orda> rdf:type owl:Ontology ;
                             owl:versionIRI <https://example.org/orda/1.0.0> ;
-                            owl:imports <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/as_our_ideas.owl> ,
-                                        <https://w3id.org/dpv/2.3/owl#> ,
+                            owl:imports <https://w3id.org/dpv/2.3/owl#> ,
                                         <https://w3id.org/dpv/2.3/risk/owl#> ;
                             dct:license <https://creativecommons.org/licenses/by/4.0/> ;
                             dct:title "Research Access Ontology"@en ;
                             vann:preferredNamespacePrefix "orda" ;
                             vann:preferredNamespaceUri "https://example.org/orda#" ;
-                            rdfs:comment "An ontology modelling DSA Article 40 vetted researcher access to platform data for systemic risk research. Distinguishes the Art. 40(4) DSC-mediated non-public data process from the Art. 40(12) direct public data process. Integrates OSDA (ActivityStreams extension) for platform data typing."@en ;
+                            rdfs:comment "An ontology modelling DSA Article 40 vetted researcher access to platform data for systemic risk research. Distinguishes the Art. 40(4) DSC-mediated non-public data process from the Art. 40(12) direct public data process. Platform data is typed with W3C ActivityStreams 2.0 (as:), extended with ORDA-native terms for the categories ActivityStreams does not cover — search history, and the relation between a real-world identity and the platform accounts it holds."@en ;
                             rdfs:label "Research Access Ontology"@en ;
                             owl:versionInfo "1.0.0" .
 
@@ -97,36 +95,27 @@ dct:hasFormat rdf:type owl:ObjectProperty ;
               rdfs:label "has format"@en .
 
 
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasAccount
-ddp:hasAccount rdf:type owl:ObjectProperty ;
-               rdfs:domain ddp:RealWorldIdentity ;
-               rdfs:range ddp:Agent ;
-               rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-               rdfs:label "has account"@en .
+###  https://www.w3.org/ns/activitystreams#actor
+as:actor rdf:type owl:ObjectProperty ;
+         rdfs:domain as:Activity ;
+         rdfs:comment "Links an activity to the account that performed it. ActivityStreams leaves the range open (Object or Link); ORDA does not narrow it."@en ;
+         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+         rdfs:label "actor"@en .
 
 
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasActivities
-ddp:hasActivities rdf:type owl:ObjectProperty ;
-                  rdfs:domain ddp:Agent ;
-                  rdfs:range ddp:ActivityHistory ;
-                  rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                  rdfs:label "has activities"@en .
+###  https://www.w3.org/ns/activitystreams#attributedTo
+as:attributedTo rdf:type owl:ObjectProperty ;
+                rdfs:comment "Links an object to the account responsible for it. Used in ORDA where authorship of a post or item is asserted without a corresponding as:Create activity."@en ;
+                rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+                rdfs:label "attributed to"@en .
 
 
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasCreator
-ddp:hasCreator rdf:type owl:ObjectProperty ;
-               rdfs:range ddp:Agent ;
-               rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-               rdfs:label "has creator"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#hasItem
-ddp:hasItem rdf:type owl:ObjectProperty ;
-            rdfs:domain ddp:ActivityHistory ;
-            rdfs:range as:Activity ;
-            rdfs:comment "Links an activity history to individual ActivityStreams activities."@en ;
-            rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-            rdfs:label "has item"@en .
+###  https://www.w3.org/ns/activitystreams#items
+as:items rdf:type owl:ObjectProperty ;
+         rdfs:domain as:Collection ;
+         rdfs:comment "Links a collection to its members. This is the property the orda:ActivityHistory subclasses are defined over. Note that ActivityStreams defines no 'orderedItems' property — ordering in an as:OrderedCollection is a JSON-LD serialisation concern, so as:items is used for both ordered and unordered histories."@en ;
+         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+         rdfs:label "items"@en .
 
 
 ###  http://www.w3.org/ns/csvw#column
@@ -234,6 +223,15 @@ orda:consultationRequestedBy rdf:type owl:ObjectProperty ;
                              rdfs:label "consultation requested by"@en .
 
 
+###  https://example.org/orda#containsHistory
+orda:containsHistory rdf:type owl:ObjectProperty ;
+                     rdfs:domain dcat:Distribution ;
+                     rdfs:range orda:ActivityHistory ;
+                     rdfs:comment "Links a dcat:Distribution to the activity history it serialises. This is what connects the request side of the ontology to the content side: a researcher follows orda:catalogueEntry to a distribution, requests it with orda:requestsData, and reads what it holds from the orda:ActivityHistory subclass reached here. Because those subclasses are defined over the ActivityStreams type of their members, the category of data a request concerns is classified rather than asserted."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "contains history"@en .
+
+
 ###  https://example.org/orda#dataCatalogueOf
 orda:dataCatalogueOf rdf:type owl:ObjectProperty ;
                      owl:inverseOf orda:hasDataCatalogue ;
@@ -283,6 +281,24 @@ orda:hasAccessModality rdf:type owl:ObjectProperty ;
                        rdfs:comment "Links a data access request (Art. 40(4) or Art. 40(12)) — or the reasoned request formulated from it — to the access modality. At application stage the modality is researcher-proposed; for Art. 40(4) reasoned requests it is determined by the DSC of establishment per DA Art. 9."@en ;
                        rdfs:isDefinedBy <https://example.org/orda> ;
                        rdfs:label "has access modality"@en .
+
+
+###  https://example.org/orda#hasAccount
+orda:hasAccount rdf:type owl:ObjectProperty ;
+                rdfs:domain orda:RealWorldIdentity ;
+                rdfs:range orda:PlatformAccount ;
+                rdfs:comment "Links a real-world identity to a platform account it holds. ActivityStreams has no term for this: it models accounts, not the people behind them. ORDA needs the distinction because the re-identification risk that separates Art. 40(4) non-public access from Art. 40(12) public access lives precisely in the link between an account and the person holding it."@en ;
+                rdfs:isDefinedBy <https://example.org/orda> ;
+                rdfs:label "has account"@en .
+
+
+###  https://example.org/orda#hasActivities
+orda:hasActivities rdf:type owl:ObjectProperty ;
+                   rdfs:domain orda:PlatformAccount ;
+                   rdfs:range orda:ActivityHistory ;
+                   rdfs:comment "Links a platform account to a history of its activities. Corresponds to the ActivityPub notion of an actor's streams, but is stated natively because the ActivityPub collection properties are not part of the ActivityStreams 2.0 Recommendation."@en ;
+                   rdfs:isDefinedBy <https://example.org/orda> ;
+                   rdfs:label "has activities"@en .
 
 
 ###  https://example.org/orda#hasAffiliatedResearcher
@@ -969,113 +985,6 @@ dct:MediaTypeOrExtent rdf:type owl:Class ;
                       rdfs:label "Media Type or Extent"@en .
 
 
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ActivityHistory
-ddp:ActivityHistory rdf:type owl:Class ;
-                    rdfs:comment "A collection of platform activities belonging to an agent. The primary unit of data returned by a DSA Article 40 data access request."@en ;
-                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                    rdfs:label "Activity History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#Agent
-ddp:Agent rdf:type owl:Class ;
-          rdfs:comment "A social media account holder — person, organisation or software agent. In the Art. 40 research access context, instances whose data is accessed may also be typed as dpv:DataSubject at the instance level, but ddp:Agent and dpv:Entity are kept as independent class hierarchies."@en ;
-          rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-          rdfs:label "Agent"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#BlockHistory
-ddp:BlockHistory rdf:type owl:Class ;
-                 rdfs:subClassOf ddp:ActivityHistory ;
-                 rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                 rdfs:label "Block History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ConsumeHistory
-ddp:ConsumeHistory rdf:type owl:Class ;
-                   rdfs:subClassOf ddp:ActivityHistory ;
-                   rdfs:comment "History of content viewed or consumed by the agent."@en ;
-                   rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                   rdfs:label "Consume History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#FavoriteHistory
-ddp:FavoriteHistory rdf:type owl:Class ;
-                    rdfs:subClassOf ddp:ActivityHistory ;
-                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                    rdfs:label "Favorite History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#FollowerHistory
-ddp:FollowerHistory rdf:type owl:Class ;
-                    rdfs:subClassOf ddp:ActivityHistory ;
-                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                    rdfs:label "Follower History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#FollowingHistory
-ddp:FollowingHistory rdf:type owl:Class ;
-                     rdfs:subClassOf ddp:ActivityHistory ;
-                     rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                     rdfs:label "Following History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#Organization
-ddp:Organization rdf:type owl:Class ;
-                 rdfs:subClassOf ddp:Agent ;
-                 rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                 rdfs:label "Organization"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#Person
-ddp:Person rdf:type owl:Class ;
-           rdfs:subClassOf ddp:Agent ;
-           rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-           rdfs:label "Person"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#PublishPostHistory
-ddp:PublishPostHistory rdf:type owl:Class ;
-                       rdfs:subClassOf ddp:ActivityHistory ;
-                       rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                       rdfs:label "Publish Post History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ReactionHistory
-ddp:ReactionHistory rdf:type owl:Class ;
-                    rdfs:subClassOf ddp:ActivityHistory ;
-                    rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                    rdfs:label "Reaction History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#RealWorldIdentity
-ddp:RealWorldIdentity rdf:type owl:Class ;
-                      rdfs:comment "The real-world person behind one or more platform accounts."@en ;
-                      rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                      rdfs:label "Real World Identity"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#SearchHistory
-ddp:SearchHistory rdf:type owl:Class ;
-                  rdfs:subClassOf ddp:ActivityHistory ;
-                  rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                  rdfs:label "Search History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#ShareHistory
-ddp:ShareHistory rdf:type owl:Class ;
-                 rdfs:subClassOf ddp:ActivityHistory ;
-                 rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                 rdfs:label "Share History"@en .
-
-
-###  http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl#SoftwareAgent
-ddp:SoftwareAgent rdf:type owl:Class ;
-                  rdfs:subClassOf ddp:Agent ;
-                  rdfs:comment "A bot or automated account."@en ;
-                  rdfs:isDefinedBy <http://www.semanticweb.org/quentin.bukold/ontologies/2025/3/ddp_onto_v1.owl> ;
-                  rdfs:label "Software Agent"@en .
-
-
 ###  http://www.w3.org/2004/02/skos/core#Concept
 skos:Concept rdf:type owl:Class ;
              rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core> .
@@ -1132,6 +1041,18 @@ orda:AccessModality rdf:type owl:Class ;
                     rdfs:label "Access Modality"@en .
 
 
+###  https://example.org/orda#ActivityHistory
+orda:ActivityHistory rdf:type owl:Class ;
+                     rdfs:subClassOf as:OrderedCollection ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty as:items ;
+                                       owl:allValuesFrom as:Activity
+                                     ] ;
+                     rdfs:comment "A collection of platform activities belonging to one account. The primary unit of data returned by a DSA Article 40 data access request. The subclasses below are defined classes over the ActivityStreams activity type of their members, so a distribution's contents can be classified from the activities it holds rather than asserted by hand. Each is defined as containing at least one, and only, members of its activity type; the 'at least one' half is deliberate, since a definition using only an owl:allValuesFrom restriction would classify every empty history as an instance of every subclass. Note that classification of a particular history requires that history to be closed — an individual must state that its asserted members are all of its members, by an owl:oneOf or cardinality axiom on as:items — because under the open-world assumption further members of other types are otherwise possible. See orda:ExampleShareHistory in the example data."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "Activity History"@en .
+
+
 ###  https://example.org/orda#AmendmentRequest
 orda:AmendmentRequest rdf:type owl:Class ;
                       rdfs:subClassOf [ rdf:type owl:Restriction ;
@@ -1174,6 +1095,25 @@ orda:Art40_4_DataAccessRequest rdf:type owl:Class ;
                                rdfs:seeAlso <http://data.europa.eu/eli/reg_del/2025/2050/oj> .
 
 
+###  https://example.org/orda#BlockHistory
+orda:BlockHistory rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Class ;
+                                        owl:intersectionOf ( orda:ActivityHistory
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty as:items ;
+                                                               owl:someValuesFrom as:Block
+                                                             ]
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty as:items ;
+                                                               owl:allValuesFrom as:Block
+                                                             ]
+                                                           )
+                                      ] ;
+                  rdfs:comment "A history of accounts blocked. Defined over as:Block, which ActivityStreams places under as:Ignore rather than directly under as:Activity."@en ;
+                  rdfs:isDefinedBy <https://example.org/orda> ;
+                  rdfs:label "Block History"@en .
+
+
 ###  https://example.org/orda#CSVDistribution
 orda:CSVDistribution rdf:type owl:Class ;
                      rdfs:subClassOf dcat:Distribution ,
@@ -1197,6 +1137,35 @@ orda:CivicDiscourseRisk rdf:type owl:Class ;
                         rdfs:comment "DSA Art. 34(1)(c): systemic risks of negative effects on civic discourse, electoral processes or public security."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "Civic Discourse Risk"@en .
+
+
+###  https://example.org/orda#ConsumeHistory
+orda:ConsumeHistory rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Class ;
+                                          owl:intersectionOf ( orda:ActivityHistory
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty as:items ;
+                                                                 owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                 owl:unionOf ( as:Listen
+                                                                               as:Read
+                                                                               as:View
+                                                                             )
+                                                               ]
+                                                               ]
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty as:items ;
+                                                                 owl:allValuesFrom [ rdf:type owl:Class ;
+                                                                 owl:unionOf ( as:Listen
+                                                                               as:Read
+                                                                               as:View
+                                                                             )
+                                                               ]
+                                                               ]
+                                                             )
+                                        ] ;
+                    rdfs:comment "A history of content viewed, read or listened to. This is the closest ActivityStreams equivalent of a platform impression or recommender delivery log, and is typically the Art. 40(4) non-public data category most relevant to systemic risk research on recommender systems."@en ;
+                    rdfs:isDefinedBy <https://example.org/orda> ;
+                    rdfs:label "Consume History"@en .
 
 
 ###  https://example.org/orda#DSADataAccessPortal
@@ -1327,6 +1296,61 @@ orda:ExpertConsultation rdf:type owl:Class ;
                         rdfs:label "Expert Consultation"@en .
 
 
+###  https://example.org/orda#FavoriteHistory
+orda:FavoriteHistory rdf:type owl:Class ;
+                     owl:equivalentClass [ rdf:type owl:Class ;
+                                           owl:intersectionOf ( orda:ActivityHistory
+                                                                [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty as:items ;
+                                                                  owl:someValuesFrom as:Like
+                                                                ]
+                                                                [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty as:items ;
+                                                                  owl:allValuesFrom as:Like
+                                                                ]
+                                                              )
+                                         ] ;
+                     rdfs:comment "A history of content favourited. Because this is defined over as:Like alone while orda:ReactionHistory admits as:Like and as:Dislike, every favorite history is inferred to be a reaction history."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "Favorite History"@en .
+
+
+###  https://example.org/orda#FollowHistory
+orda:FollowHistory rdf:type owl:Class ;
+                   owl:equivalentClass [ rdf:type owl:Class ;
+                                         owl:intersectionOf ( orda:ActivityHistory
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty as:items ;
+                                                                owl:someValuesFrom as:Follow
+                                                              ]
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty as:items ;
+                                                                owl:allValuesFrom as:Follow
+                                                              ]
+                                                            )
+                                       ] ;
+                   rdfs:comment "A history of follow relationships. ActivityStreams models following as a single as:Follow activity, so follower and followed histories cannot be told apart by member type alone; the two directions are given as primitive subclasses."@en ;
+                   rdfs:isDefinedBy <https://example.org/orda> ;
+                   rdfs:label "Follow History"@en .
+
+
+###  https://example.org/orda#FollowerHistory
+orda:FollowerHistory rdf:type owl:Class ;
+                     rdfs:subClassOf orda:FollowHistory ;
+                     owl:disjointWith orda:FollowingHistory ;
+                     rdfs:comment "A history of the accounts that follow the subject account — that is, as:Follow activities in which the subject is the object rather than the actor. Primitive rather than defined: the direction is a property of the activity's participants, not of its type, so OWL cannot separate it from orda:FollowingHistory by member type. Corresponds to the ActivityPub 'followers' collection, which is not part of the ActivityStreams 2.0 Recommendation."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "Follower History"@en .
+
+
+###  https://example.org/orda#FollowingHistory
+orda:FollowingHistory rdf:type owl:Class ;
+                      rdfs:subClassOf orda:FollowHistory ;
+                      rdfs:comment "A history of the accounts the subject account follows — as:Follow activities in which the subject is the actor. Corresponds to the ActivityPub 'following' collection, which is not part of the ActivityStreams 2.0 Recommendation. See orda:FollowerHistory for why this is primitive."@en ;
+                      rdfs:isDefinedBy <https://example.org/orda> ;
+                      rdfs:label "Following History"@en .
+
+
 ###  https://example.org/orda#FundamentalRightsRisk
 orda:FundamentalRightsRisk rdf:type owl:Class ;
                            rdfs:subClassOf orda:SystemicRisk ;
@@ -1376,6 +1400,22 @@ orda:OrganisationalModality rdf:type owl:Class ;
                             rdfs:label "Organisational Modality"@en .
 
 
+###  https://example.org/orda#PlatformAccount
+orda:PlatformAccount rdf:type owl:Class ;
+                     owl:equivalentClass [ rdf:type owl:Class ;
+                                           owl:unionOf ( as:Application
+                                                         as:Group
+                                                         as:Organization
+                                                         as:Person
+                                                         as:Service
+                                                       )
+                                         ] ;
+                     owl:disjointWith orda:RealWorldIdentity ;
+                     rdfs:comment "An account on a platform, held by a person, organisation, group or automated agent. ActivityStreams has no single class for this — it lists Application, Group, Organization, Person and Service as actor types but defines no common as:Actor superclass — so ORDA supplies the union. Automated or bot accounts are typed as:Application or as:Service."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "Platform Account"@en .
+
+
 ###  https://example.org/orda#PrincipalResearcher
 orda:PrincipalResearcher rdf:type owl:Class ;
                          rdfs:subClassOf orda:ApplicantResearcher ;
@@ -1390,6 +1430,59 @@ orda:PublicWellbeingRisk rdf:type owl:Class ;
                          rdfs:comment "DSA Art. 34(1)(d): systemic risks of negative effects on public health, physical and mental wellbeing, or gender-based violence."@en ;
                          rdfs:isDefinedBy <https://example.org/orda> ;
                          rdfs:label "Public Wellbeing Risk"@en .
+
+
+###  https://example.org/orda#PublishPostHistory
+orda:PublishPostHistory rdf:type owl:Class ;
+                        owl:equivalentClass [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( orda:ActivityHistory
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty as:items ;
+                                                                     owl:someValuesFrom as:Create
+                                                                   ]
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty as:items ;
+                                                                     owl:allValuesFrom as:Create
+                                                                   ]
+                                                                 )
+                                            ] ;
+                        rdfs:comment "A history of content published by the account, defined over as:Create."@en ;
+                        rdfs:isDefinedBy <https://example.org/orda> ;
+                        rdfs:label "Publish Post History"@en .
+
+
+###  https://example.org/orda#ReactionHistory
+orda:ReactionHistory rdf:type owl:Class ;
+                     owl:equivalentClass [ rdf:type owl:Class ;
+                                           owl:intersectionOf ( orda:ActivityHistory
+                                                                [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty as:items ;
+                                                                  owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                 owl:unionOf ( as:Dislike
+                                                                               as:Like
+                                                                             )
+                                                               ]
+                                                                ]
+                                                                [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty as:items ;
+                                                                  owl:allValuesFrom [ rdf:type owl:Class ;
+                                                                 owl:unionOf ( as:Dislike
+                                                                               as:Like
+                                                                             )
+                                                               ]
+                                                                ]
+                                                              )
+                                         ] ;
+                     rdfs:comment "A history of reactions to content, whether positive or negative. Subsumes orda:FavoriteHistory."@en ;
+                     rdfs:isDefinedBy <https://example.org/orda> ;
+                     rdfs:label "Reaction History"@en .
+
+
+###  https://example.org/orda#RealWorldIdentity
+orda:RealWorldIdentity rdf:type owl:Class ;
+                       rdfs:comment "The real-world person behind one or more platform accounts, reached via orda:hasAccount. ActivityStreams has no counterpart: it models accounts, and as:Person is an account held by a natural person rather than the person themselves. ORDA keeps the distinction because it is what separates the two Article 40 access routes — Art. 40(12) public data concerns accounts and their public activity, whereas Art. 40(4) non-public data may permit linkage back to the identity holding them, which is the source of the re-identification risk the safeguards address. Declared disjoint from orda:PlatformAccount."@en ;
+                       rdfs:isDefinedBy <https://example.org/orda> ;
+                       rdfs:label "Real World Identity"@en .
 
 
 ###  https://example.org/orda#ReasonedRequest
@@ -1452,6 +1545,52 @@ orda:RiskMitigationMeasure rdf:type owl:Class ;
                            rdfs:isDefinedBy <https://example.org/orda> ;
                            rdfs:label "Risk Mitigation Measure"@en ;
                            rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_35> .
+
+
+###  https://example.org/orda#Search
+orda:Search rdf:type owl:Class ;
+            rdfs:subClassOf as:Activity ;
+            rdfs:comment "A query issued by an account against a platform's search function. ORDA-native: ActivityStreams defines no search activity, because searching is not a social action published to a stream. The term is required nonetheless — search and query logs are among the data categories most often sought under Article 40, particularly from very large online search engines."@en ;
+            rdfs:isDefinedBy <https://example.org/orda> ;
+            rdfs:label "Search"@en .
+
+
+###  https://example.org/orda#SearchHistory
+orda:SearchHistory rdf:type owl:Class ;
+                   owl:equivalentClass [ rdf:type owl:Class ;
+                                         owl:intersectionOf ( orda:ActivityHistory
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty as:items ;
+                                                                owl:someValuesFrom orda:Search
+                                                              ]
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty as:items ;
+                                                                owl:allValuesFrom orda:Search
+                                                              ]
+                                                            )
+                                       ] ;
+                   rdfs:comment "A history of queries issued by the account. Defined over the ORDA-native orda:Search, as ActivityStreams supplies no equivalent activity type."@en ;
+                   rdfs:isDefinedBy <https://example.org/orda> ;
+                   rdfs:label "Search History"@en .
+
+
+###  https://example.org/orda#ShareHistory
+orda:ShareHistory rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Class ;
+                                        owl:intersectionOf ( orda:ActivityHistory
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty as:items ;
+                                                               owl:someValuesFrom as:Announce
+                                                             ]
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty as:items ;
+                                                               owl:allValuesFrom as:Announce
+                                                             ]
+                                                           )
+                                      ] ;
+                  rdfs:comment "A history of content shared or reposted by the account, defined over as:Announce."@en ;
+                  rdfs:isDefinedBy <https://example.org/orda> ;
+                  rdfs:label "Share History"@en .
 
 
 ###  https://example.org/orda#StatusEvent
@@ -1597,7 +1736,7 @@ dpv:Customer rdf:type owl:Class ;
 ###  https://w3id.org/dpv#DataSubject
 dpv:DataSubject rdf:type owl:Class ;
                 rdfs:subClassOf dpv:HumanSubject ;
-                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. Instances may also be typed as ddp:Agent when they are social media account holders."@en ;
+                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. Instances may also be typed as orda:RealWorldIdentity and linked via orda:hasAccount to the platform accounts they hold; note that the account itself is an orda:PlatformAccount, which is disjoint from the identity behind it. dpv:Entity and the ActivityStreams actor types are kept as independent class hierarchies."@en ;
                 rdfs:isDefinedBy <https://w3id.org/dpv> ;
                 rdfs:label "Data Subject"@en .
 
@@ -1771,7 +1910,145 @@ dpv:VulnerableDataSubject rdf:type owl:Class ;
 
 ###  https://www.w3.org/ns/activitystreams#Activity
 as:Activity rdf:type owl:Class ;
-            rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> .
+            rdfs:subClassOf as:Object ;
+            rdfs:comment "An action taken by a platform account. The unit from which activity histories are composed."@en ;
+            rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+            rdfs:label "Activity"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Announce
+as:Announce rdf:type owl:Class ;
+            rdfs:subClassOf as:Activity ;
+            rdfs:comment "The account shared or reposted the object. The ActivityStreams counterpart of a share or boost."@en ;
+            rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+            rdfs:label "Announce"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Application
+as:Application rdf:type owl:Class ;
+               rdfs:subClassOf as:Object ;
+               rdfs:comment "A software application holding a platform account. Together with as:Service this covers automated or bot accounts, which have no dedicated ActivityStreams type."@en ;
+               rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+               rdfs:label "Application"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Block
+as:Block rdf:type owl:Class ;
+         rdfs:subClassOf as:Ignore ;
+         rdfs:comment "The account blocked the object. Note that ActivityStreams places Block under as:Ignore rather than directly under as:Activity."@en ;
+         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+         rdfs:label "Block"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Collection
+as:Collection rdf:type owl:Class ;
+              rdfs:subClassOf as:Object ;
+              rdfs:comment "A set of objects, linked by as:items. The container from which the orda:ActivityHistory classes are built."@en ;
+              rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+              rdfs:label "Collection"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Create
+as:Create rdf:type owl:Class ;
+          rdfs:subClassOf as:Activity ;
+          rdfs:comment "The account created the object — the activity underlying a published post."@en ;
+          rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+          rdfs:label "Create"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Dislike
+as:Dislike rdf:type owl:Class ;
+           rdfs:subClassOf as:Activity ;
+           rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+           rdfs:label "Dislike"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Follow
+as:Follow rdf:type owl:Class ;
+          rdfs:subClassOf as:Activity ;
+          rdfs:comment "The account began following the object. ORDA distinguishes follower from following histories by the direction of this activity relative to the account whose history it is, not by two separate activity types."@en ;
+          rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+          rdfs:label "Follow"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Group
+as:Group rdf:type owl:Class ;
+         rdfs:subClassOf as:Object ;
+         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+         rdfs:label "Group"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Ignore
+as:Ignore rdf:type owl:Class ;
+          rdfs:subClassOf as:Activity ;
+          rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+          rdfs:label "Ignore"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Like
+as:Like rdf:type owl:Class ;
+        rdfs:subClassOf as:Activity ;
+        rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+        rdfs:label "Like"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Listen
+as:Listen rdf:type owl:Class ;
+          rdfs:subClassOf as:Activity ;
+          rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+          rdfs:label "Listen"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Object
+as:Object rdf:type owl:Class ;
+          rdfs:comment "The root of the ActivityStreams type hierarchy."@en ;
+          rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+          rdfs:label "Object"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#OrderedCollection
+as:OrderedCollection rdf:type owl:Class ;
+                     rdfs:subClassOf as:Collection ;
+                     rdfs:comment "A collection whose members carry a defined order. ActivityStreams expresses the ordering in JSON-LD serialisation rather than through a distinct RDF property, so members are still reached via as:items."@en ;
+                     rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+                     rdfs:label "Ordered Collection"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Organization
+as:Organization rdf:type owl:Class ;
+                rdfs:subClassOf as:Object ;
+                rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+                rdfs:label "Organization"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Person
+as:Person rdf:type owl:Class ;
+          rdfs:subClassOf as:Object ;
+          rdfs:comment "A natural person holding a platform account. Distinct from orda:RealWorldIdentity: as:Person is the account, not the human behind it, and one human may hold several."@en ;
+          rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+          rdfs:label "Person"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Read
+as:Read rdf:type owl:Class ;
+        rdfs:subClassOf as:Activity ;
+        rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+        rdfs:label "Read"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#Service
+as:Service rdf:type owl:Class ;
+           rdfs:subClassOf as:Object ;
+           rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+           rdfs:label "Service"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#View
+as:View rdf:type owl:Class ;
+        rdfs:subClassOf as:Activity ;
+        rdfs:comment "The account viewed the object. With as:Read and as:Listen this covers content consumption — the closest ActivityStreams comes to a recommender impression log."@en ;
+        rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+        rdfs:label "View"@en .
 
 
 #################################################################
@@ -1839,8 +2116,7 @@ orda:FacebookVLOP rdf:type owl:NamedIndividual ,
                            orda:VeryLargeOnlinePlatform ;
                   <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
-                  rdfs:label "Facebook"@en ;
-                  skos:closeMatch ddp:Facebook .
+                  rdfs:label "Facebook"@en .
 
 
 ###  https://example.org/orda#GoogleMapsVLOP
@@ -1880,8 +2156,7 @@ orda:InstagramVLOP rdf:type owl:NamedIndividual ,
                             orda:VeryLargeOnlinePlatform ;
                    <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
-                   rdfs:label "Instagram"@en ;
-                   skos:closeMatch ddp:Instagram .
+                   rdfs:label "Instagram"@en .
 
 
 ###  https://example.org/orda#LinkedInVLOP
@@ -2030,8 +2305,7 @@ orda:TikTokVLOP rdf:type owl:NamedIndividual ,
                          orda:VeryLargeOnlinePlatform ;
                 <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                 rdfs:isDefinedBy <https://example.org/orda> ;
-                rdfs:label "TikTok"@en ;
-                skos:closeMatch ddp:TikTok .
+                rdfs:label "TikTok"@en .
 
 
 ###  https://example.org/orda#TransferImpactAssessment
@@ -2063,8 +2337,7 @@ orda:YouTubeVLOP rdf:type owl:NamedIndividual ,
                           orda:VeryLargeOnlinePlatform ;
                  <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                  rdfs:isDefinedBy <https://example.org/orda> ;
-                 rdfs:label "YouTube"@en ;
-                 skos:closeMatch ddp:YouTube .
+                 rdfs:label "YouTube"@en .
 
 
 ###  https://example.org/orda#ZalandoVLOP
