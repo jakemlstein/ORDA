@@ -1,7 +1,7 @@
 @prefix : <https://example.org/orda#> .
 @prefix as: <https://www.w3.org/ns/activitystreams#> .
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix dpv: <https://w3id.org/dpv/owl#> .
+@prefix dpv: <https://w3id.org/dpv#> .
 @prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix loc: <https://w3id.org/dpv/loc#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -35,6 +35,23 @@
 #    Annotation properties
 #################################################################
 
+###  http://purl.org/dc/terms/description
+dct:description rdf:type owl:AnnotationProperty ;
+                rdfs:comment "Free text supplied by a party to the process (an applicant, a platform or a DSC), as opposed to a value ORDA models structurally. Declared an annotation property, as DCMI publishes it, because DPV uses dct:description to annotate its own ontology IRI and an OWL datatype property may not be asserted of an ontology; its three ORDA sub-properties are annotation properties for the same reason. ORDA uses this for descriptive text directly where a subject carries only one such text, as on orda:ResearchProject and on the orda:AccessJustification statements, and makes the narrower properties subproperties of it where a subject carries several, so that orda:independenceDeclaration, orda:publicationTimeline and orda:amendmentGrounds remain individually identifiable while still being reachable generically. Left without a domain deliberately, so that ORDA constrains nothing about the term for importers. Typed here as an owl:DatatypeProperty, which DCMI itself does not commit to."@en ;
+                rdfs:isDefinedBy dct: ;
+                rdfs:label "description"@en ;
+                rdfs:range xsd:string .
+
+
+###  http://purl.org/dc/terms/identifier
+dct:identifier rdf:type owl:AnnotationProperty ;
+               rdfs:comment "The reference under which a data access request is registered, e.g. in the DSA Data Access Portal. Declared an annotation property rather than a datatype property: DPV, which ORDA imports, uses dct:identifier to annotate its own ontology IRI, and an OWL datatype property may not be asserted of an ontology. The same reasoning applies to dct:description. One consequence is that the previous owl:FunctionalProperty characteristic is dropped, so a second identifier on one request is no longer detected by a reasoner."@en ;
+               rdfs:isDefinedBy dct: ;
+               rdfs:label "identifier"@en ;
+               rdfs:range xsd:string ;
+               rdfs:domain orda:DataAccessRequest .
+
+
 ###  http://www.w3.org/2004/02/skos/core#closeMatch
 skos:closeMatch rdf:type owl:AnnotationProperty ;
                 rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core> .
@@ -45,9 +62,48 @@ skos:inScheme rdf:type owl:AnnotationProperty ;
               rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core> .
 
 
+###  https://example.org/orda#amendmentGrounds
+orda:amendmentGrounds rdf:type owl:AnnotationProperty ;
+                      rdfs:comment "The grounds for the amendment request per Art. 40(5) DSA: (a) platform does not have access to the data, or (b) access would create significant vulnerabilities."@en ;
+                      rdfs:isDefinedBy <https://example.org/orda> ;
+                      rdfs:label "amendment grounds"@en ;
+                      rdfs:subPropertyOf dct:description ;
+                      rdfs:range xsd:string ;
+                      rdfs:domain orda:AmendmentRequest .
+
+
+###  https://example.org/orda#independenceDeclaration
+orda:independenceDeclaration rdf:type owl:AnnotationProperty ;
+                             rdfs:comment "A declaration by the researcher that they are independent from commercial interests in relation to the specific research project, as required by Art. 40(8)(b) DSA."@en ;
+                             rdfs:isDefinedBy <https://example.org/orda> ;
+                             rdfs:label "independence declaration"@en ;
+                             rdfs:subPropertyOf dct:description ;
+                             rdfs:range xsd:string ;
+                             rdfs:domain orda:DataAccessRequest .
+
+
+###  https://example.org/orda#publicationTimeline
+orda:publicationTimeline rdf:type owl:AnnotationProperty ;
+                         rdfs:comment "The planned timeline for making research results publicly available, e.g. 'within 12 months of completion'."@en ;
+                         rdfs:isDefinedBy <https://example.org/orda> ;
+                         rdfs:label "publication timeline"@en ;
+                         rdfs:subPropertyOf dct:description ;
+                         rdfs:range xsd:string ;
+                         rdfs:domain orda:Art40_4_DataAccessRequest .
+
+
 #################################################################
 #    Object Properties
 #################################################################
+
+###  http://purl.org/cerif/frapo/hasFundingAgency
+frapo:hasFundingAgency rdf:type owl:ObjectProperty ;
+                       rdfs:domain frapo:Funding ;
+                       rdfs:range frapo:FundingAgency ;
+                       rdfs:comment "Links funding to the agency providing it. Every frapo:Funding instance in ORDA is required to carry one."@en ;
+                       rdfs:isDefinedBy frapo: ;
+                       rdfs:label "has funding agency"@en .
+
 
 ###  http://purl.org/cerif/frapo/isEmployedBy
 frapo:isEmployedBy rdf:type owl:ObjectProperty ;
@@ -56,15 +112,6 @@ frapo:isEmployedBy rdf:type owl:ObjectProperty ;
                    rdfs:isDefinedBy frapo: ;
                    rdfs:label "is employed by"@en .
 
-
-###  http://purl.org/cerif/frapo/isFundedBy
-###  http://purl.org/cerif/frapo/hasFundingAgency
-frapo:hasFundingAgency rdf:type owl:ObjectProperty ;
-                       rdfs:domain frapo:Funding ;
-                       rdfs:range frapo:FundingAgency ;
-                       rdfs:comment "Links funding to the agency providing it. Every frapo:Funding instance in ORDA is required to carry one."@en ;
-                       rdfs:isDefinedBy frapo: ;
-                       rdfs:label "has funding agency"@en .
 
 ###  http://purl.org/cerif/frapo/isFundedBy
 frapo:isFundedBy rdf:type owl:ObjectProperty ;
@@ -93,29 +140,6 @@ dct:hasFormat rdf:type owl:ObjectProperty ;
               rdfs:comment "Used here to link a dcat:Distribution to its format-specific schema description (csvw:Schema for CSV, or a foaf:Document URL for JSON Schema)."@en ;
               rdfs:isDefinedBy dct: ;
               rdfs:label "has format"@en .
-
-
-###  https://www.w3.org/ns/activitystreams#actor
-as:actor rdf:type owl:ObjectProperty ;
-         rdfs:domain as:Activity ;
-         rdfs:comment "Links an activity to the account that performed it. ActivityStreams leaves the range open (Object or Link); ORDA does not narrow it."@en ;
-         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
-         rdfs:label "actor"@en .
-
-
-###  https://www.w3.org/ns/activitystreams#attributedTo
-as:attributedTo rdf:type owl:ObjectProperty ;
-                rdfs:comment "Links an object to the account responsible for it. Used in ORDA where authorship of a post or item is asserted without a corresponding as:Create activity."@en ;
-                rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
-                rdfs:label "attributed to"@en .
-
-
-###  https://www.w3.org/ns/activitystreams#items
-as:items rdf:type owl:ObjectProperty ;
-         rdfs:domain as:Collection ;
-         rdfs:comment "Links a collection to its members. This is the property the orda:ActivityHistory subclasses are defined over. Note that ActivityStreams defines no 'orderedItems' property; ordering in an as:OrderedCollection is a JSON-LD serialisation concern, so as:items is used for both ordered and unordered histories."@en ;
-         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
-         rdfs:label "items"@en .
 
 
 ###  http://www.w3.org/ns/csvw#column
@@ -171,7 +195,7 @@ orda:amendsRequest rdf:type owl:ObjectProperty ,
 ###  https://example.org/orda#appliesMeasure
 orda:appliesMeasure rdf:type owl:ObjectProperty ;
                     rdfs:domain orda:AccessModality ;
-                    rdfs:range orda:DataHandlingMeasure ;
+                    rdfs:range <https://w3id.org/dpv/owl#TechnicalOrganisationalMeasure> ;
                     rdfs:comment "Links an access modality to the technical, legal or organisational measures that constitute it, e.g. a technical modality applying pseudonymisation, or a legal modality applying standard contractual clauses."@en ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
                     rdfs:label "applies measure"@en .
@@ -191,7 +215,7 @@ orda:assessedBy rdf:type owl:ObjectProperty ,
 orda:assessesMitigation rdf:type owl:ObjectProperty ;
                         rdfs:domain orda:ResearchProject ;
                         rdfs:range orda:DataProvider ;
-                        rdfs:comment "Links a research project to the VLOP or VLOSE whose risk mitigation measures (under Art. 35 DSA) it assesses for adequacy, efficiency and impact. Shares domain with orda:investigates per Art. 40(4)."@en ;
+                        rdfs:comment "Links a research project to the VLOP or VLOSE whose systemic risk mitigation measures (under Art. 35 DSA) it assesses for adequacy, efficiency and impact. Shares domain with orda:investigates per Art. 40(4)."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "assesses mitigation"@en .
 
@@ -199,8 +223,8 @@ orda:assessesMitigation rdf:type owl:ObjectProperty ;
 ###  https://example.org/orda#assessesMitigationMeasure
 orda:assessesMitigationMeasure rdf:type owl:ObjectProperty ;
                                rdfs:domain orda:ResearchProject ;
-                               rdfs:range orda:RiskMitigationMeasure ;
-                               rdfs:comment "Links a research project to the specific Art. 35 mitigation measure whose adequacy, efficiency and impact it assesses. Refines orda:assessesMitigation, which names only the platform."@en ;
+                               rdfs:range orda:SystemicRiskMitigationMeasure ;
+                               rdfs:comment "Links a research project to the specific Art. 35 systemic risk mitigation measure whose adequacy, efficiency and impact it assesses. Refines orda:assessesMitigation, which names only the platform."@en ;
                                rdfs:isDefinedBy <https://example.org/orda> ;
                                rdfs:label "assesses mitigation measure"@en .
 
@@ -272,7 +296,7 @@ orda:eventStatus rdf:type owl:ObjectProperty ,
 
 ###  https://example.org/orda#hasAccessJustification
 orda:hasAccessJustification rdf:type owl:ObjectProperty ;
-                            rdfs:subPropertyOf dpv:hasJustification ;
+                            rdfs:subPropertyOf <https://w3id.org/dpv/owl#hasJustification> ;
                             rdfs:domain orda:DataAccessRequest ;
                             rdfs:range orda:AccessJustification ;
                             rdfs:comment "Links a data access request to a statement in the application justifying the access sought. DSA Art. 40(8)(e) requires the application to demonstrate that the data and the time frames requested are necessary for, and proportionate to, the purposes of the research. Every data access request must carry at least one orda:NecessityStatement and at least one orda:ProportionalityStatement; a single statement addressing both limbs may be typed as both."@en ;
@@ -295,7 +319,7 @@ orda:hasAccessModality rdf:type owl:ObjectProperty ;
 
 ###  https://example.org/orda#hasAccount
 orda:hasAccount rdf:type owl:ObjectProperty ;
-                rdfs:domain dpv:NaturalPerson ;
+                rdfs:domain <https://w3id.org/dpv/owl#NaturalPerson> ;
                 rdfs:range orda:PlatformAccount ;
                 rdfs:comment "Links a real-world person to a platform account they hold. ActivityStreams has no term for this: it models accounts, not the people behind them, and as:Person is an account held by a human rather than the human themselves. The domain is dpv:NaturalPerson. DPV already names the concept ('A human'), so ORDA states the relation rather than coining a class for one of its ends. ORDA needs the relation because it is what separates the two Article 40 access routes: Art. 40(12) public data concerns accounts and their public activity, whereas Art. 40(4) non-public data may permit linkage back to the person holding them, which is the source of the re-identification risk the safeguards address. Note that a dpv:DataSubject is not automatically in this domain: DPV places data subjects under dpv:LegalEntity rather than dpv:NaturalPerson, so a platform user who holds accounts should carry both types. ORDA researchers are typed foaf:Person, so this property does not reach them either unless a researcher's own account is being described."@en ;
                 rdfs:isDefinedBy <https://example.org/orda> ;
@@ -361,7 +385,7 @@ orda:hasExpertConsultation rdf:type owl:ObjectProperty ;
 ###  https://example.org/orda#hasMeasure
 orda:hasMeasure rdf:type owl:ObjectProperty ;
                 rdfs:domain dcat:Distribution ;
-                rdfs:range orda:DataHandlingMeasure ;
+                rdfs:range <https://w3id.org/dpv/owl#TechnicalOrganisationalMeasure> ;
                 rdfs:comment "Links a dcat:Distribution to a technical, legal or organisational measure governing how the data it describes may be accessed and handled."@en ;
                 rdfs:isDefinedBy <https://example.org/orda> ;
                 rdfs:label "has measure"@en .
@@ -383,8 +407,8 @@ orda:hasMethod rdf:type owl:ObjectProperty ;
 ###  https://example.org/orda#hasMitigationMeasure
 orda:hasMitigationMeasure rdf:type owl:ObjectProperty ;
                           rdfs:domain orda:DataProvider ;
-                          rdfs:range orda:RiskMitigationMeasure ;
-                          rdfs:comment "Links a VLOP or VLOSE to a risk mitigation measure it has put in place under DSA Art. 35."@en ;
+                          rdfs:range orda:SystemicRiskMitigationMeasure ;
+                          rdfs:comment "Links a VLOP or VLOSE to a systemic risk mitigation measure it has put in place under DSA Art. 35."@en ;
                           rdfs:isDefinedBy <https://example.org/orda> ;
                           rdfs:label "has mitigation measure"@en .
 
@@ -677,40 +701,63 @@ orda:targets rdf:type owl:ObjectProperty ;
 
 
 ###  https://w3id.org/dpv/owl#hasContext
-dpv:hasContext rdfs:domain orda:ResearchProject ;
-                                      rdfs:range dpv:Context .
+<https://w3id.org/dpv/owl#hasContext> rdfs:domain orda:ResearchProject ;
+                                      rdfs:range <https://w3id.org/dpv/owl#Context> .
 
 
 ###  https://w3id.org/dpv/owl#hasData
-dpv:hasData rdfs:domain orda:ResearchProject .
+<https://w3id.org/dpv/owl#hasData> rdfs:domain orda:ResearchProject .
 
 
 ###  https://w3id.org/dpv/owl#hasDataSubject
-dpv:hasDataSubject rdfs:domain orda:DataAccessRequest ;
-                                          rdfs:range dpv:DataSubject .
+<https://w3id.org/dpv/owl#hasDataSubject> rdfs:domain orda:DataAccessRequest ;
+                                          rdfs:range <https://w3id.org/dpv/owl#DataSubject> .
 
 
 ###  https://w3id.org/dpv/owl#hasJurisdiction
-dpv:hasJurisdiction rdfs:domain orda:SystemicRisk ;
-                                           rdfs:range dpv:Location .
+<https://w3id.org/dpv/owl#hasJurisdiction> rdfs:domain orda:SystemicRisk ;
+                                           rdfs:range <https://w3id.org/dpv/owl#Location> .
 
 
 ###  https://w3id.org/dpv/owl#hasLegalBasis
-dpv:hasLegalBasis rdfs:domain [ rdf:type owl:Class ;
+<https://w3id.org/dpv/owl#hasLegalBasis> rdfs:domain [ rdf:type owl:Class ;
                                                        owl:unionOf ( orda:DataAccessRequest
                                                                      orda:ResearchProject
                                                                    )
                                                      ] ;
-                                         rdfs:range dpv:LegalBasis .
+                                         rdfs:range <https://w3id.org/dpv/owl#LegalBasis> .
 
 
 ###  https://w3id.org/dpv/owl#hasPurpose
-dpv:hasPurpose rdfs:domain orda:ResearchProject .
+<https://w3id.org/dpv/owl#hasPurpose> rdfs:domain orda:ResearchProject .
 
 
 ###  https://w3id.org/dpv/risk/owl#hasRiskAssessment
 <https://w3id.org/dpv/risk/owl#hasRiskAssessment> rdfs:domain orda:Art40_4_DataAccessRequest ;
-                                                  rdfs:range dpv:RiskAssessment .
+                                                  rdfs:range <https://w3id.org/dpv/owl#RiskAssessment> .
+
+
+###  https://www.w3.org/ns/activitystreams#actor
+as:actor rdf:type owl:ObjectProperty ;
+         rdfs:domain as:Activity ;
+         rdfs:comment "Links an activity to the account that performed it. ActivityStreams leaves the range open (Object or Link); ORDA does not narrow it."@en ;
+         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+         rdfs:label "actor"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#attributedTo
+as:attributedTo rdf:type owl:ObjectProperty ;
+                rdfs:comment "Links an object to the account responsible for it. Used in ORDA where authorship of a post or item is asserted without a corresponding as:Create activity."@en ;
+                rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+                rdfs:label "attributed to"@en .
+
+
+###  https://www.w3.org/ns/activitystreams#items
+as:items rdf:type owl:ObjectProperty ;
+         rdfs:domain as:Collection ;
+         rdfs:comment "Links a collection to its members. This is the property the orda:ActivityHistory subclasses are defined over. Note that ActivityStreams defines no 'orderedItems' property; ordering in an as:OrderedCollection is a JSON-LD serialisation concern, so as:items is used for both ordered and unordered histories."@en ;
+         rdfs:isDefinedBy <https://www.w3.org/ns/activitystreams> ;
+         rdfs:label "items"@en .
 
 
 #################################################################
@@ -751,23 +798,6 @@ frapo:hasStartDate rdf:type owl:DatatypeProperty ;
                    rdfs:range xsd:dateTime ;
                    rdfs:isDefinedBy frapo: ;
                    rdfs:label "has start date"@en .
-
-
-###  http://purl.org/dc/terms/description
-dct:description rdf:type owl:AnnotationProperty ;
-                rdfs:range xsd:string ;
-                rdfs:comment "Free text supplied by a party to the process (an applicant, a platform or a DSC), as opposed to a value ORDA models structurally. Declared an annotation property, as DCMI publishes it, because DPV uses dct:description to annotate its own ontology IRI and an OWL datatype property may not be asserted of an ontology; its three ORDA sub-properties are annotation properties for the same reason. ORDA uses this for descriptive text directly where a subject carries only one such text, as on orda:ResearchProject and on the orda:AccessJustification statements, and makes the narrower properties subproperties of it where a subject carries several, so that orda:independenceDeclaration, orda:publicationTimeline and orda:amendmentGrounds remain individually identifiable while still being reachable generically. Left without a domain deliberately, so that ORDA constrains nothing about the term for importers. Typed here as an owl:DatatypeProperty, which DCMI itself does not commit to."@en ;
-                rdfs:isDefinedBy dct: ;
-                rdfs:label "description"@en .
-
-
-###  http://purl.org/dc/terms/identifier
-dct:identifier rdf:type owl:AnnotationProperty ;
-               rdfs:domain orda:DataAccessRequest ;
-               rdfs:range xsd:string ;
-               rdfs:comment "The reference under which a data access request is registered, e.g. in the DSA Data Access Portal. Declared an annotation property rather than a datatype property: DPV, which ORDA imports, uses dct:identifier to annotate its own ontology IRI, and an OWL datatype property may not be asserted of an ontology. The same reasoning applies to dct:description. One consequence is that the previous owl:FunctionalProperty characteristic is dropped, so a second identifier on one request is no longer detected by a reasoner."@en ;
-               rdfs:isDefinedBy dct: ;
-               rdfs:label "identifier"@en .
 
 
 ###  http://www.w3.org/ns/csvw#datatype
@@ -836,16 +866,6 @@ orda:accessStartDate rdf:type owl:DatatypeProperty ,
                      rdfs:label "access start date"@en .
 
 
-###  https://example.org/orda#amendmentGrounds
-orda:amendmentGrounds rdf:type owl:AnnotationProperty ;
-                      rdfs:subPropertyOf dct:description ;
-                      rdfs:domain orda:AmendmentRequest ;
-                      rdfs:range xsd:string ;
-                      rdfs:comment "The grounds for the amendment request per Art. 40(5) DSA: (a) platform does not have access to the data, or (b) access would create significant vulnerabilities."@en ;
-                      rdfs:isDefinedBy <https://example.org/orda> ;
-                      rdfs:label "amendment grounds"@en .
-
-
 ###  https://example.org/orda#eventDate
 orda:eventDate rdf:type owl:DatatypeProperty ,
                         owl:FunctionalProperty ;
@@ -863,16 +883,6 @@ orda:hasPublicationCommitment rdf:type owl:DatatypeProperty ;
                               rdfs:comment "Whether the researcher has committed to publishing results publicly and free of charge within a reasonable period, as required by Art. 40(8)(g) DSA."@en ;
                               rdfs:isDefinedBy <https://example.org/orda> ;
                               rdfs:label "has publication commitment"@en .
-
-
-###  https://example.org/orda#independenceDeclaration
-orda:independenceDeclaration rdf:type owl:AnnotationProperty ;
-                             rdfs:subPropertyOf dct:description ;
-                             rdfs:domain orda:DataAccessRequest ;
-                             rdfs:range xsd:string ;
-                             rdfs:comment "A declaration by the researcher that they are independent from commercial interests in relation to the specific research project, as required by Art. 40(8)(b) DSA."@en ;
-                             rdfs:isDefinedBy <https://example.org/orda> ;
-                             rdfs:label "independence declaration"@en .
 
 
 ###  https://example.org/orda#projectEndDate
@@ -902,16 +912,6 @@ orda:projectTitle rdf:type owl:DatatypeProperty ,
                   rdfs:label "project title"@en .
 
 
-###  https://example.org/orda#publicationTimeline
-orda:publicationTimeline rdf:type owl:AnnotationProperty ;
-                         rdfs:subPropertyOf dct:description ;
-                         rdfs:domain orda:Art40_4_DataAccessRequest ;
-                         rdfs:range xsd:string ;
-                         rdfs:comment "The planned timeline for making research results publicly available, e.g. 'within 12 months of completion'."@en ;
-                         rdfs:isDefinedBy <https://example.org/orda> ;
-                         rdfs:label "publication timeline"@en .
-
-
 ###  https://example.org/orda#requestDate
 orda:requestDate rdf:type owl:DatatypeProperty ,
                           owl:FunctionalProperty ;
@@ -924,7 +924,7 @@ orda:requestDate rdf:type owl:DatatypeProperty ,
 
 ###  https://example.org/orda#researcherEmail
 orda:researcherEmail rdf:type owl:DatatypeProperty ;
-                     rdfs:domain orda:VettedResearcher ;
+                     rdfs:domain orda:Researcher ;
                      rdfs:range xsd:string ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "researcher email"@en .
@@ -932,7 +932,7 @@ orda:researcherEmail rdf:type owl:DatatypeProperty ;
 
 ###  https://example.org/orda#researcherName
 orda:researcherName rdf:type owl:DatatypeProperty ;
-                    rdfs:domain orda:VettedResearcher ;
+                    rdfs:domain orda:Researcher ;
                     rdfs:range xsd:string ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
                     rdfs:label "researcher name"@en .
@@ -1058,7 +1058,7 @@ foaf:Person rdf:type owl:Class ;
 
 ###  https://example.org/orda#AccessJustification
 orda:AccessJustification rdf:type owl:Class ;
-                         rdfs:subClassOf dpv:Justification ;
+                         rdfs:subClassOf <https://w3id.org/dpv/owl#Justification> ;
                          rdfs:comment "A statement made in a data access application justifying the access sought, reached via orda:hasAccessJustification. DSA Art. 40(8)(e) requires an application to demonstrate that access to the data and the time frames requested are necessary for, and proportionate to, the purposes of the research. The condition applies on both access routes: directly for Art. 40(4) applications as part of vetting under Art. 40(8), and for Art. 40(12) public data requests through that paragraph's cross-reference to Art. 40(8) points (b) to (e). The statement text is carried by dct:description. The class is a subclass of dpv:Justification and orda:hasAccessJustification a subproperty of dpv:hasJustification, so ORDA aligns with DPV without asserting anything about the DPV terms themselves."@en ;
                          rdfs:isDefinedBy <https://example.org/orda> ;
                          rdfs:label "Access Justification"@en ;
@@ -1128,8 +1128,7 @@ orda:Art40_4_DataAccessRequest rdf:type owl:Class ;
 
 ###  https://example.org/orda#BlockHistory
 orda:BlockHistory rdf:type owl:Class ;
-                  owl:equivalentClass [ rdf:type owl:Class ;
-                                        owl:intersectionOf ( orda:ActivityHistory
+                  owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                              [ rdf:type owl:Restriction ;
                                                                owl:onProperty as:items ;
                                                                owl:someValuesFrom as:Block
@@ -1138,7 +1137,8 @@ orda:BlockHistory rdf:type owl:Class ;
                                                                owl:onProperty as:items ;
                                                                owl:allValuesFrom as:Block
                                                              ]
-                                                           )
+                                                           ) ;
+                                        rdf:type owl:Class
                                       ] ;
                   rdfs:comment "A history of accounts blocked. Defined over as:Block, which ActivityStreams places under as:Ignore rather than directly under as:Activity."@en ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1172,27 +1172,27 @@ orda:CivicDiscourseRisk rdf:type owl:Class ;
 
 ###  https://example.org/orda#ConsumeHistory
 orda:ConsumeHistory rdf:type owl:Class ;
-                    owl:equivalentClass [ rdf:type owl:Class ;
-                                          owl:intersectionOf ( orda:ActivityHistory
+                    owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                                [ rdf:type owl:Restriction ;
                                                                  owl:onProperty as:items ;
                                                                  owl:someValuesFrom [ rdf:type owl:Class ;
-                                                                 owl:unionOf ( as:Listen
-                                                                               as:Read
-                                                                               as:View
-                                                                             )
-                                                               ]
+                                                                                      owl:unionOf ( as:Listen
+                                                                                                    as:Read
+                                                                                                    as:View
+                                                                                                  )
+                                                                                    ]
                                                                ]
                                                                [ rdf:type owl:Restriction ;
                                                                  owl:onProperty as:items ;
                                                                  owl:allValuesFrom [ rdf:type owl:Class ;
-                                                                 owl:unionOf ( as:Listen
-                                                                               as:Read
-                                                                               as:View
-                                                                             )
+                                                                                     owl:unionOf ( as:Listen
+                                                                                                   as:Read
+                                                                                                   as:View
+                                                                                                 )
+                                                                                   ]
                                                                ]
-                                                               ]
-                                                             )
+                                                             ) ;
+                                          rdf:type owl:Class
                                         ] ;
                     rdfs:comment "A history of content viewed, read or listened to. This is the closest ActivityStreams equivalent of a platform impression or recommender delivery log, and is typically the Art. 40(4) non-public data category most relevant to systemic risk research on recommender systems."@en ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1237,15 +1237,7 @@ orda:DataAccessRequest rdf:type owl:Class ;
                                                            orda:Art40_4_DataAccessRequest
                                                          )
                                            ] ;
-                       rdfs:subClassOf dpv:Process ,
-                                       [ rdf:type owl:Restriction ;
-                                         owl:onProperty orda:includesResearcher ;
-                                         owl:someValuesFrom orda:ApplicantResearcher
-                                       ] ,
-                                       [ rdf:type owl:Restriction ;
-                                         owl:onProperty orda:isPartOf ;
-                                         owl:someValuesFrom orda:ResearchProject
-                                       ] ,
+                       rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ,
                                        [ rdf:type owl:Restriction ;
                                          owl:onProperty orda:hasAccessJustification ;
                                          owl:someValuesFrom orda:NecessityStatement
@@ -1255,12 +1247,20 @@ orda:DataAccessRequest rdf:type owl:Class ;
                                          owl:someValuesFrom orda:ProportionalityStatement
                                        ] ,
                                        [ rdf:type owl:Restriction ;
-                                         owl:onProperty orda:accessStartDate ;
+                                         owl:onProperty orda:includesResearcher ;
+                                         owl:someValuesFrom orda:ApplicantResearcher
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:isPartOf ;
+                                         owl:someValuesFrom orda:ResearchProject
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orda:accessEndDate ;
                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                          owl:onDataRange xsd:date
                                        ] ,
                                        [ rdf:type owl:Restriction ;
-                                         owl:onProperty orda:accessEndDate ;
+                                         owl:onProperty orda:accessStartDate ;
                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                          owl:onDataRange xsd:date
                                        ] ;
@@ -1273,38 +1273,22 @@ orda:DataAccessRequest rdf:type owl:Class ;
                        rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_40> .
 
 
-###  https://example.org/orda#DataHandlingClause
-orda:DataHandlingClause rdf:type owl:Class ;
-                        rdfs:subClassOf orda:DataHandlingMeasure ;
-                        rdfs:comment "A legal clause that governs how data is handled under specific conditions, such as international transfers. Instances include the Transfer Impact Assessment required when data is sent outside the EU/EEA."@en ;
-                        rdfs:isDefinedBy <https://example.org/orda> ;
-                        rdfs:label "Data Handling Clause"@en .
-
-
-###  https://example.org/orda#DataHandlingMeasure
-orda:DataHandlingMeasure rdf:type owl:Class ;
-                         rdfs:subClassOf dpv:LegalMeasure ;
-                         rdfs:comment "A protective measure, whether technical, legal or organisational, attached to a dcat:Distribution to govern how the data it describes may be accessed and handled."@en ;
-                         rdfs:isDefinedBy <https://example.org/orda> ;
-                         rdfs:label "Data Handling Measure"@en .
-
-
 ###  https://example.org/orda#DataManagementPlan
 orda:DataManagementPlan rdf:type owl:Class ;
-                        rdfs:subClassOf orda:DataHandlingMeasure ,
+                        rdfs:subClassOf <https://w3id.org/dpv/owl#TechnicalOrganisationalMeasure> ,
                                         [ rdf:type owl:Restriction ;
-                                          owl:onProperty dpv:hasStorageCondition ;
-                                          owl:someValuesFrom dpv:StorageDeletion
+                                          owl:onProperty <https://w3id.org/dpv/owl#hasStorageCondition> ;
+                                          owl:someValuesFrom <https://w3id.org/dpv/owl#StorageDeletion>
                                         ] ,
                                         [ rdf:type owl:Restriction ;
-                                          owl:onProperty dpv:hasStorageCondition ;
-                                          owl:someValuesFrom dpv:StorageDuration
+                                          owl:onProperty <https://w3id.org/dpv/owl#hasStorageCondition> ;
+                                          owl:someValuesFrom <https://w3id.org/dpv/owl#StorageDuration>
                                         ] ,
                                         [ rdf:type owl:Restriction ;
-                                          owl:onProperty dpv:hasTechnicalOrganisationalMeasure ;
-                                          owl:someValuesFrom dpv:TechnicalOrganisationalMeasure
+                                          owl:onProperty <https://w3id.org/dpv/owl#hasTechnicalOrganisationalMeasure> ;
+                                          owl:someValuesFrom <https://w3id.org/dpv/owl#TechnicalOrganisationalMeasure>
                                         ] ;
-                        rdfs:comment "A plan governing how accessed data is stored, protected and deleted. Retention, deletion and security requirements are expressed with DPV terms: dpv:StorageDuration and dpv:StorageDeletion via dpv:hasStorageCondition, and dpv:TechnicalOrganisationalMeasure via dpv:hasTechnicalOrganisationalMeasure."@en ;
+                        rdfs:comment "A plan governing how accessed data is stored, protected and deleted. Retention, deletion and security requirements are expressed with DPV terms: dpv:StorageDuration and dpv:StorageDeletion via dpv:hasStorageCondition, and dpv:TechnicalOrganisationalMeasure via dpv:hasTechnicalOrganisationalMeasure. The only research-side safeguard given an ORDA class of its own: it is a named artefact of the Art. 40 vetting process and carries axioms of its own. Every other protective measure a researcher applies is documented directly with DPV terms under dpv:TechnicalOrganisationalMeasure rather than through an ORDA class hierarchy. Not to be confused with orda:SystemicRiskMitigationMeasure, which is a measure taken by a platform and studied by researchers, not one they are bound by."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "Data Management Plan"@en .
 
@@ -1316,7 +1300,7 @@ orda:DataProvider rdf:type owl:Class ;
                                                       orda:VeryLargeOnlineSearchEngine
                                                     )
                                       ] ;
-                  rdfs:subClassOf dpv:LegalEntity ;
+                  rdfs:subClassOf <https://w3id.org/dpv/owl#LegalEntity> ;
                   rdfs:comment "A superset including VLOPs and VLOSEs"@en ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
                   rdfs:label "Data Provider"@en .
@@ -1324,7 +1308,7 @@ orda:DataProvider rdf:type owl:Class ;
 
 ###  https://example.org/orda#DigitalServicesCoordinator
 orda:DigitalServicesCoordinator rdf:type owl:Class ;
-                                rdfs:subClassOf dpv:LegalEntity ;
+                                rdfs:subClassOf <https://w3id.org/dpv/owl#LegalEntity> ;
                                 rdfs:comment "A national authority designated under DSA Art. 49 to oversee DSA compliance and handle researcher data access applications under Art. 40."@en ;
                                 rdfs:isDefinedBy <https://example.org/orda> ;
                                 rdfs:label "Digital Services Coordinator"@en ;
@@ -1347,8 +1331,7 @@ orda:ExpertConsultation rdf:type owl:Class ;
 
 ###  https://example.org/orda#FavoriteHistory
 orda:FavoriteHistory rdf:type owl:Class ;
-                     owl:equivalentClass [ rdf:type owl:Class ;
-                                           owl:intersectionOf ( orda:ActivityHistory
+                     owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                                 [ rdf:type owl:Restriction ;
                                                                   owl:onProperty as:items ;
                                                                   owl:someValuesFrom as:Like
@@ -1357,7 +1340,8 @@ orda:FavoriteHistory rdf:type owl:Class ;
                                                                   owl:onProperty as:items ;
                                                                   owl:allValuesFrom as:Like
                                                                 ]
-                                                              )
+                                                              ) ;
+                                           rdf:type owl:Class
                                          ] ;
                      rdfs:comment "A history of content favourited. Because this is defined over as:Like alone while orda:ReactionHistory admits as:Like and as:Dislike, every favorite history is inferred to be a reaction history."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1366,8 +1350,7 @@ orda:FavoriteHistory rdf:type owl:Class ;
 
 ###  https://example.org/orda#FollowHistory
 orda:FollowHistory rdf:type owl:Class ;
-                   owl:equivalentClass [ rdf:type owl:Class ;
-                                         owl:intersectionOf ( orda:ActivityHistory
+                   owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                               [ rdf:type owl:Restriction ;
                                                                 owl:onProperty as:items ;
                                                                 owl:someValuesFrom as:Follow
@@ -1376,7 +1359,8 @@ orda:FollowHistory rdf:type owl:Class ;
                                                                 owl:onProperty as:items ;
                                                                 owl:allValuesFrom as:Follow
                                                               ]
-                                                            )
+                                                            ) ;
+                                         rdf:type owl:Class
                                        ] ;
                    rdfs:comment "A history of follow relationships. ActivityStreams models following as a single as:Follow activity, so follower and followed histories cannot be told apart by member type alone; the two directions are given as primitive subclasses."@en ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1414,15 +1398,6 @@ orda:IllegalContentRisk rdf:type owl:Class ;
                         rdfs:comment "DSA Art. 34(1)(a): systemic risks from dissemination of illegal content."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "Illegal Content Risk"@en .
-
-
-###  https://example.org/orda#InternationalDataTransferMeasure
-orda:InternationalDataTransferMeasure rdf:type owl:Class ;
-                                      rdfs:subClassOf orda:DataHandlingMeasure ;
-                                      rdfs:comment "Measures to ensure that any transfer of data out of the EU/EEA is subject to an appropriate transfer mechanism under GDPR Chapter V. Instances include Standard Contractual Clauses and Adequacy Decisions."@en ;
-                                      rdfs:isDefinedBy <https://example.org/orda> ;
-                                      rdfs:label "International Data Transfer Measure"@en ;
-                                      rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679#chap_V> .
 
 
 ###  https://example.org/orda#LegalModality
@@ -1498,8 +1473,7 @@ orda:PublicWellbeingRisk rdf:type owl:Class ;
 
 ###  https://example.org/orda#PublishPostHistory
 orda:PublishPostHistory rdf:type owl:Class ;
-                        owl:equivalentClass [ rdf:type owl:Class ;
-                                              owl:intersectionOf ( orda:ActivityHistory
+                        owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                                    [ rdf:type owl:Restriction ;
                                                                      owl:onProperty as:items ;
                                                                      owl:someValuesFrom as:Create
@@ -1508,7 +1482,8 @@ orda:PublishPostHistory rdf:type owl:Class ;
                                                                      owl:onProperty as:items ;
                                                                      owl:allValuesFrom as:Create
                                                                    ]
-                                                                 )
+                                                                 ) ;
+                                              rdf:type owl:Class
                                             ] ;
                         rdfs:comment "A history of content published by the account, defined over as:Create."@en ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1517,25 +1492,25 @@ orda:PublishPostHistory rdf:type owl:Class ;
 
 ###  https://example.org/orda#ReactionHistory
 orda:ReactionHistory rdf:type owl:Class ;
-                     owl:equivalentClass [ rdf:type owl:Class ;
-                                           owl:intersectionOf ( orda:ActivityHistory
+                     owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                                 [ rdf:type owl:Restriction ;
                                                                   owl:onProperty as:items ;
                                                                   owl:someValuesFrom [ rdf:type owl:Class ;
-                                                                 owl:unionOf ( as:Dislike
-                                                                               as:Like
-                                                                             )
-                                                               ]
+                                                                                       owl:unionOf ( as:Dislike
+                                                                                                     as:Like
+                                                                                                   )
+                                                                                     ]
                                                                 ]
                                                                 [ rdf:type owl:Restriction ;
                                                                   owl:onProperty as:items ;
                                                                   owl:allValuesFrom [ rdf:type owl:Class ;
-                                                                 owl:unionOf ( as:Dislike
-                                                                               as:Like
-                                                                             )
-                                                               ]
+                                                                                      owl:unionOf ( as:Dislike
+                                                                                                    as:Like
+                                                                                                  )
+                                                                                    ]
                                                                 ]
-                                                              )
+                                                              ) ;
+                                           rdf:type owl:Class
                                          ] ;
                      rdfs:comment "A history of reactions to content, whether positive or negative. Subsumes orda:FavoriteHistory."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1565,12 +1540,12 @@ orda:ResearchMethod rdf:type owl:Class ;
 
 ###  https://example.org/orda#ResearchProject
 orda:ResearchProject rdf:type owl:Class ;
-                     rdfs:subClassOf dpv:Process ,
+                     rdfs:subClassOf <https://w3id.org/dpv/owl#Process> ,
                                      [ rdf:type owl:Restriction ;
                                        owl:onProperty frapo:isFundedBy ;
                                        owl:someValuesFrom frapo:Funding
                                      ] ;
-                     rdfs:comment "A research project that processes data, defined as a subclass of dpv:Process. Under DSA Art. 40, may submit data access requests to investigate systemic risks or assess risk mitigation measures within the EU."@en ;
+                     rdfs:comment "A research project that processes data, defined as a subclass of dpv:Process. Under DSA Art. 40, may submit data access requests to investigate systemic risks or assess systemic risk mitigation measures within the EU."@en ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Research Project"@en .
 
@@ -1595,15 +1570,6 @@ orda:Researcher rdf:type owl:Class ;
                 rdfs:label "Researcher"@en .
 
 
-###  https://example.org/orda#RiskMitigationMeasure
-orda:RiskMitigationMeasure rdf:type owl:Class ;
-                           rdfs:subClassOf dpv:RiskMitigationMeasure ;
-                           rdfs:comment "A measure put in place by a VLOP or VLOSE under DSA Art. 35 to mitigate the systemic risks identified under Art. 34. Specialises dpv:RiskMitigationMeasure to the DSA systemic-risk setting, mirroring the way orda:SystemicRisk is kept distinct from dpv:Risk."@en ;
-                           rdfs:isDefinedBy <https://example.org/orda> ;
-                           rdfs:label "Risk Mitigation Measure"@en ;
-                           rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_35> .
-
-
 ###  https://example.org/orda#Search
 orda:Search rdf:type owl:Class ;
             rdfs:subClassOf as:Activity ;
@@ -1614,8 +1580,7 @@ orda:Search rdf:type owl:Class ;
 
 ###  https://example.org/orda#SearchHistory
 orda:SearchHistory rdf:type owl:Class ;
-                   owl:equivalentClass [ rdf:type owl:Class ;
-                                         owl:intersectionOf ( orda:ActivityHistory
+                   owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                               [ rdf:type owl:Restriction ;
                                                                 owl:onProperty as:items ;
                                                                 owl:someValuesFrom orda:Search
@@ -1624,7 +1589,8 @@ orda:SearchHistory rdf:type owl:Class ;
                                                                 owl:onProperty as:items ;
                                                                 owl:allValuesFrom orda:Search
                                                               ]
-                                                            )
+                                                            ) ;
+                                         rdf:type owl:Class
                                        ] ;
                    rdfs:comment "A history of queries issued by the account. Defined over the ORDA-native orda:Search, as ActivityStreams supplies no equivalent activity type."@en ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1633,8 +1599,7 @@ orda:SearchHistory rdf:type owl:Class ;
 
 ###  https://example.org/orda#ShareHistory
 orda:ShareHistory rdf:type owl:Class ;
-                  owl:equivalentClass [ rdf:type owl:Class ;
-                                        owl:intersectionOf ( orda:ActivityHistory
+                  owl:equivalentClass [ owl:intersectionOf ( orda:ActivityHistory
                                                              [ rdf:type owl:Restriction ;
                                                                owl:onProperty as:items ;
                                                                owl:someValuesFrom as:Announce
@@ -1643,7 +1608,8 @@ orda:ShareHistory rdf:type owl:Class ;
                                                                owl:onProperty as:items ;
                                                                owl:allValuesFrom as:Announce
                                                              ]
-                                                           )
+                                                           ) ;
+                                        rdf:type owl:Class
                                       ] ;
                   rdfs:comment "A history of content shared or reposted by the account, defined over as:Announce."@en ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
@@ -1680,6 +1646,15 @@ orda:SystemicRisk rdf:type owl:Class ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
                   rdfs:label "Systemic Risk"@en ;
                   rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_34> .
+
+
+###  https://example.org/orda#SystemicRiskMitigationMeasure
+orda:SystemicRiskMitigationMeasure rdf:type owl:Class ;
+                                   rdfs:subClassOf <https://w3id.org/dpv/owl#RiskMitigationMeasure> ;
+                                   rdfs:comment "A measure put in place by a VLOP or VLOSE under DSA Art. 35 to mitigate the systemic risks identified under Art. 34. Specialises dpv:RiskMitigationMeasure to the DSA systemic-risk setting, mirroring the way orda:SystemicRisk is kept distinct from dpv:Risk. Named for the risks it addresses, and so for the fact that it is an object of study: it is a measure taken by the platform, which a research project may investigate under Art. 40(4) for adequacy, efficiency and impact. It is not a safeguard the researcher is bound by. Those are documented with DPV terms under dpv:TechnicalOrganisationalMeasure, reached via orda:hasMeasure, orda:appliesMeasure and orda:DataManagementPlan."@en ;
+                                   rdfs:isDefinedBy <https://example.org/orda> ;
+                                   rdfs:label "Systemic Risk Mitigation Measure"@en ;
+                                   rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065#art_35> .
 
 
 ###  https://example.org/orda#TechnicalModality
@@ -1727,221 +1702,221 @@ orda:VettedResearcher rdf:type owl:Class ;
 
 
 ###  https://w3id.org/dpv/owl#Adult
-dpv:Adult rdf:type owl:Class ;
-          rdfs:comment "A natural person that is not a child i.e. has attained the age of maturity."@en ;
-          rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-          rdfs:label "Adult"@en .
+<https://w3id.org/dpv/owl#Adult> rdf:type owl:Class ;
+                                 rdfs:comment "A natural person that is not a child i.e. has attained the age of maturity."@en ;
+                                 rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                 rdfs:label "Adult"@en .
 
 
 ###  https://w3id.org/dpv/owl#Applicant
-dpv:Applicant rdf:type owl:Class ;
-              rdfs:comment "Data subjects that have applied for something."@en ;
-              rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-              rdfs:label "Applicant"@en .
+<https://w3id.org/dpv/owl#Applicant> rdf:type owl:Class ;
+                                     rdfs:comment "Data subjects that have applied for something."@en ;
+                                     rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                     rdfs:label "Applicant"@en .
 
 
 ###  https://w3id.org/dpv/owl#AsylumSeeker
-dpv:AsylumSeeker rdf:type owl:Class ;
-                 rdfs:comment "Data subjects that are asylum seekers."@en ;
-                 rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                 rdfs:label "Asylum Seeker"@en .
+<https://w3id.org/dpv/owl#AsylumSeeker> rdf:type owl:Class ;
+                                        rdfs:comment "Data subjects that are asylum seekers."@en ;
+                                        rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                        rdfs:label "Asylum Seeker"@en .
 
 
 ###  https://w3id.org/dpv/owl#Child
-dpv:Child rdf:type owl:Class ;
-          rdfs:comment "A natural person that has not attained the age of maturity."@en ;
-          rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-          rdfs:label "Child"@en .
+<https://w3id.org/dpv/owl#Child> rdf:type owl:Class ;
+                                 rdfs:comment "A natural person that has not attained the age of maturity."@en ;
+                                 rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                 rdfs:label "Child"@en .
 
 
 ###  https://w3id.org/dpv/owl#Citizen
-dpv:Citizen rdf:type owl:Class ;
-            rdfs:comment "Data subjects that are citizens of a jurisdiction."@en ;
-            rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-            rdfs:label "Citizen"@en .
+<https://w3id.org/dpv/owl#Citizen> rdf:type owl:Class ;
+                                   rdfs:comment "Data subjects that are citizens of a jurisdiction."@en ;
+                                   rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                   rdfs:label "Citizen"@en .
 
 
 ###  https://w3id.org/dpv/owl#Client
-dpv:Client rdf:type owl:Class ;
-           rdfs:comment "Data subjects that are clients of a service."@en ;
-           rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-           rdfs:label "Client"@en .
+<https://w3id.org/dpv/owl#Client> rdf:type owl:Class ;
+                                  rdfs:comment "Data subjects that are clients of a service."@en ;
+                                  rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                  rdfs:label "Client"@en .
 
 
 ###  https://w3id.org/dpv/owl#Consumer
-dpv:Consumer rdf:type owl:Class ;
-             rdfs:comment "Data subjects that consume goods or services."@en ;
-             rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-             rdfs:label "Consumer"@en .
+<https://w3id.org/dpv/owl#Consumer> rdf:type owl:Class ;
+                                    rdfs:comment "Data subjects that consume goods or services."@en ;
+                                    rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                    rdfs:label "Consumer"@en .
 
 
 ###  https://w3id.org/dpv/owl#Customer
-dpv:Customer rdf:type owl:Class ;
-             rdfs:comment "Data subjects that are customers of a service or product."@en ;
-             rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-             rdfs:label "Customer"@en .
+<https://w3id.org/dpv/owl#Customer> rdf:type owl:Class ;
+                                    rdfs:comment "Data subjects that are customers of a service or product."@en ;
+                                    rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                    rdfs:label "Customer"@en .
 
 
 ###  https://w3id.org/dpv/owl#DataSubject
-dpv:DataSubject rdf:type owl:Class ;
-                rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. An instance that is also typed dpv:NaturalPerson may be linked via orda:hasAccount to the platform accounts it holds; the account itself is an orda:PlatformAccount. The second typing has to be stated: in DPV, dpv:DataSubject sits under dpv:HumanSubject and dpv:LegalEntity, which is a separate branch of dpv:Entity from dpv:NaturalPerson, so being a data subject does not by itself make an instance a natural person. The two are distinct (an account is not the person holding it), but ORDA does not assert disjointness between them, so keeping them apart is a modelling convention here rather than something a reasoner enforces. The DPV entity hierarchy and the ActivityStreams actor types are kept independent."@en ;
-                rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                rdfs:label "Data Subject"@en .
+<https://w3id.org/dpv/owl#DataSubject> rdf:type owl:Class ;
+                                       rdfs:comment "A natural person whose personal data is processed. In the Art. 40 context, these are platform users whose data researchers access. An instance that is also typed dpv:NaturalPerson may be linked via orda:hasAccount to the platform accounts it holds; the account itself is an orda:PlatformAccount. The second typing has to be stated: in DPV, dpv:DataSubject sits under dpv:HumanSubject and dpv:LegalEntity, which is a separate branch of dpv:Entity from dpv:NaturalPerson, so being a data subject does not by itself make an instance a natural person. The two are distinct (an account is not the person holding it), but ORDA does not assert disjointness between them, so keeping them apart is a modelling convention here rather than something a reasoner enforces. The DPV entity hierarchy and the ActivityStreams actor types are kept independent."@en ;
+                                       rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                       rdfs:label "Data Subject"@en .
 
 
 ###  https://w3id.org/dpv/owl#ElderlyDataSubject
-dpv:ElderlyDataSubject rdf:type owl:Class ;
-                       rdfs:comment "Data subjects that are considered elderly (i.e. based on age)."@en ;
-                       rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                       rdfs:label "Elderly Data Subject"@en .
+<https://w3id.org/dpv/owl#ElderlyDataSubject> rdf:type owl:Class ;
+                                              rdfs:comment "Data subjects that are considered elderly (i.e. based on age)."@en ;
+                                              rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                              rdfs:label "Elderly Data Subject"@en .
 
 
 ###  https://w3id.org/dpv/owl#Employee
-dpv:Employee rdf:type owl:Class ;
-             rdfs:comment "Data subjects that are employees."@en ;
-             rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-             rdfs:label "Employee"@en .
+<https://w3id.org/dpv/owl#Employee> rdf:type owl:Class ;
+                                    rdfs:comment "Data subjects that are employees."@en ;
+                                    rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                    rdfs:label "Employee"@en .
 
 
 ###  https://w3id.org/dpv/owl#GuardianOfDataSubject
-dpv:GuardianOfDataSubject rdf:type owl:Class ;
-                          rdfs:comment "Guardian(s) of a data subject."@en ;
-                          rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                          rdfs:label "Guardian(s) of Data Subject"@en .
+<https://w3id.org/dpv/owl#GuardianOfDataSubject> rdf:type owl:Class ;
+                                                 rdfs:comment "Guardian(s) of a data subject."@en ;
+                                                 rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                                 rdfs:label "Guardian(s) of Data Subject"@en .
 
 
 ###  https://w3id.org/dpv/owl#HumanSubject
-dpv:HumanSubject rdf:type owl:Class ;
-                 rdfs:comment "A human that is the subject of a specific context, such as Data Subject for data or AI Subject for AI."@en ;
-                 rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                 rdfs:label "Human Subject"@en .
+<https://w3id.org/dpv/owl#HumanSubject> rdf:type owl:Class ;
+                                        rdfs:comment "A human that is the subject of a specific context, such as Data Subject for data or AI Subject for AI."@en ;
+                                        rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                        rdfs:label "Human Subject"@en .
 
 
 ###  https://w3id.org/dpv/owl#Immigrant
-dpv:Immigrant rdf:type owl:Class ;
-              rdfs:comment "Data subjects that are immigrants."@en ;
-              rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-              rdfs:label "Immigrant"@en .
+<https://w3id.org/dpv/owl#Immigrant> rdf:type owl:Class ;
+                                     rdfs:comment "Data subjects that are immigrants."@en ;
+                                     rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                     rdfs:label "Immigrant"@en .
 
 
 ###  https://w3id.org/dpv/owl#JobApplicant
-dpv:JobApplicant rdf:type owl:Class ;
-                 rdfs:comment "Data subjects that have applied for a job."@en ;
-                 rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                 rdfs:label "Job Applicant"@en .
+<https://w3id.org/dpv/owl#JobApplicant> rdf:type owl:Class ;
+                                        rdfs:comment "Data subjects that have applied for a job."@en ;
+                                        rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                        rdfs:label "Job Applicant"@en .
 
 
 ###  https://w3id.org/dpv/owl#Justification
-dpv:Justification rdf:type owl:Class ;
-                  rdfs:comment "A form of documentation providing reasons, explanations, or justifications. ORDA places orda:AccessJustification beneath this so that the Art. 40(8)(e) demonstration is discoverable as a DPV justification, without asserting anything about the DPV term itself."@en ;
-                  rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                  rdfs:label "Justification"@en .
+<https://w3id.org/dpv/owl#Justification> rdf:type owl:Class ;
+                                         rdfs:comment "A form of documentation providing reasons, explanations, or justifications. ORDA places orda:AccessJustification beneath this so that the Art. 40(8)(e) demonstration is discoverable as a DPV justification, without asserting anything about the DPV term itself."@en ;
+                                         rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                         rdfs:label "Justification"@en .
 
 
 ###  https://w3id.org/dpv/owl#LegalEntity
-dpv:LegalEntity rdf:type owl:Class ;
-                rdfs:isDefinedBy <https://w3id.org/dpv/owl#> .
+<https://w3id.org/dpv/owl#LegalEntity> rdf:type owl:Class ;
+                                       rdfs:isDefinedBy <https://w3id.org/dpv/owl#> .
 
 
 ###  https://w3id.org/dpv/owl#Location
-dpv:Location rdf:type owl:Class ;
-             rdfs:isDefinedBy <https://w3id.org/dpv/owl#> .
+<https://w3id.org/dpv/owl#Location> rdf:type owl:Class ;
+                                    rdfs:isDefinedBy <https://w3id.org/dpv/owl#> .
 
 
 ###  https://w3id.org/dpv/owl#Member
-dpv:Member rdf:type owl:Class ;
-           rdfs:comment "Data subjects that are members of a group or organisation."@en ;
-           rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-           rdfs:label "Member"@en .
+<https://w3id.org/dpv/owl#Member> rdf:type owl:Class ;
+                                  rdfs:comment "Data subjects that are members of a group or organisation."@en ;
+                                  rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                  rdfs:label "Member"@en .
 
 
 ###  https://w3id.org/dpv/owl#MentallyVulnerableDataSubject
-dpv:MentallyVulnerableDataSubject rdf:type owl:Class ;
-                                  rdfs:comment "Data subjects that are considered mentally vulnerable."@en ;
-                                  rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                                  rdfs:label "Mentally Vulnerable Data Subject"@en .
+<https://w3id.org/dpv/owl#MentallyVulnerableDataSubject> rdf:type owl:Class ;
+                                                         rdfs:comment "Data subjects that are considered mentally vulnerable."@en ;
+                                                         rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                                         rdfs:label "Mentally Vulnerable Data Subject"@en .
 
 
 ###  https://w3id.org/dpv/owl#NaturalPerson
-dpv:NaturalPerson rdf:type owl:Class ;
-                  rdfs:comment "A human."@en ;
-                  rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                  rdfs:label "Natural Person"@en .
+<https://w3id.org/dpv/owl#NaturalPerson> rdf:type owl:Class ;
+                                         rdfs:comment "A human."@en ;
+                                         rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                         rdfs:label "Natural Person"@en .
 
 
 ###  https://w3id.org/dpv/owl#NonCitizen
-dpv:NonCitizen rdf:type owl:Class ;
-               rdfs:comment "Data subjects that are not citizens of a jurisdiction."@en ;
-               rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-               rdfs:label "Non-Citizen"@en .
+<https://w3id.org/dpv/owl#NonCitizen> rdf:type owl:Class ;
+                                      rdfs:comment "Data subjects that are not citizens of a jurisdiction."@en ;
+                                      rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                      rdfs:label "Non-Citizen"@en .
 
 
 ###  https://w3id.org/dpv/owl#ParentOfDataSubject
-dpv:ParentOfDataSubject rdf:type owl:Class ;
-                        rdfs:comment "Parent(s) of a data subject."@en ;
-                        rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                        rdfs:label "Parent(s) of Data Subject"@en .
+<https://w3id.org/dpv/owl#ParentOfDataSubject> rdf:type owl:Class ;
+                                               rdfs:comment "Parent(s) of a data subject."@en ;
+                                               rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                               rdfs:label "Parent(s) of Data Subject"@en .
 
 
 ###  https://w3id.org/dpv/owl#Participant
-dpv:Participant rdf:type owl:Class ;
-                rdfs:comment "Data subjects that participate in an activity or process."@en ;
-                rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                rdfs:label "Participant"@en .
+<https://w3id.org/dpv/owl#Participant> rdf:type owl:Class ;
+                                       rdfs:comment "Data subjects that participate in an activity or process."@en ;
+                                       rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                       rdfs:label "Participant"@en .
 
 
 ###  https://w3id.org/dpv/owl#Patient
-dpv:Patient rdf:type owl:Class ;
-            rdfs:comment "Data subjects that receive medical attention, treatment, or care."@en ;
-            rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-            rdfs:label "Patient"@en .
+<https://w3id.org/dpv/owl#Patient> rdf:type owl:Class ;
+                                   rdfs:comment "Data subjects that receive medical attention, treatment, or care."@en ;
+                                   rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                   rdfs:label "Patient"@en .
 
 
 ###  https://w3id.org/dpv/owl#Student
-dpv:Student rdf:type owl:Class ;
-            rdfs:comment "Data subjects that are students."@en ;
-            rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-            rdfs:label "Student"@en .
+<https://w3id.org/dpv/owl#Student> rdf:type owl:Class ;
+                                   rdfs:comment "Data subjects that are students."@en ;
+                                   rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                   rdfs:label "Student"@en .
 
 
 ###  https://w3id.org/dpv/owl#Subscriber
-dpv:Subscriber rdf:type owl:Class ;
-               rdfs:comment "Data subjects that subscribe to a service."@en ;
-               rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-               rdfs:label "Subscriber"@en .
+<https://w3id.org/dpv/owl#Subscriber> rdf:type owl:Class ;
+                                      rdfs:comment "Data subjects that subscribe to a service."@en ;
+                                      rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                      rdfs:label "Subscriber"@en .
 
 
 ###  https://w3id.org/dpv/owl#SupraNationalUnion
-dpv:SupraNationalUnion rdf:type owl:Class ;
-                       rdfs:isDefinedBy <https://w3id.org/dpv/owl#> .
+<https://w3id.org/dpv/owl#SupraNationalUnion> rdf:type owl:Class ;
+                                              rdfs:isDefinedBy <https://w3id.org/dpv/owl#> .
 
 
 ###  https://w3id.org/dpv/owl#Tourist
-dpv:Tourist rdf:type owl:Class ;
-            rdfs:comment "Data subjects that are tourists."@en ;
-            rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-            rdfs:label "Tourist"@en .
+<https://w3id.org/dpv/owl#Tourist> rdf:type owl:Class ;
+                                   rdfs:comment "Data subjects that are tourists."@en ;
+                                   rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                   rdfs:label "Tourist"@en .
 
 
 ###  https://w3id.org/dpv/owl#User
-dpv:User rdf:type owl:Class ;
-         rdfs:comment "Data subjects that use a service or product."@en ;
-         rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-         rdfs:label "User"@en .
+<https://w3id.org/dpv/owl#User> rdf:type owl:Class ;
+                                rdfs:comment "Data subjects that use a service or product."@en ;
+                                rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                rdfs:label "User"@en .
 
 
 ###  https://w3id.org/dpv/owl#Visitor
-dpv:Visitor rdf:type owl:Class ;
-            rdfs:comment "Data subjects that visit a place or service."@en ;
-            rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-            rdfs:label "Visitor"@en .
+<https://w3id.org/dpv/owl#Visitor> rdf:type owl:Class ;
+                                   rdfs:comment "Data subjects that visit a place or service."@en ;
+                                   rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                   rdfs:label "Visitor"@en .
 
 
 ###  https://w3id.org/dpv/owl#VulnerableDataSubject
-dpv:VulnerableDataSubject rdf:type owl:Class ;
-                          rdfs:comment "Data subjects which should be considered 'vulnerable' and therefore would require additional measures and safeguards."@en ;
-                          rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
-                          rdfs:label "Vulnerable Data Subject"@en .
+<https://w3id.org/dpv/owl#VulnerableDataSubject> rdf:type owl:Class ;
+                                                 rdfs:comment "Data subjects which should be considered 'vulnerable' and therefore would require additional measures and safeguards."@en ;
+                                                 rdfs:isDefinedBy <https://w3id.org/dpv/owl#> ;
+                                                 rdfs:label "Vulnerable Data Subject"@en .
 
 
 ###  https://www.w3.org/ns/activitystreams#Activity
@@ -2109,7 +2084,7 @@ as:View rdf:type owl:Class ;
 ###  https://example.org/orda#AliExpressVLOP
 orda:AliExpressVLOP rdf:type owl:NamedIndividual ,
                              orda:VeryLargeOnlinePlatform ;
-                    dpv:hasLocation loc:NL ;
+                    <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
                     rdfs:label "AliExpress"@en ;
                     rdfs:seeAlso <https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses> .
@@ -2118,7 +2093,7 @@ orda:AliExpressVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#AmazonStoreVLOP
 orda:AmazonStoreVLOP rdf:type owl:NamedIndividual ,
                               orda:VeryLargeOnlinePlatform ;
-                     dpv:hasLocation loc:LU ;
+                     <https://w3id.org/dpv/owl#hasLocation> loc:LU ;
                      rdfs:isDefinedBy <https://example.org/orda> ;
                      rdfs:label "Amazon Store"@en .
 
@@ -2126,7 +2101,7 @@ orda:AmazonStoreVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#AppStoreVLOP
 orda:AppStoreVLOP rdf:type owl:NamedIndividual ,
                            orda:VeryLargeOnlinePlatform ;
-                  dpv:hasLocation loc:IE ;
+                  <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
                   rdfs:label "Apple App Store"@en .
 
@@ -2134,7 +2109,7 @@ orda:AppStoreVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#BingVLOSE
 orda:BingVLOSE rdf:type owl:NamedIndividual ,
                         orda:VeryLargeOnlineSearchEngine ;
-               dpv:hasLocation loc:IE ;
+               <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                rdfs:isDefinedBy <https://example.org/orda> ;
                rdfs:label "Bing"@en .
 
@@ -2142,7 +2117,7 @@ orda:BingVLOSE rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#BookingVLOP
 orda:BookingVLOP rdf:type owl:NamedIndividual ,
                           orda:VeryLargeOnlinePlatform ;
-                 dpv:hasLocation loc:NL ;
+                 <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
                  rdfs:isDefinedBy <https://example.org/orda> ;
                  rdfs:label "Booking.com"@en .
 
@@ -2150,7 +2125,7 @@ orda:BookingVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#FacebookVLOP
 orda:FacebookVLOP rdf:type owl:NamedIndividual ,
                            orda:VeryLargeOnlinePlatform ;
-                  dpv:hasLocation loc:IE ;
+                  <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
                   rdfs:label "Facebook"@en .
 
@@ -2158,7 +2133,7 @@ orda:FacebookVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#GoogleMapsVLOP
 orda:GoogleMapsVLOP rdf:type owl:NamedIndividual ,
                              orda:VeryLargeOnlinePlatform ;
-                    dpv:hasLocation loc:IE ;
+                    <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
                     rdfs:label "Google Maps"@en .
 
@@ -2166,7 +2141,7 @@ orda:GoogleMapsVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#GooglePlayVLOP
 orda:GooglePlayVLOP rdf:type owl:NamedIndividual ,
                              orda:VeryLargeOnlinePlatform ;
-                    dpv:hasLocation loc:IE ;
+                    <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                     rdfs:isDefinedBy <https://example.org/orda> ;
                     rdfs:label "Google Play"@en .
 
@@ -2174,7 +2149,7 @@ orda:GooglePlayVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#GoogleSearchVLOSE
 orda:GoogleSearchVLOSE rdf:type owl:NamedIndividual ,
                                 orda:VeryLargeOnlineSearchEngine ;
-                       dpv:hasLocation loc:IE ;
+                       <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                        rdfs:isDefinedBy <https://example.org/orda> ;
                        rdfs:label "Google Search"@en .
 
@@ -2182,7 +2157,7 @@ orda:GoogleSearchVLOSE rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#GoogleShoppingVLOP
 orda:GoogleShoppingVLOP rdf:type owl:NamedIndividual ,
                                  orda:VeryLargeOnlinePlatform ;
-                        dpv:hasLocation loc:IE ;
+                        <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                         rdfs:isDefinedBy <https://example.org/orda> ;
                         rdfs:label "Google Shopping"@en .
 
@@ -2190,7 +2165,7 @@ orda:GoogleShoppingVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#InstagramVLOP
 orda:InstagramVLOP rdf:type owl:NamedIndividual ,
                             orda:VeryLargeOnlinePlatform ;
-                   dpv:hasLocation loc:IE ;
+                   <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
                    rdfs:label "Instagram"@en .
 
@@ -2198,7 +2173,7 @@ orda:InstagramVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#LinkedInVLOP
 orda:LinkedInVLOP rdf:type owl:NamedIndividual ,
                            orda:VeryLargeOnlinePlatform ;
-                  dpv:hasLocation loc:IE ;
+                  <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
                   rdfs:label "LinkedIn"@en .
 
@@ -2206,7 +2181,7 @@ orda:LinkedInVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#PinterestVLOP
 orda:PinterestVLOP rdf:type owl:NamedIndividual ,
                             orda:VeryLargeOnlinePlatform ;
-                   dpv:hasLocation loc:IE ;
+                   <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
                    rdfs:label "Pinterest"@en .
 
@@ -2222,18 +2197,19 @@ orda:RequestStatusScheme rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#SnapchatVLOP
 orda:SnapchatVLOP rdf:type owl:NamedIndividual ,
                            orda:VeryLargeOnlinePlatform ;
-                  dpv:hasLocation loc:NL ;
+                  <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
                   rdfs:isDefinedBy <https://example.org/orda> ;
                   rdfs:label "Snapchat"@en .
 
 
 ###  https://example.org/orda#StandardContractualClauses
 orda:StandardContractualClauses rdf:type owl:NamedIndividual ,
-                                         orda:InternationalDataTransferMeasure ;
-                                rdfs:comment "European Commission-approved Standard Contractual Clauses (SCCs) governing the transfer of personal data to a third country outside the EU/EEA under GDPR Art. 46(2)(c)."@en ;
+                                         <https://w3id.org/dpv/owl#LegalMeasure> ;
+                                rdfs:comment "European Commission-approved Standard Contractual Clauses (SCCs) governing the transfer of personal data to a third country outside the EU/EEA under GDPR Art. 46(2)(c). Typed directly as a dpv:LegalMeasure: the transfer mechanism is a research-side safeguard, and ORDA documents those with DPV rather than through a class hierarchy of its own."@en ;
                                 rdfs:isDefinedBy <https://example.org/orda> ;
                                 rdfs:label "Standard Contractual Clauses"@en ;
-                                rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021D0914> .
+                                rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679#chap_V> ,
+                                             <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021D0914> .
 
 
 ###  https://example.org/orda#StatusAmendmentAccepted
@@ -2339,23 +2315,24 @@ orda:StatusUnderAssessment rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#TikTokVLOP
 orda:TikTokVLOP rdf:type owl:NamedIndividual ,
                          orda:VeryLargeOnlinePlatform ;
-                dpv:hasLocation loc:IE ;
+                <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                 rdfs:isDefinedBy <https://example.org/orda> ;
                 rdfs:label "TikTok"@en .
 
 
 ###  https://example.org/orda#TransferImpactAssessment
 orda:TransferImpactAssessment rdf:type owl:NamedIndividual ,
-                                       orda:DataHandlingClause ;
-                              rdfs:comment "An assessment required before transferring personal data to a third country, evaluating whether the destination country's legal framework ensures adequate protection equivalent to EU standards."@en ;
+                                       <https://w3id.org/dpv/owl#RiskAssessment> ;
+                              rdfs:comment "An assessment required before transferring personal data to a third country, evaluating whether the destination country's legal framework ensures adequate protection equivalent to EU standards. Typed as a dpv:RiskAssessment rather than a legal measure: what it produces is an appraisal of the destination framework, on which the choice of transfer mechanism then turns."@en ;
                               rdfs:isDefinedBy <https://example.org/orda> ;
-                              rdfs:label "Transfer Impact Assessment"@en .
+                              rdfs:label "Transfer Impact Assessment"@en ;
+                              rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679#chap_V> .
 
 
 ###  https://example.org/orda#WikipediaVLOP
 orda:WikipediaVLOP rdf:type owl:NamedIndividual ,
                             orda:VeryLargeOnlinePlatform ;
-                   dpv:hasLocation loc:NL ;
+                   <https://w3id.org/dpv/owl#hasLocation> loc:NL ;
                    rdfs:isDefinedBy <https://example.org/orda> ;
                    rdfs:label "Wikipedia"@en .
 
@@ -2363,7 +2340,7 @@ orda:WikipediaVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#XVLOP
 orda:XVLOP rdf:type owl:NamedIndividual ,
                     orda:VeryLargeOnlinePlatform ;
-           dpv:hasLocation loc:IE ;
+           <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
            rdfs:isDefinedBy <https://example.org/orda> ;
            rdfs:label "X (formerly Twitter)"@en .
 
@@ -2371,7 +2348,7 @@ orda:XVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#YouTubeVLOP
 orda:YouTubeVLOP rdf:type owl:NamedIndividual ,
                           orda:VeryLargeOnlinePlatform ;
-                 dpv:hasLocation loc:IE ;
+                 <https://w3id.org/dpv/owl#hasLocation> loc:IE ;
                  rdfs:isDefinedBy <https://example.org/orda> ;
                  rdfs:label "YouTube"@en .
 
@@ -2379,7 +2356,7 @@ orda:YouTubeVLOP rdf:type owl:NamedIndividual ,
 ###  https://example.org/orda#ZalandoVLOP
 orda:ZalandoVLOP rdf:type owl:NamedIndividual ,
                           orda:VeryLargeOnlinePlatform ;
-                 dpv:hasLocation loc:DE ;
+                 <https://w3id.org/dpv/owl#hasLocation> loc:DE ;
                  rdfs:isDefinedBy <https://example.org/orda> ;
                  rdfs:label "Zalando"@en .
 
@@ -2400,7 +2377,7 @@ loc:DE rdf:type owl:NamedIndividual ;
 
 ###  https://w3id.org/dpv/loc#EU
 loc:EU rdf:type owl:NamedIndividual ,
-                dpv:SupraNationalUnion ;
+                <https://w3id.org/dpv/owl#SupraNationalUnion> ;
        rdfs:comment "The jurisdiction within which DSA systemic risks must occur to trigger Art. 40 data access rights."@en ;
        rdfs:isDefinedBy <https://w3id.org/dpv/loc> ;
        rdfs:label "European Union"@en ;
