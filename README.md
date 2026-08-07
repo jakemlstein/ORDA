@@ -2,6 +2,8 @@
 
 ORDA models the research access application process under the European Union's Digital Services Act Article 40. Article 40 has two access provisions, one for public and one for pnon public data. While ORDA models both, there are further processes such as mediation, appeal that are not yet modeled.
 
+[Documentation](https://w3id.org)
+
 ## Legislation
 
 - [Digital Services Act](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065) — Regulation (EU) 2022/2065. Article 40 grants researchers access to platform data to investigate the systemic risks identified under Article 34.
