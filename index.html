@@ -463,16 +463,16 @@ types; disjointness would force such a passage to be duplicated into two individ
 <p>A researcher who may participate in the DSA Art. 40 data access process. Broader class encompassing all researcher roles.</p>
 <table class="props" summary="Assertions for orda:Researcher"><tr><th>Label</th><td>Researcher</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#Researcher</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-foaf_Person"><code>foaf:Person</code></a></td></tr><tr><th>Disjoint with</th><td><a href="#t-orda_DataProvider"><code>orda:DataProvider</code></a>, <a href="#t-orda_DigitalServicesCoordinator"><code>orda:DigitalServicesCoordinator</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_ResearchMethod"><code>orda:ResearchMethod</code></h4>
-<p><em>Method used to investigate the research question.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:ResearchMethod"><tr><th>Label</th><td>Research Method</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#ResearchMethod</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_ResearchProject"><code>orda:ResearchProject</code></h4>
 <p>A research project that processes data, defined as a subclass of dpv:Process. Under DSA Art. 40, may submit data access requests to investigate systemic risks or assess systemic risk mitigation measures within the EU.</p>
 <table class="props" summary="Assertions for orda:ResearchProject"><tr><th>Label</th><td>Research Project</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#ResearchProject</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="https://w3id.org/dpv/owl#Process"><code>dpv-owl:Process</code></a></td></tr><tr><th>Restrictions</th><td><a href="#t-frapo_isFundedBy"><code>frapo:isFundedBy</code></a> <span class="op">some</span> <a href="#t-frapo_Funding"><code>frapo:Funding</code></a></td></tr><tr><th>Disjoint with</th><td><a href="#t-orda_DataAccessRequest"><code>orda:DataAccessRequest</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_ResearchQuestion"><code>orda:ResearchQuestion</code></h4>
-<p><em>Research question of the research project linked to this request.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:ResearchQuestion"><tr><th>Label</th><td>Research Question</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#ResearchQuestion</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_ResearchTopic"><code>orda:ResearchTopic</code></h4>
-<p><em>The topic of the research project linked to this request.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:ResearchTopic"><tr><th>Label</th><td>Research Topic</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#ResearchTopic</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_StatusEvent"><code>orda:StatusEvent</code></h4>
 <p>A timestamped event recording a status change in the lifecycle of a data access request. Captures who triggered the change, when, and what the new status is.</p>
@@ -553,8 +553,8 @@ types; disjointness would force such a passage to be duplicated into two individ
 <table class="props" summary="Assertions for orda:hasAccount"><tr><th>Label</th><td>has account</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#hasAccount</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-dpv_NaturalPerson"><code>dpv:NaturalPerson</code></a></td></tr><tr><th>Range</th><td><a href="#t-orda_PlatformAccount"><code>orda:PlatformAccount</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_hasActivities"><code>orda:hasActivities</code></h4>
 <p>Links a platform account to a collection of its activities.</p>
-<table class="props" summary="Assertions for orda:hasActivities"><tr><th>Label</th><td>has activities</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#hasActivities</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-orda_PlatformAccount"><code>orda:PlatformAccount</code></a></td></tr><tr><th>Range</th><td><a href="#t-as_OrderedCollection"><code>as:OrderedCollection</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
-<h4 id="t-orda_hasAffiliatedResearcher"><code>orda:hasAffiliatedResearcher</code></h4>
+<table class="props" summary="Assertions for orda:hasActivities"><tr><th>Label</th><td>has activities</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#hasActivities</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td}< code">orta_PlatformAccount">< code">orta:PlatformAccount"></a ></ td ></ tr >< tr >< th > Range < / th >< td >< a href =" # t - orda _ PlatformAccount " >< code > orda : PlatformAccount </ code ></ a ></ td ></ tr >< tr >< th > Defined by < / th >< td >< code > https : // w3id . org / orda </ code ></ td ></ tr ></ table >
+<h4 id = " t - orda _ hasAffiliatedResearcher " >< code > orda : hasAffiliatedResearcher </ code ></ h4 >
 <p>Links a research organisation to the vetted researchers affiliated with it. The domain is entailed from the range of orda:affiliatedWith.</p>
 <table class="props" summary="Assertions for orda:hasAffiliatedResearcher"><tr><th>Label</th><td>has affiliated researcher</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#hasAffiliatedResearcher</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Inverse of</th><td><a href="#t-orda_affiliatedWith"><code>orda:affiliatedWith</code></a></td></tr><tr><th>Domain</th><td><a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Range</th><td><a href="#t-orda_Researcher"><code>orda:Researcher</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_hasDataAccessRequest"><code>orda:hasDataAccessRequest</code></h4>
@@ -698,13 +698,13 @@ types; disjointness would force such a passage to be duplicated into two individ
 <p>A declaration by the researcher that they are independent from commercial interests in relation to the specific research project, as required by Art. 40(8)(b) DSA.</p>
 <table class="props" summary="Assertions for orda:independenceDeclaration"><tr><th>Label</th><td>independence declaration</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#independenceDeclaration</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Sub-property of</th><td><a href="#t-dct_description"><code>dct:description</code></a></td></tr><tr><th>Domain</th><td><a href="#t-orda_DataAccessRequest"><code>orda:DataAccessRequest</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#string"><code>xsd:string</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_projectEndDate"><code>orda:projectEndDate</code></h4>
-<p><em>The end date of the research project.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:projectEndDate"><tr><th>Label</th><td>project end date</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#projectEndDate</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Characteristics</th><td>functional</td></tr><tr><th>Domain</th><td><a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#date"><code>xsd:date</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_projectStartDate"><code>orda:projectStartDate</code></h4>
-<p><em>Start date of the research project.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:projectStartDate"><tr><th>Label</th><td>project start date</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#projectStartDate</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Characteristics</th><td>functional</td></tr><tr><th>Domain</th><td><a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#date"><code>xsd:date</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_projectTitle"><code>orda:projectTitle</code></h4>
-<p><em>The title of the research project.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:projectTitle"><tr><th>Label</th><td>project title</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#projectTitle</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Characteristics</th><td>functional</td></tr><tr><th>Domain</th><td><a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#string"><code>xsd:string</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_publicationTimeline"><code>orda:publicationTimeline</code></h4>
 <p>The planned timeline for making research results publicly available, e.g. 'within 12 months of completion'.</p>
@@ -713,10 +713,10 @@ types; disjointness would force such a passage to be duplicated into two individ
 <p>The date on which the data access request was submitted.</p>
 <table class="props" summary="Assertions for orda:requestDate"><tr><th>Label</th><td>request date</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#requestDate</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Characteristics</th><td>functional</td></tr><tr><th>Domain</th><td><a href="#t-orda_DataAccessRequest"><code>orda:DataAccessRequest</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#date"><code>xsd:date</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_researcherEmail"><code>orda:researcherEmail</code></h4>
-<p><em>The email address of the researcher.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:researcherEmail"><tr><th>Label</th><td>researcher email</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#researcherEmail</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-orda_VettedResearcher"><code>orda:VettedResearcher</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#string"><code>xsd:string</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_researcherName"><code>orda:researcherName</code></h4>
-<p><em>The name of the researcher.</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:researcherName"><tr><th>Label</th><td>researcher name</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#researcherName</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-orda_VettedResearcher"><code>orda:VettedResearcher</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#string"><code>xsd:string</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h2 id="scheme">10. Request Status Scheme</h2>
 <p>The lifecycle of a data access request is tracked with a SKOS concept scheme. The current
@@ -762,61 +762,61 @@ date and one status.</p>
 located in its member state of establishment. The list is illustrative rather than authoritative;
 the Commission maintains the definitive register.</p>
 <h4 id="t-orda_AliExpressVLOP"><code>orda:AliExpressVLOP</code></h4>
-<p><em>AliExpress (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:AliExpressVLOP"><tr><th>Label</th><td>AliExpress</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#AliExpressVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_NL"><code>loc:NL</code></a></td></tr><tr><th>See also</th><td><a href="https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses">https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses</a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_AmazonStoreVLOP"><code>orda:AmazonStoreVLOP</code></h4>
-<p><em>Amazon (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:AmazonStoreVLOP"><tr><th>Label</th><td>Amazon Store</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#AmazonStoreVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_LU"><code>loc:LU</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_AppStoreVLOP"><code>orda:AppStoreVLOP</code></h4>
-<p><em>Apple (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:AppStoreVLOP"><tr><th>Label</th><td>Apple App Store</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#AppStoreVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_BingVLOSE"><code>orda:BingVLOSE</code></h4>
-<p><em>Bing (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:BingVLOSE"><tr><th>Label</th><td>Bing</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#BingVLOSE</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlineSearchEngine"><code>orda:VeryLargeOnlineSearchEngine</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_BookingVLOP"><code>orda:BookingVLOP</code></h4>
-<p><em>Booking.com (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:BookingVLOP"><tr><th>Label</th><td>Booking.com</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#BookingVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_NL"><code>loc:NL</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_FacebookVLOP"><code>orda:FacebookVLOP</code></h4>
-<p><em>Facebook (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:FacebookVLOP"><tr><th>Label</th><td>Facebook</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#FacebookVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_GoogleMapsVLOP"><code>orda:GoogleMapsVLOP</code></h4>
-<p><em>Google Maps (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:GoogleMapsVLOP"><tr><th>Label</th><td>Google Maps</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#GoogleMapsVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_GooglePlayVLOP"><code>orda:GooglePlayVLOP</code></h4>
-<p><em>Google Play (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:GooglePlayVLOP"><tr><th>Label</th><td>Google Play</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#GooglePlayVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_GoogleSearchVLOSE"><code>orda:GoogleSearchVLOSE</code></h4>
-<p><em>Google Search (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:GoogleSearchVLOSE"><tr><th>Label</th><td>Google Search</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#GoogleSearchVLOSE</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlineSearchEngine"><code>orda:VeryLargeOnlineSearchEngine</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_GoogleShoppingVLOP"><code>orda:GoogleShoppingVLOP</code></h4>
-<p><em>Google Shopping (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:GoogleShoppingVLOP"><tr><th>Label</th><td>Google Shopping</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#GoogleShoppingVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_InstagramVLOP"><code>orda:InstagramVLOP</code></h4>
-<p><em>Instagram (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:InstagramVLOP"><tr><th>Label</th><td>Instagram</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#InstagramVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_LinkedInVLOP"><code>orda:LinkedInVLOP</code></h4>
-<p><em>LinkedIn (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:LinkedInVLOP"><tr><th>Label</th><td>LinkedIn</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#LinkedInVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_PinterestVLOP"><code>orda:PinterestVLOP</code></h4>
-<p><em>Pinterest (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:PinterestVLOP"><tr><th>Label</th><td>Pinterest</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#PinterestVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_SnapchatVLOP"><code>orda:SnapchatVLOP</code></h4>
-<p><em>Snapchat (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:SnapchatVLOP"><tr><th>Label</th><td>Snapchat</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#SnapchatVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_NL"><code>loc:NL</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_TikTokVLOP"><code>orda:TikTokVLOP</code></h4>
-<p><em>TikTok (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:TikTokVLOP"><tr><th>Label</th><td>TikTok</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#TikTokVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_WikipediaVLOP"><code>orda:WikipediaVLOP</code></h4>
-<p><em>Wikipedia (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:WikipediaVLOP"><tr><th>Label</th><td>Wikipedia</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#WikipediaVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_NL"><code>loc:NL</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_XVLOP"><code>orda:XVLOP</code></h4>
-<p><em>X, formerly Twitter (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:XVLOP"><tr><th>Label</th><td>X (formerly Twitter)</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#XVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_YouTubeVLOP"><code>orda:YouTubeVLOP</code></h4>
-<p><em>YouTube (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:YouTubeVLOP"><tr><th>Label</th><td>YouTube</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#YouTubeVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_IE"><code>loc:IE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <h4 id="t-orda_ZalandoVLOP"><code>orda:ZalandoVLOP</code></h4>
-<p><em>Zalando (the legal entity).</em></p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for orda:ZalandoVLOP"><tr><th>Label</th><td>Zalando</td></tr><tr><th>IRI</th><td><code>https://w3id.org/orda#ZalandoVLOP</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-orda_VeryLargeOnlinePlatform"><code>orda:VeryLargeOnlinePlatform</code></a></td></tr><tr><th>Location</th><td><a href="#t-loc_DE"><code>loc:DE</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/orda</code></td></tr></table>
 <p>Further individuals defined by ORDA:</p>
 <h4 id="t-orda_StandardContractualClauses"><code>orda:StandardContractualClauses</code></h4>
@@ -879,10 +879,10 @@ restriction it does not carry in its source vocabulary, that is noted in the ter
 <p>A form of documentation providing reasons, explanations, or justifications. ORDA places orda:AccessJustification beneath this so that the Art. 40(8)(e) demonstration is discoverable as a DPV justification, without asserting anything about the DPV term itself.</p>
 <table class="props" summary="Assertions for dpv:Justification"><tr><th>Label</th><td>Justification</td></tr><tr><th>IRI</th><td><code>https://w3id.org/dpv#Justification</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="https://w3id.org/dpv/owl#Context"><code>dpv-owl:Context</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv</code></td></tr></table>
 <h4 id="t-dpv_LegalEntity"><code>dpv:LegalEntity</code></h4>
-<p>A human or non-human entity that is recognised as having rights and obligations in law.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for dpv:LegalEntity"><tr><th>IRI</th><td><code>https://w3id.org/dpv#LegalEntity</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv</code></td></tr></table>
 <h4 id="t-dpv_Location"><code>dpv:Location</code></h4>
-<p>A position, site, or area where something is located.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for dpv:Location"><tr><th>IRI</th><td><code>https://w3id.org/dpv#Location</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv</code></td></tr></table>
 <h4 id="t-dpv_Member"><code>dpv:Member</code></h4>
 <p>Data subjects that are members of a group or organisation.</p>
@@ -916,7 +916,7 @@ so the term behaves exactly as DPV defines it.</p>
 <p>Data subjects that subscribe to a service.</p>
 <table class="props" summary="Assertions for dpv:Subscriber"><tr><th>Label</th><td>Subscriber</td></tr><tr><th>IRI</th><td><code>https://w3id.org/dpv#Subscriber</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-dpv_DataSubject"><code>dpv:DataSubject</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv</code></td></tr></table>
 <h4 id="t-dpv_SupraNationalUnion"><code>dpv:SupraNationalUnion</code></h4>
-<p>A political union of two or more countries with an establishment of common authority, such as the European Union.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for dpv:SupraNationalUnion"><tr><th>IRI</th><td><code>https://w3id.org/dpv#SupraNationalUnion</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv</code></td></tr></table>
 <h4 id="t-dpv_Tourist"><code>dpv:Tourist</code></h4>
 <p>Data subjects that are tourists.</p>
@@ -950,7 +950,7 @@ supplies the union of its five actor types.</p>
 <p>A set of objects, linked by as:items. Retained as the domain of as:items and as the superclass of as:OrderedCollection, which ORDA uses as the container for platform activity.</p>
 <table class="props" summary="Assertions for as:Collection"><tr><th>Label</th><td>Collection</td></tr><tr><th>IRI</th><td><code>https://www.w3.org/ns/activitystreams#Collection</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-as_Object"><code>as:Object</code></a></td></tr><tr><th>Defined by</th><td><code>https://www.w3.org/ns/activitystreams</code></td></tr></table>
 <h4 id="t-as_Group"><code>as:Group</code></h4>
-<p>A formal or informal collective of actors.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for as:Group"><tr><th>Label</th><td>Group</td></tr><tr><th>IRI</th><td><code>https://www.w3.org/ns/activitystreams#Group</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-as_Object"><code>as:Object</code></a></td></tr><tr><th>Defined by</th><td><code>https://www.w3.org/ns/activitystreams</code></td></tr></table>
 <h4 id="t-as_Object"><code>as:Object</code></h4>
 <p>The root of the ActivityStreams type hierarchy.</p>
@@ -959,56 +959,56 @@ supplies the union of its five actor types.</p>
 <p>A collection whose members carry a defined order. ActivityStreams expresses the ordering in JSON-LD serialisation rather than through a distinct RDF property, so members are still reached via as:items.</p>
 <table class="props" summary="Assertions for as:OrderedCollection"><tr><th>Label</th><td>Ordered Collection</td></tr><tr><th>IRI</th><td><code>https://www.w3.org/ns/activitystreams#OrderedCollection</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-as_Collection"><code>as:Collection</code></a></td></tr><tr><th>Defined by</th><td><code>https://www.w3.org/ns/activitystreams</code></td></tr></table>
 <h4 id="t-as_Organization"><code>as:Organization</code></h4>
-<p>An organisation, as an ActivityStreams actor.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for as:Organization"><tr><th>Label</th><td>Organization</td></tr><tr><th>IRI</th><td><code>https://www.w3.org/ns/activitystreams#Organization</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-as_Object"><code>as:Object</code></a></td></tr><tr><th>Defined by</th><td><code>https://www.w3.org/ns/activitystreams</code></td></tr></table>
 <h4 id="t-as_Person"><code>as:Person</code></h4>
 <p>An account held by a natural person. Distinct from <code>dpv:NaturalPerson</code>: as:Person is the account, not the human behind it, and one human may hold several. The two are related by <a href="#t-orda_hasAccount"><code>orda:hasAccount</code></a>; ORDA does not assert disjointness between them.</p>
 <table class="props" summary="Assertions for as:Person"><tr><th>Label</th><td>Person</td></tr><tr><th>IRI</th><td><code>https://www.w3.org/ns/activitystreams#Person</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-as_Object"><code>as:Object</code></a></td></tr><tr><th>Defined by</th><td><code>https://www.w3.org/ns/activitystreams</code></td></tr></table>
 <h4 id="t-as_Service"><code>as:Service</code></h4>
-<p>A service of any kind, as an ActivityStreams actor.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for as:Service"><tr><th>Label</th><td>Service</td></tr><tr><th>IRI</th><td><code>https://www.w3.org/ns/activitystreams#Service</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-as_Object"><code>as:Object</code></a></td></tr><tr><th>Defined by</th><td><code>https://www.w3.org/ns/activitystreams</code></td></tr></table>
 <h4 id="t-as_items"><code>as:items</code></h4>
 <p>Links a collection to its members. This is how the as:OrderedCollection reached by orda:hasActivities and orda:containsHistory is populated. Note that ActivityStreams defines no 'orderedItems' property; ordering in an as:OrderedCollection is a JSON-LD serialisation concern, so as:items is used for both ordered and unordered collections.</p>
 <table class="props" summary="Assertions for as:items"><tr><th>Label</th><td>items</td></tr><tr><th>IRI</th><td><code>https://www.w3.org/ns/activitystreams#items</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-as_Collection"><code>as:Collection</code></a></td></tr><tr><th>Defined by</th><td><code>https://www.w3.org/ns/activitystreams</code></td></tr></table>
 <h3 id="ns-frapo">12.3 FRAPO: Funding, Research Administration and Projects Ontology</h3>
 <h4 id="t-frapo_College"><code>frapo:College</code></h4>
-<p>An institution of higher education, typically one forming part of a university.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:College"><tr><th>Label</th><td>College</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/College</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-foaf_Organization"><code>foaf:Organization</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_Funding"><code>frapo:Funding</code></h4>
 <p>An amount of money available to finance some project or activity. Within ORDA every instance must name the agency providing it, so that the funding disclosure required by Art. 40(8)(b) DSA is reachable from any funded research project.</p>
 <table class="props" summary="Assertions for frapo:Funding"><tr><th>Label</th><td>Funding</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/Funding</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Restrictions</th><td><a href="#t-frapo_hasFundingAgency"><code>frapo:hasFundingAgency</code></a> <span class="op">some</span> <a href="#t-frapo_FundingAgency"><code>frapo:FundingAgency</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_FundingAgency"><code>frapo:FundingAgency</code></h4>
-<p>An organisation that provides funding, for example for research projects.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:FundingAgency"><tr><th>Label</th><td>Funding Agency</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/FundingAgency</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-foaf_Organization"><code>foaf:Organization</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_Grant"><code>frapo:Grant</code></h4>
-<p>A sum of money awarded by a funding agency to support a defined programme of work.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:Grant"><tr><th>Label</th><td>Grant</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/Grant</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-frapo_Funding"><code>frapo:Funding</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_hasEndDate"><code>frapo:hasEndDate</code></h4>
-<p>The date on which something ends.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:hasEndDate"><tr><th>Label</th><td>has end date</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/hasEndDate</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-frapo_Funding"><code>frapo:Funding</code></a> or <a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#dateTime"><code>xsd:dateTime</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_hasFundingAgency"><code>frapo:hasFundingAgency</code></h4>
 <p>Links funding to the agency providing it. Every frapo:Funding instance in ORDA is required to carry one.</p>
 <table class="props" summary="Assertions for frapo:hasFundingAgency"><tr><th>Label</th><td>has funding agency</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/hasFundingAgency</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-frapo_Funding"><code>frapo:Funding</code></a></td></tr><tr><th>Range</th><td><a href="#t-frapo_FundingAgency"><code>frapo:FundingAgency</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_hasGrantNumber"><code>frapo:hasGrantNumber</code></h4>
-<p>The identifier assigned to a grant by the funding agency that awarded it.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:hasGrantNumber"><tr><th>Label</th><td>has grant number</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/hasGrantNumber</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-frapo_Grant"><code>frapo:Grant</code></a> or <a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_hasStartDate"><code>frapo:hasStartDate</code></h4>
-<p>The date on which something starts.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:hasStartDate"><tr><th>Label</th><td>has start date</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/hasStartDate</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-frapo_Funding"><code>frapo:Funding</code></a> or <a href="#t-frapo_Grant"><code>frapo:Grant</code></a> or <a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#dateTime"><code>xsd:dateTime</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_isEmployedBy"><code>frapo:isEmployedBy</code></h4>
-<p>Relates a person to the organisation that employs them.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:isEmployedBy"><tr><th>Label</th><td>is employed by</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/isEmployedBy</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-foaf_Agent"><code>foaf:Agent</code></a></td></tr><tr><th>Range</th><td><a href="#t-foaf_Agent"><code>foaf:Agent</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_isFundedBy"><code>frapo:isFundedBy</code></h4>
 <p>Links a research project to the funding that finances it. FRAPO defines this property as polymorphic over both the funding and the agency providing it, so the range permits either, but ORDA requires a research project to name its frapo:Funding; the funding agency is reached from there via frapo:hasFundingAgency.</p>
 <table class="props" summary="Assertions for frapo:isFundedBy"><tr><th>Label</th><td>is funded by</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/isFundedBy</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-orda_ResearchProject"><code>orda:ResearchProject</code></a></td></tr><tr><th>Range</th><td><a href="#t-frapo_Funding"><code>frapo:Funding</code></a> or <a href="#t-frapo_FundingAgency"><code>frapo:FundingAgency</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_Project"><code>frapo:Project</code></h4>
-<p>A planned programme of work undertaken to achieve a defined objective.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:Project"><tr><th>Label</th><td>Project</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/Project</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_ResearchInstitute"><code>frapo:ResearchInstitute</code></h4>
-<p>An institution whose primary purpose is the conduct of research.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:ResearchInstitute"><tr><th>Label</th><td>Research Institute</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/ResearchInstitute</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-foaf_Organization"><code>foaf:Organization</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h4 id="t-frapo_University"><code>frapo:University</code></h4>
-<p>An institution of higher education and research that awards academic degrees.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for frapo:University"><tr><th>Label</th><td>University</td></tr><tr><th>IRI</th><td><code>http://purl.org/cerif/frapo/University</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Sub-class of</th><td><a href="#t-foaf_Organization"><code>foaf:Organization</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/cerif/frapo/</code></td></tr></table>
 <h3 id="ns-csvw">12.4 CSV on the Web (CSVW)</h3>
 <h4 id="t-csvw_column"><code>csvw:column</code></h4>
@@ -1034,26 +1034,26 @@ supplies the union of its five actor types.</p>
 <table class="props" summary="Assertions for csvw:titles"><tr><th>Label</th><td>titles</td></tr><tr><th>IRI</th><td><code>http://www.w3.org/ns/csvw#titles</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-csvw_Column"><code>csvw:Column</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#string"><code>xsd:string</code></a></td></tr><tr><th>Defined by</th><td><code>http://www.w3.org/ns/csvw#</code></td></tr></table>
 <h3 id="ns-loc">12.5 DPV Locations extension</h3>
 <h4 id="t-loc_DE"><code>loc:DE</code></h4>
-<p>Germany.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for loc:DE"><tr><th>IRI</th><td><code>https://w3id.org/dpv/loc#DE</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv/loc</code></td></tr></table>
 <h4 id="t-loc_EU"><code>loc:EU</code></h4>
 <p>The jurisdiction within which DSA systemic risks must occur to trigger Art. 40 data access rights.</p>
 <table class="props" summary="Assertions for loc:EU"><tr><th>Label</th><td>European Union</td></tr><tr><th>IRI</th><td><code>https://w3id.org/dpv/loc#EU</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a>, <a href="#t-dpv_SupraNationalUnion"><code>dpv:SupraNationalUnion</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv/loc</code></td></tr></table>
 <h4 id="t-loc_IE"><code>loc:IE</code></h4>
-<p>Ireland.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for loc:IE"><tr><th>IRI</th><td><code>https://w3id.org/dpv/loc#IE</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv/loc</code></td></tr></table>
 <h4 id="t-loc_LU"><code>loc:LU</code></h4>
-<p>Luxembourg.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for loc:LU"><tr><th>IRI</th><td><code>https://w3id.org/dpv/loc#LU</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv/loc</code></td></tr></table>
 <h4 id="t-loc_NL"><code>loc:NL</code></h4>
-<p>The Netherlands.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for loc:NL"><tr><th>IRI</th><td><code>https://w3id.org/dpv/loc#NL</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a></td></tr><tr><th>Defined by</th><td><code>https://w3id.org/dpv/loc</code></td></tr></table>
 <h3 id="ns-dct">12.6 DCMI Metadata Terms</h3>
 <h4 id="t-dct_description"><code>dct:description</code></h4>
 <p>Free text supplied by a party to the process (an applicant, a platform or a DSC), as opposed to a value ORDA models structurally. ORDA uses this for descriptive text directly where a subject carries only one such text, as on orda:ResearchProject and on the orda:AccessJustification statements, and makes the narrower properties subproperties of it where a subject carries several, so that orda:independenceDeclaration, orda:publicationTimeline and orda:amendmentGrounds remain individually identifiable while still being reachable generically. Left without a domain deliberately, so that ORDA constrains nothing about the term for importers. Typed here as an owl:DatatypeProperty, which DCMI itself does not commit to.</p>
 <table class="props" summary="Assertions for dct:description"><tr><th>Label</th><td>description</td></tr><tr><th>IRI</th><td><code>http://purl.org/dc/terms/description</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#string"><code>xsd:string</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/dc/terms/</code></td></tr></table>
 <h4 id="t-dct_format"><code>dct:format</code></h4>
-<p>The file format, physical medium, or dimensions of the resource.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for dct:format"><tr><th>Label</th><td>format</td></tr><tr><th>IRI</th><td><code>http://purl.org/dc/terms/format</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#ObjectProperty"><code>owl:ObjectProperty</code></a></td></tr><tr><th>Domain</th><td><a href="#t-dcat_Distribution"><code>dcat:Distribution</code></a></td></tr><tr><th>Range</th><td><a href="#t-dct_MediaTypeOrExtent"><code>dct:MediaTypeOrExtent</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/dc/terms/</code></td></tr></table>
 <h4 id="t-dct_hasFormat"><code>dct:hasFormat</code></h4>
 <p>Used here to link a dcat:Distribution to its format-specific schema description (csvw:Schema for CSV, or a foaf:Document URL for JSON Schema).</p>
@@ -1062,44 +1062,44 @@ supplies the union of its five actor types.</p>
 <p>The reference under which a data access request is registered, e.g. in the DSA Data Access Portal.</p>
 <table class="props" summary="Assertions for dct:identifier"><tr><th>Label</th><td>identifier</td></tr><tr><th>IRI</th><td><code>http://purl.org/dc/terms/identifier</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#DatatypeProperty"><code>owl:DatatypeProperty</code></a></td></tr><tr><th>Characteristics</th><td>functional</td></tr><tr><th>Domain</th><td><a href="#t-orda_DataAccessRequest"><code>orda:DataAccessRequest</code></a></td></tr><tr><th>Range</th><td><a href="http://www.w3.org/2001/XMLSchema#string"><code>xsd:string</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/dc/terms/</code></td></tr></table>
 <h4 id="t-dct_MediaTypeOrExtent"><code>dct:MediaTypeOrExtent</code></h4>
-<p>A media type or extent, used as the range of dct:format.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for dct:MediaTypeOrExtent"><tr><th>Label</th><td>Media Type or Extent</td></tr><tr><th>IRI</th><td><code>http://purl.org/dc/terms/MediaTypeOrExtent</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>http://purl.org/dc/terms/</code></td></tr></table>
 <h3 id="ns-skos">12.7 SKOS Simple Knowledge Organization System</h3>
 <h4 id="t-skos_closeMatch"><code>skos:closeMatch</code></h4>
-<p>Links two concepts that are sufficiently similar to be used interchangeably in some applications.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for skos:closeMatch"><tr><th>IRI</th><td><code>http://www.w3.org/2004/02/skos/core#closeMatch</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#AnnotationProperty"><code>owl:AnnotationProperty</code></a></td></tr><tr><th>Defined by</th><td><code>http://www.w3.org/2004/02/skos/core</code></td></tr></table>
 <h4 id="t-skos_Concept"><code>skos:Concept</code></h4>
-<p>An idea or notion; a unit of thought.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for skos:Concept"><tr><th>IRI</th><td><code>http://www.w3.org/2004/02/skos/core#Concept</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>http://www.w3.org/2004/02/skos/core</code></td></tr></table>
 <h4 id="t-skos_ConceptScheme"><code>skos:ConceptScheme</code></h4>
-<p>A set of concepts, optionally including statements about the semantic relationships between them.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for skos:ConceptScheme"><tr><th>IRI</th><td><code>http://www.w3.org/2004/02/skos/core#ConceptScheme</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>http://www.w3.org/2004/02/skos/core</code></td></tr></table>
 <h4 id="t-skos_inScheme"><code>skos:inScheme</code></h4>
-<p>Relates a concept to the concept scheme it belongs to.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for skos:inScheme"><tr><th>IRI</th><td><code>http://www.w3.org/2004/02/skos/core#inScheme</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#AnnotationProperty"><code>owl:AnnotationProperty</code></a></td></tr><tr><th>Defined by</th><td><code>http://www.w3.org/2004/02/skos/core</code></td></tr></table>
 <h3 id="ns-filetype">12.8 EU Publications Office file-type authority table</h3>
 <h4 id="t-filetype_CSV"><code>filetype:CSV</code></h4>
-<p>Comma-separated values, a plain-text tabular data format.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for filetype:CSV"><tr><th>IRI</th><td><code>http://publications.europa.eu/resource/authority/file-type/CSV</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a></td></tr><tr><th>Defined by</th><td><code>http://publications.europa.eu/resource/authority/file-type</code></td></tr></table>
 <h4 id="t-filetype_JSON"><code>filetype:JSON</code></h4>
-<p>JavaScript Object Notation, a text-based structured data format.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for filetype:JSON"><tr><th>IRI</th><td><code>http://publications.europa.eu/resource/authority/file-type/JSON</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a></td></tr><tr><th>Defined by</th><td><code>http://publications.europa.eu/resource/authority/file-type</code></td></tr></table>
 <h4 id="t-filetype_PDF"><code>filetype:PDF</code></h4>
-<p>Portable Document Format.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for filetype:PDF"><tr><th>IRI</th><td><code>http://publications.europa.eu/resource/authority/file-type/PDF</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#NamedIndividual"><code>owl:NamedIndividual</code></a></td></tr><tr><th>Defined by</th><td><code>http://publications.europa.eu/resource/authority/file-type</code></td></tr></table>
 <h3 id="ns-foaf">12.9 FOAF (Friend of a Friend)</h3>
 <h4 id="t-foaf_Agent"><code>foaf:Agent</code></h4>
-<p>An agent, such as a person, group, software or physical artefact.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for foaf:Agent"><tr><th>Label</th><td>Agent</td></tr><tr><th>IRI</th><td><code>http://xmlns.com/foaf/0.1/Agent</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>http://xmlns.com/foaf/0.1/</code></td></tr></table>
 <h4 id="t-foaf_Organization"><code>foaf:Organization</code></h4>
-<p>An organisation.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for foaf:Organization"><tr><th>Label</th><td>Organization</td></tr><tr><th>IRI</th><td><code>http://xmlns.com/foaf/0.1/Organization</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>http://xmlns.com/foaf/0.1/</code></td></tr></table>
 <h4 id="t-foaf_Person"><code>foaf:Person</code></h4>
-<p>A person.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for foaf:Person"><tr><th>Label</th><td>Person</td></tr><tr><th>IRI</th><td><code>http://xmlns.com/foaf/0.1/Person</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Defined by</th><td><code>http://xmlns.com/foaf/0.1/</code></td></tr></table>
 <h3 id="ns-dcat">12.10 Data Catalog Vocabulary (DCAT)</h3>
 <h4 id="t-dcat_Distribution"><code>dcat:Distribution</code></h4>
-<p>A specific representation of a dataset; a dataset may be available in several distributions that differ in format or access method.</p>
+<p><em>No definition is given in the ontology.</em></p>
 <table class="props" summary="Assertions for dcat:Distribution"><tr><th>Label</th><td>Distribution</td></tr><tr><th>IRI</th><td><code>http://www.w3.org/ns/dcat#Distribution</code></td></tr><tr><th>Type</th><td><a href="http://www.w3.org/2002/07/owl#Class"><code>owl:Class</code></a></td></tr><tr><th>Disjoint with</th><td><a href="#t-orda_ReasonedRequest"><code>orda:ReasonedRequest</code></a></td></tr><tr><th>Defined by</th><td><code>http://www.w3.org/ns/dcat#</code></td></tr></table>
 <h3 id="ns-eli">12.11 European Legislation Identifier (ELI)</h3>
 <h4 id="t-eli_LegalResource"><code>eli:LegalResource</code></h4>
