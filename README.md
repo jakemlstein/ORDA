@@ -13,3 +13,12 @@ To model data requested, ORDA links to ActivityStreams2.0 rather than defining i
 
 ORDA is a draft under review and should not be considered a specification.
 ORDA is a project of DSA40 Collaboratory and the University of Oxford. 
+
+## Features in Pipeline 
+
+1. Connector to centralized form
+2. Mapping to Catalogues
+3. Onboard DSA40 Collab data (?)
+4. Hosting setup
+5. SPARQL endpoint
+6. SPARQL Query Builder
